@@ -19,6 +19,7 @@ def booking():
 def thankyou():
 	return render_template("thankyou.html")
 
+# Blueprint
 app.register_blueprint(app_attraction, url_prefix='/api')
 app.register_blueprint(app_mrts, url_prefix='/api')
 
