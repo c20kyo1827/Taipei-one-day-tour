@@ -159,7 +159,22 @@ class mydb_mgr:
                 self.connect_and_run(add_image, True)
 
     def get_attractions_by_page_keyword(self, page, keyword):
-        pass
+        def run(cursor):
+            cursor.execute("USE website")
+            limit = 12
+            offset = limit*int(page)
+            if keyword==None:
+                sql = "SELECT * FROM attraction LIMIT %s,%s"
+                val = (offset, limit)
+                
+            else:
+                sql = "SELECT * FROM attraction LIMIT %s,%s WHERE name LIKE CONCAT('%', %s, '%')"
+                val = (offset, limit, keyword)
+            print(sql)
+            print(val)
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
 
     def get_attraction(self, id):
         def run(cursor):

@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 import os
 import sys
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -9,10 +9,54 @@ app_attraction = Blueprint('app_attraction', __name__)
 mydb = mydb_mgr.mydb_mgr()
 mydb.init()
 
+# TODO
+# Optimize the data process
+# It looks like that there are so many redundant steps
+# Consider the flask_sqlalchemy
+
 @app_attraction.route('/attractions')
 def attractions():
     try:
-        pass
+        if request.args.get("page").isdigit():
+            attrct = mydb.get_attractions_by_page_keyword(request.args.get("page"), request.args.get("keyword"))
+            attrct_next = mydb.get_attractions_by_page_keyword(int(request.args.get("page"))+1, request.args.get("keyword"))
+            if attrct_next==[]:
+                next_page = None
+            else:
+                next_page = int(request.args.get("page"))+1
+            data = []
+            print(attrct)
+            print(next_page)
+            for info in attrct:
+                category = mydb.get_category_by_id(info[0])
+                mrt = mydb.get_mrt_by_id(info[0])
+                images = [image[1] for image in mydb.get_images_by_id(info[0])]
+                mrt = None if mrt==[] else mrt[0][1]
+                data.append( \
+                    { \
+                        "id": info[0], \
+                        "name": info[1], \
+                        "category": category[0][1], \
+                        "description": info[2], \
+                        "address": info[3], \
+                        "transport": info[4], \
+                        "mrt": mrt, \
+                        "lat": info[5], \
+                        "lng": info[6], \
+                        "images": images \
+                    } \
+                )
+
+            return jsonify({ \
+                        "nextPage": next_page, \
+                        "data": data
+                    })
+        else:
+            return \
+                jsonify({ \
+                    "error": True, \
+                    "message": "Argument page is wrong" \
+                }), 500
     except:
         return \
             jsonify({ \
@@ -24,22 +68,22 @@ def attractions():
 def attraction(attractionId):
     try:
         if isinstance(attractionId,int):
-            data = mydb.get_attraction(attractionId)
+            attrct = mydb.get_attraction(attractionId)
             category = mydb.get_category_by_id(attractionId)
             mrt = mydb.get_mrt_by_id(attractionId)
             images = [image[1] for image in mydb.get_images_by_id(attractionId)]
-            print(images)
+            mrt = None if mrt==[] else mrt[0][1]
             return jsonify({ \
                         "data": { \
-                            "id": data[0][0], \
-                            "name": data[0][1], \
+                            "id": attrct[0][0], \
+                            "name": attrct[0][1], \
                             "category": category[0][1], \
-                            "description": data[0][2], \
-                            "address": data[0][3], \
-                            "transport": data[0][4], \
-                            "mrt": mrt[0][1], \
-                            "lat": data[0][5], \
-                            "lng": data[0][6], \
+                            "description": attrct[0][2], \
+                            "address": attrct[0][3], \
+                            "transport": attrct[0][4], \
+                            "mrt": mrt, \
+                            "lat": attrct[0][5], \
+                            "lng": attrct[0][6], \
                             "images": images \
                         } \
                     })
