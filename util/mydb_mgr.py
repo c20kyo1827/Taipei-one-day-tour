@@ -4,8 +4,9 @@ from mysql.connector import pooling
 import os
 
 # TODO
-# Use flask_sqlalchemy to modify
-# Create index
+# 1. Use flask_sqlalchemy to modify
+# 2. Create index
+# 3. Use the inner join
 class mydb_mgr:
     def __init__(self):
         self._mypool = None
@@ -168,10 +169,8 @@ class mydb_mgr:
                 val = (offset, limit)
                 
             else:
-                sql = "SELECT * FROM attraction LIMIT %s,%s WHERE name LIKE CONCAT('%', %s, '%')"
-                val = (offset, limit, keyword)
-            print(sql)
-            print(val)
+                sql = "SELECT * FROM attraction LEFT JOIN mrt ON mrt.attraction_id=attraction.id WHERE attraction.name LIKE CONCAT('%', %s, '%') OR mrt.name=%s LIMIT %s,%s"
+                val = (keyword, keyword, offset, limit)
             cursor.execute(sql, val)
             return cursor.fetchall()
         return self.connect_and_run(run)

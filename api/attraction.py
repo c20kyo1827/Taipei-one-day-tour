@@ -25,8 +25,6 @@ def attractions():
             else:
                 next_page = int(request.args.get("page"))+1
             data = []
-            print(attrct)
-            print(next_page)
             for info in attrct:
                 category = mydb.get_category_by_id(info[0])
                 mrt = mydb.get_mrt_by_id(info[0])
@@ -94,7 +92,6 @@ def attraction(attractionId):
                     "message": "attraction id is not integer" \
                 }), 400
     except:
-        print("123")
         return \
             jsonify({ \
                 "error": True, \
