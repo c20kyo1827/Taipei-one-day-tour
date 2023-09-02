@@ -157,7 +157,16 @@ class mydb_mgr:
                 
                 self.connect_and_run(add_image, True)
 
-            
+    def get_mrt(self):
+        def run(cursor):
+            cursor.execute("USE website")
+            cursor.execute("SELECT mrt.name, \
+                                COUNT(*) 'count' \
+                            FROM mrt \
+                            GROUP BY mrt.name \
+                            ORDER BY count DESC, mrt.name")
+            return cursor.fetchall()
+        return self.connect_and_run(run)
 
 if __name__=="__main__":
     flow = mydb_mgr()

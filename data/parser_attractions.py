@@ -20,8 +20,6 @@ def parse(file_path):
             attraction_dict["lat"] = list["latitude"]
             attractions.append(attraction_dict)
 
-            print(str(attraction_dict["id"]) + " " + str(attraction_dict["category"]))
-
             tokens = list["file"].lower().split("https")
             img_list = []
             for token in tokens:
