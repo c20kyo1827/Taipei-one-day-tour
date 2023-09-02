@@ -58,28 +58,46 @@ class mydb_mgr:
     def reset_table(self):
         def run(cursor):
             cursor.execute("USE website")
-            cursor.execute("DROP TABLE IF EXISTS message")
-            cursor.execute("DROP TABLE IF EXISTS member")
+            cursor.execute("DROP TABLE IF EXISTS attraction")
+            cursor.execute("DROP TABLE IF EXISTS mrt")
+            cursor.execute("DROP TABLE IF EXISTS category")
+            cursor.execute("DROP TABLE IF EXISTS image")
             cursor.execute( \
-                "CREATE TABLE member( \
+                "CREATE TABLE attraction( \
                     id bigint AUTO_INCREMENT, \
                     name varchar(255) NOT NULL, \
-                    username varchar(255) NOT NULL, \
-                    password varchar(255) NOT NULL, \
-                    follower_count int UNSIGNED NOT NULL DEFAULT 0, \
-                    time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
+                    description TEXT NOT NULL, \
+                    address TEXT NOT NULL, \
+                    lng FLOAT NOT NULL, \
+                    lat FLOAT NOT NULL, \
                     PRIMARY KEY(id) \
                 )" \
             )
             cursor.execute( \
-                "CREATE TABLE message( \
+                "CREATE TABLE mrt( \
                     id bigint AUTO_INCREMENT, \
-                    member_id bigint NOT NULL, \
-                    content varchar(255) NOT NULL, \
-                    like_count int UNSIGNED NOT NULL DEFAULT 0, \
-                    time datetime NOT NULL DEFAULT CURRENT_TIMESTAMP, \
-                    PRIMARY KEY(id), \
-                    FOREIGN KEY(member_id) REFERENCES member(id) \
+                    name varchar(255) NOT NULL, \
+                    attraction_id bigint NOT NULL, \
+                    FOREIGN KEY(attraction_id) REFERENCES attraction(id), \
+                    PRIMARY KEY(id) \
+                )" \
+            )
+            cursor.execute( \
+                "CREATE TABLE category( \
+                    id bigint AUTO_INCREMENT, \
+                    name varchar(255) NOT NULL, \
+                    attraction_id bigint NOT NULL, \
+                    FOREIGN KEY(attraction_id) REFERENCES attraction(id), \
+                    PRIMARY KEY(id) \
+                )" \
+            )
+            cursor.execute( \
+                "CREATE TABLE image( \
+                    id bigint AUTO_INCREMENT, \
+                    url TEXT NOT NULL, \
+                    attraction_id bigint NOT NULL, \
+                    FOREIGN KEY(attraction_id) REFERENCES attraction(id), \
+                    PRIMARY KEY(id) \
                 )" \
             )
         self.connect_and_run(run)
@@ -87,71 +105,13 @@ class mydb_mgr:
     def show(self):
         def run(cursor):
             cursor.execute("USE website")
-            cursor.execute("SELECT * FROM member")
-            member_info = cursor.fetchall()
-            for x in member_info: print(x)
-            cursor.execute("SELECT * FROM message")
-            message_info = cursor.fetchall()
-            for x in message_info: print(x)
+            table = ["attraction", "mrt", "category", "image"]
+            for t in table:
+                cmd = "SELECT * FROM " + t
+                cursor.execute(cmd)
+                member_info = cursor.fetchall()
+                for x in member_info: print(x)
         self.connect_and_run(run)
-
-    def get_member(self, username, password=None):
-        def run(cursor):
-            if password==None:
-                sql = "SELECT id, username, name FROM member WHERE username = %s"
-                val = (username, )
-            else:
-                sql = "SELECT id, username, name FROM member WHERE username = %s AND password = %s"
-                val = (username, password)
-            cursor.execute("USE website")
-            cursor.execute(sql, val)
-            return cursor.fetchall()
-        return self.connect_and_run(run)
-    
-    def update_member(self, username, name):
-        def run(cursor):
-            sql = "UPDATE member SET name=%s WHERE username=%s"
-            val = (name, username)
-            cursor.execute("USE website")
-            cursor.execute(sql, val)
-            cursor.execute("SELECT CASE WHEN ROW_COUNT() > 0 THEN 1 ELSE 0 END AS updated")
-            return cursor.fetchall()
-        return self.connect_and_run(run, True)
-
-    def add_member(self, name, username, password, follower_count=0):
-        def run(cursor):
-            sql = "INSERT INTO member (name, username, password, follower_count) VALUES (%s, %s, %s, %s)"
-            val = (name, username, password, follower_count)
-            cursor.execute("USE website")
-            cursor.execute(sql, val)
-        self.connect_and_run(run, True)
-
-    def get_message(self):
-        def run(cursor):
-            cursor.execute("USE website")
-            cursor.execute("SELECT message.id, message.content, member.username FROM member INNER JOIN message ON message.member_id=member.id ORDER BY message.time DESC")
-            message_info = cursor.fetchall()
-            return message_info
-        return self.connect_and_run(run)
-
-    def add_message(self, member_id, content, like_count=0):
-        def run(cursor):
-            # sql = "INSERT INTO message (member_id, content, like_count) SELECT id, %s, %s FROM member WHERE id=%s LIMIT 1"
-            sql = "INSERT INTO message (member_id, content, like_count) VALUES (%s, %s, %s)"
-            val = (member_id, content, like_count)
-            cursor.execute("USE website")
-            cursor.execute(sql, val)
-        self.connect_and_run(run, True)
-
-    def delete_message(self, msg_id, user_id):
-        def run(cursor):
-            sql = "DELETE FROM message WHERE id=%s"
-            val = (msg_id,)
-            print(sql)
-            cursor.execute("USE website")
-            cursor.execute(sql, val)
-        self.connect_and_run(run, True)
-
 
 if __name__=="__main__":
     flow = mydb_mgr()
@@ -161,4 +121,5 @@ if __name__=="__main__":
     else:
         flow.init()
 
+    print("Show the content : ")
     flow.show()
