@@ -4,6 +4,9 @@ from mysql.connector import pooling
 import json
 import os
 
+# TODO
+# Use flask_sqlalchemy to modify
+# Create index
 class mydb_mgr:
     def __init__(self):
         self._mypool = None
@@ -64,7 +67,7 @@ class mydb_mgr:
             cursor.execute("DROP TABLE IF EXISTS image")
             cursor.execute( \
                 "CREATE TABLE attraction( \
-                    id bigint AUTO_INCREMENT, \
+                    id bigint NOT NULL, \
                     name varchar(255) NOT NULL, \
                     description TEXT NOT NULL, \
                     address TEXT NOT NULL, \
@@ -112,6 +115,49 @@ class mydb_mgr:
                 member_info = cursor.fetchall()
                 for x in member_info: print(x)
         self.connect_and_run(run)
+
+    def add_attraction_mrt(self, attractions):
+        for info in attractions:
+            def add_attraction(cursor):
+                sql = "INSERT INTO attraction  \
+                        (id, name, description, address, lng, lat) VALUES (%s, %s, %s, %s, %s, %s)"
+                val = ( 
+                        info["id"], info["name"], \
+                        info["description"], info["address"], \
+                        info["lng"], info["lat"]
+                    )
+                cursor.execute("USE website")
+                cursor.execute(sql, val)
+            self.connect_and_run(add_attraction, True)
+
+            def add_mrt(cursor):
+                sql = "INSERT INTO mrt  \
+                        (name, attraction_id) VALUES (%s, %s)"
+                val = ( info["mrt"], info["id"] )
+                cursor.execute("USE website")
+                cursor.execute(sql, val)
+            if info["mrt"] != None:
+                self.connect_and_run(add_mrt)
+
+            # def add_category(cursor):
+            #     sql = "INSERT INTO mrt  \
+            #             (name, attraction_id) VALUES (%s, %s)"
+            #     val = ( info["mrt"], info["id"] )
+            #     cursor.execute("USE website")
+            #     cursor.execute(sql, val)
+            # self.connect_and_run(add_category)
+
+            for img in info["images"]:
+                def add_image(cursor):
+                    sql = "INSERT INTO image  \
+                            (url, attraction_id) VALUES (%s, %s)"
+                    val = ( img, info["id"] )
+                    cursor.execute("USE website")
+                    cursor.execute(sql, val)
+                
+                self.connect_and_run(add_image)
+
+            
 
 if __name__=="__main__":
     flow = mydb_mgr()
