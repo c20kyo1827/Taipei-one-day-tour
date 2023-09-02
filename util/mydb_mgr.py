@@ -1,7 +1,6 @@
 from mysql.connector import connect
 from mysql.connector import Error
 from mysql.connector import pooling
-import json
 import os
 
 # TODO
@@ -71,6 +70,7 @@ class mydb_mgr:
                     name varchar(255) NOT NULL, \
                     description TEXT NOT NULL, \
                     address TEXT NOT NULL, \
+                    transport TEXT NOT NULL, \
                     lng FLOAT NOT NULL, \
                     lat FLOAT NOT NULL, \
                     PRIMARY KEY(id) \
@@ -120,10 +120,11 @@ class mydb_mgr:
         for info in attractions:
             def add_attraction(cursor):
                 sql = "INSERT INTO attraction  \
-                        (id, name, description, address, lng, lat) VALUES (%s, %s, %s, %s, %s, %s)"
+                        (id, name, description, address, transport, lng, lat) VALUES (%s, %s, %s, %s, %s, %s, %s)"
                 val = ( 
                         info["id"], info["name"], \
                         info["description"], info["address"], \
+                        info["transport"], \
                         info["lng"], info["lat"]
                     )
                 cursor.execute("USE website")
@@ -157,7 +158,19 @@ class mydb_mgr:
                 
                 self.connect_and_run(add_image, True)
 
-    def get_mrt(self):
+    def get_attractions_by_page_keyword(self, page, keyword):
+        pass
+
+    def get_attraction(self, id):
+        def run(cursor):
+            cursor.execute("USE website")
+            sql = "SELECT * FROM attraction WHERE id=%s"
+            val = (id, )
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+
+    def get_mrts(self):
         def run(cursor):
             cursor.execute("USE website")
             cursor.execute("SELECT mrt.name, \
@@ -165,6 +178,33 @@ class mydb_mgr:
                             FROM mrt \
                             GROUP BY mrt.name \
                             ORDER BY count DESC, mrt.name")
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+
+    def get_mrt_by_id(self, id):
+        def run(cursor):
+            cursor.execute("USE website")
+            sql = "SELECT * FROM mrt WHERE attraction_id=%s"
+            val = (id, )
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+
+    def get_category_by_id(self, id):
+        def run(cursor):
+            cursor.execute("USE website")
+            sql = "SELECT * FROM category WHERE attraction_id=%s"
+            val = (id, )
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+    
+    def get_images_by_id(self, id):
+        def run(cursor):
+            cursor.execute("USE website")
+            sql = "SELECT * FROM image WHERE attraction_id=%s"
+            val = (id, )
+            cursor.execute(sql, val)
             return cursor.fetchall()
         return self.connect_and_run(run)
 

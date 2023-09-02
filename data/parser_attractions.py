@@ -15,6 +15,7 @@ def parse(file_path):
             attraction_dict["category"] = list["CAT"]
             attraction_dict["description"] = list["description"]
             attraction_dict["address"] = list["address"]
+            attraction_dict["transport"] = list["direction"]
             attraction_dict["mrt"] = list["MRT"]
             attraction_dict["lng"] = list["longitude"]
             attraction_dict["lat"] = list["latitude"]
@@ -31,7 +32,7 @@ def parse(file_path):
 if __name__=="__main__":
     file_path = os.path.join(PARENT_DIR, "data", "taipei-attractions.json")
     parse(file_path)
-    flow = mydb_mgr.mydb_mgr()
-    flow.reset()
-    flow.add_attraction_mrt(attractions)
-    # flow.show()
+    mydb = mydb_mgr.mydb_mgr()
+    mydb.reset()
+    mydb.add_attraction_mrt(attractions)
+    # mydb.show()
