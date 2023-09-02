@@ -137,15 +137,15 @@ class mydb_mgr:
                 cursor.execute("USE website")
                 cursor.execute(sql, val)
             if info["mrt"] != None:
-                self.connect_and_run(add_mrt)
+                self.connect_and_run(add_mrt, True)
 
-            # def add_category(cursor):
-            #     sql = "INSERT INTO mrt  \
-            #             (name, attraction_id) VALUES (%s, %s)"
-            #     val = ( info["mrt"], info["id"] )
-            #     cursor.execute("USE website")
-            #     cursor.execute(sql, val)
-            # self.connect_and_run(add_category)
+            def add_category(cursor):
+                sql = "INSERT INTO category  \
+                        (name, attraction_id) VALUES (%s, %s)"
+                val = ( info["category"], info["id"] )
+                cursor.execute("USE website")
+                cursor.execute(sql, val)
+            self.connect_and_run(add_category, True)
 
             for img in info["images"]:
                 def add_image(cursor):
@@ -155,7 +155,7 @@ class mydb_mgr:
                     cursor.execute("USE website")
                     cursor.execute(sql, val)
                 
-                self.connect_and_run(add_image)
+                self.connect_and_run(add_image, True)
 
             
 
