@@ -37,6 +37,6 @@ def parse(file_path):
 if __name__=="__main__":
     file_path = os.path.join(PARENT_DIR, "data", "taipei-attractions.json")
     parse(file_path)
-    flow = mydb_mgr()
+    flow = mydb_mgr.mydb_mgr()
     flow.reset()
     flow.show()
