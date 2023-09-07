@@ -4,6 +4,10 @@ import sys
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PARENT_DIR)
 from util import mydb_mgr
+
+# TODO
+# Check the comman, colon, and space in the string.
+# Check whether it needs to be removed?
 attractions = []
 def parse(file_path):
     with open(file_path, encoding="utf-8") as f:
