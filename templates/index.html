@@ -7,25 +7,37 @@
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <div>台北一日遊</div>
-            <div>
-                <div>預定行程</div>
-                <div>登入/註冊</div>
+    <header class="header">
+        <nav class="header__navigation">
+            <div class="header__navigation-left">台北一日遊</div>
+            <div class="header__navigation-right">
+                <div class="header__navigation-right-button1 header__navigatio-right-button--setting"><p>預定行程</p></div>
+                <div>&nbsp&nbsp</div>
+                <div class="header__navigation-right-button2 header__navigatio-right-button--setting"><p>登入/註冊</p></div>
             </div>
         </nav>
-        <div>
-            <!-- background image -->
-            <div></div>
-        </div>
+        
     </header>
+    <div class="hero-image">
+        <!-- background image -->
+        <div class="hero-image__slogan">
+            <div class="hero-image__slogan-content">
+                <div class="hero-image__slogan-text">
+                    <p class="hero-image__slogan-text-line1">享受台北一日悠閒</p>
+                    <p class="hero-image__slogan-text-line2">探索每個角落，體驗城市的深度旅遊行程</p>
+                </div>
+                <div class="hero-image__slogan-search">
+                    <input type="text" name="searchAttraction" class="hero-image__slogan-search-input" placeholder="輸入景點名稱查詢">
+                    <button type="submit" class="hero-image__slogan-search-button"></button>
+                </div>
+            </div>
+        </div>
+    </div>
     <main>
-        <!-- mrt list bar virtual scroll -->
-        <div></div>
-        <!-- attractions -->
-        <div></div>
+        <div>mrt list bar virtual scroll</div>
+        <div>attractions</div>
     </main>
+    <footer>COPYRIGHT @ 2021 台北一日遊</footer>
     <script src="../static/js/index.css"></script>
 </body>
 </html>
