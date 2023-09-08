@@ -1,9 +1,10 @@
-/*
-    header
-*/
+/*============*/
+/*  header*/
+/*============*/
 .header{
     width: 100%;
-    height: 34px;
+    height: 54px;
+    box-sizing: border-box;
     padding-top: 10px;
     padding-bottom: 10px;
 
@@ -11,6 +12,7 @@
     justify-content: center;
 }
 
+/* navigation*/
 .header__navigation{
     display: flex;
     align-items: center;
@@ -55,20 +57,22 @@
 }
 
 .header__navigation-right-button1{
-    width: 84px;
-    height: 34px;
+    width: 104px;
+    height: 54px;
+    box-sizing: border-box;
     padding: 10px;
 }
 
 .header__navigation-right-button2{
-    width: 91px;
-    height: 34px;
+    width: 111px;
+    height: 54px;
+    box-sizing: border-box;
     padding: 10px;
 }
 
-/*
-    hero-image
-*/
+/*============*/
+/*  hero-image
+/*============*/
 .hero-image{
     height: 320px;
     background-image: url("../figure/[orig]\ welcome\ image.png");
@@ -80,8 +84,10 @@
     justify-content:center;
 }
 
+/* slogan */
 .hero-image__slogan{
-    height: 149px;
+    height: 169px;
+    box-sizing: border-box;
     padding: 10px;
 }
 
@@ -114,6 +120,7 @@
     line-height: 13.3px;
 }
 
+/* search */
 .hero-image__search{
     width: 100%;
     height: 46px;
@@ -155,23 +162,29 @@
     background-size: 30px 30px;
 }
 
-/*
-    main
-*/
+/*============*/
+/*  main
+/*============*/
 .main{
-    height: 966px;
+    margin: auto;
+    height: 1046px;
+    box-sizing: border-box;
     padding-top: 40px;
     padding-bottom: 40px;
 }
 
+/* mrt */
 .main__mrt-list-bar{
-    height: 50px;
+    height: 70px;
 
+    box-sizing: border-box;
     padding-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
 
     display: flex;
     align-items:center;
-    justify-content:center;
+    justify-content: space-between
 }
 
 .main__mrt-list-bar__left-button{
@@ -197,15 +210,85 @@
 .main__mrt-list-bar__main-content{
     display: flex;
     align-items: center;
+    justify-content: space-between
 }
 
-.main__attractions{
+/* attraction */
+.main__attraction-board{
+    gap: 30px;
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.main__attraction-element{
+    flex-grow: 1;
+    position: relative;
+
+    border: 1px solid;
+    border-radius: 5px;
+    border-color: #E8E8E8;
+    background-color: #E8E8E8;
+}
+
+.main__attraction-image{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+
+    /* Should check use this or object-fit: contain; */
+    object-fit: cover;
+    object-position: center center;
+}
+
+.main__attraction-name{
+    width: 100%;
+    height: 40px;
+    position: absolute;
+    bottom: 45px;
+    box-sizing: border-box;
+    padding: 10px;
     
+    opacity: 0.65;
+    background-color: #000000;
+
+    font-weight: 700;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #FFFFFF;
+    line-height: 13.3px;
+
+    display: flex;
+    text-align: center;
+    align-items: center;
 }
 
-/*
-    footer
-*/
+.main__attraction-info{
+    width: 100%;
+    height: 45px;
+    position: absolute;
+    bottom: 0px;
+    box-sizing: border-box;
+    padding: 10px;
+
+    opacity: 0.2;
+    background-color: #FFFFFF;
+
+    font-weight: 700;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #757575;
+    line-height: 13.3px;
+
+    display: flex;
+    align-items:center;
+    justify-content: space-between
+}
+
+/*============*/
+/*  footer
+/*============*/
 .footer{
     width: 100%;
     height: 104px;
@@ -218,9 +301,9 @@
 }
 
 .footer__textbox{
-    width: 224px;
-    height: 14px;
-
+    width: 234px;
+    height: 24px;
+    box-sizing: border-box;
     padding: 5px;
 
     font-weight: 700;
@@ -238,12 +321,20 @@
     .hero-image__slogan{
         width: 1180px;
     }
-    .main__mrt-list-bar{
+    .main{
+        margin: auto;
         width: 1200px;
+    }
+    .main__attraction-element{
+        width: 270px;
+        height: 242px;
+    }
+    .main__attraction-image{
+        height: 197px;
     }
 }
 
-@media (max-width: 1200px){
+@media (min-width: 360px) and (max-width: 1200px){
     .header__navigation{
         width: 100%;
     }
@@ -253,16 +344,30 @@
     .main{
         width: 100%;
     }
+    .main__attraction-element{
+        width: 270px;
+        height: 242px;
+    }
+    .main__attraction-image{
+        height: 197px;
+    }
 }
 
 @media (max-width: 360px){
+    .header__navigation{
+        width: 100%;
+    }
     .hero-image__slogan{
         width: 340px;
     }
     .main{
         width: 100%;
     }
-    .footer{
-        display: none;
+    .main__attraction-element{
+        width: 322px;
+        height: 280px;
+    }
+    .main__attraction-image{
+        height: 235px;
     }
 }
