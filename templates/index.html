@@ -11,33 +11,46 @@
         <nav class="header__navigation">
             <div class="header__navigation-left">台北一日遊</div>
             <div class="header__navigation-right">
-                <div class="header__navigation-right-button1 header__navigatio-right-button--setting"><p>預定行程</p></div>
+                <button class="header__navigation-right-button1 header__navigatio-right-button--setting">預定行程</button>
                 <div>&nbsp&nbsp</div>
-                <div class="header__navigation-right-button2 header__navigatio-right-button--setting"><p>登入/註冊</p></div>
+                <button class="header__navigation-right-button2 header__navigatio-right-button--setting">登入/註冊</button>
             </div>
         </nav>
         
     </header>
     <div class="hero-image">
-        <!-- background image -->
+        <!-- TODO : Check the media@360 -->
         <div class="hero-image__slogan">
             <div class="hero-image__slogan-content">
                 <div class="hero-image__slogan-text">
-                    <p class="hero-image__slogan-text-line1">享受台北一日悠閒</p>
-                    <p class="hero-image__slogan-text-line2">探索每個角落，體驗城市的深度旅遊行程</p>
+                    <div class="hero-image__slogan-text-line1">輕鬆享受台北一日悠閒</div>
+                    <div class="hero-image__slogan-text-line2">探索每個角落，體驗城市的深度旅遊行程</div>
                 </div>
-                <div class="hero-image__slogan-search">
-                    <input type="text" name="searchAttraction" class="hero-image__slogan-search-input" placeholder="輸入景點名稱查詢">
-                    <button type="submit" class="hero-image__slogan-search-button"></button>
+                <div class="hero-image__search">
+                    <input type="text" name="searchAttraction" class="hero-image__search-input" placeholder="輸入景點名稱查詢">
+                    <button type="submit" class="hero-image__search-button"></button>
                 </div>
             </div>
         </div>
     </div>
-    <main>
-        <div>mrt list bar virtual scroll</div>
+    <main class="main">
+        <div class="main__mrt-list-bar">
+            <button type="submit" class="main__mrt-list-bar__left-button main__mrt-list-bar__button-setting"></button>
+            <div class=".main__mrt-list-bar__main-content">
+                <div>test1</div>
+                <div>test2</div>
+                <div>test3</div>
+                <div>test4</div>
+            </div>
+            <button type="submit" class="main__mrt-list-bar__right-button main__mrt-list-bar__button-setting"></button>
+        </div>
         <div>attractions</div>
     </main>
-    <footer>COPYRIGHT @ 2021 台北一日遊</footer>
+    <footer class="footer">
+        <div class="footer__textbox">
+            COPYRIGHT © 2021 台北一日遊
+        </div>
+    </footer>
     <script src="../static/js/index.css"></script>
 </body>
 </html>

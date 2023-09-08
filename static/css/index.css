@@ -1,3 +1,6 @@
+/*
+    header
+*/
 .header{
     width: 100%;
     height: 34px;
@@ -43,23 +46,29 @@
     font-family: "Noto Sans TC";
     line-height: 13.3px;
 
+    border-width : 0;
+    background-color: #FFFFFF;
+
     display: flex;
     align-items:center;
     justify-content:center;
 }
 
 .header__navigation-right-button1{
-    width: 64px;
-    height: 14px;
+    width: 84px;
+    height: 34px;
     padding: 10px;
 }
 
 .header__navigation-right-button2{
-    width: 71px;
-    height: 14px;
+    width: 91px;
+    height: 34px;
     padding: 10px;
 }
 
+/*
+    hero-image
+*/
 .hero-image{
     height: 320px;
     background-image: url("../figure/[orig]\ welcome\ image.png");
@@ -91,30 +100,37 @@
 }
 
 .hero-image__slogan-text-line1{
+    height: 41px;
+
     font-size: 28px;
     line-height: 24px;
 }
 
 .hero-image__slogan-text-line2{
+    height: 22px;
+    margin-top: 15px;
+
     font-size: 16px;
     line-height: 13.3px;
 }
 
-.hero-image__slogan-search{
+.hero-image__search{
     width: 100%;
     height: 46px;
     position: absolute;
     top: 103px;
-
+    
     display: flex;
     align-items:center;
     justify-content:left;
 }
 
-.hero-image__slogan-search-input{
+.hero-image__search-input{
     width: 392px;
     height: 40px;
 
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
     box-shadow: 0px 0px 20px 0px rgba(170, 187, 204, 1);
 
     text-indent: 15px;
@@ -125,15 +141,94 @@
     line-height: 13.3px;
 }
 
-.hero-image__slogan-search-button{
+.hero-image__search-button{
     width: 60px;
     height: 100%;
     
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-width: 0px;
     background-color: #448899;
     background-image: url("../figure/icon_search.png");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 30px 30px;
+}
+
+/*
+    main
+*/
+.main{
+    height: 966px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.main__mrt-list-bar{
+    height: 50px;
+
+    padding-bottom: 20px;
+
+    display: flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.main__mrt-list-bar__left-button{
+    background-image: url("../figure/arrow\ left.png");
+}
+
+.main__mrt-list-bar__right-button{
+    background-image: url("../figure/arrow\ right.png");
+}
+
+.main__mrt-list-bar__button-setting{
+    width: 50px;
+    height: 50px;
+
+    border-width : 0;
+
+    background-color: #FFFFFF;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 30px 30px;
+}
+
+.main__mrt-list-bar__main-content{
+    display: flex;
+    align-items: center;
+}
+
+.main__attractions{
+    
+}
+
+/*
+    footer
+*/
+.footer{
+    width: 100%;
+    height: 104px;
+
+    background-color: #757575;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer__textbox{
+    width: 224px;
+    height: 14px;
+
+    padding: 5px;
+
+    font-weight: 700;
+    font-size: 14px;
+    font-family: "Noto Sans TC";
+    line-height: 13.3px;
+
+    color: #FFFFFF;
 }
 
 @media (min-width: 1200px) and (max-width: 1920px){
@@ -143,6 +238,9 @@
     .hero-image__slogan{
         width: 1180px;
     }
+    .main__mrt-list-bar{
+        width: 1200px;
+    }
 }
 
 @media (max-width: 1200px){
@@ -151,5 +249,20 @@
     }
     .hero-image__slogan{
         width: 100%;
+    }
+    .main{
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px){
+    .hero-image__slogan{
+        width: 340px;
+    }
+    .main{
+        width: 100%;
+    }
+    .footer{
+        display: none;
     }
 }
