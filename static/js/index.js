@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     await initializeMrt();
     await initializeAttraction();
     addElementListener();
+    addObserver();
     console.log("initialize page : " + this.page);
 });
 
@@ -49,7 +50,6 @@ async function loadAttraction(){
     let fetchURL = "/api/attractions?page=";
     console.log("load page : " + this.page);
     if(this.page==null){
-        console.log("Error! You should set the page...");
         return ;
     }
     fetchURL += this.page;
@@ -60,9 +60,25 @@ async function loadAttraction(){
     let response = await fetch(fetchURL);
     let json = await response.json();
     const board = document.querySelector(".main__attraction-board");
-    await json.data.forEach(data => {
+    if(json.data.length===0){
+        console.log("123");
         const container = document.createElement("div");
-        const img = document.createElement('img');
+        const info = document.createElement("div");
+        info.classList.add("main__attraction-info");
+        info.innerText = "查無結果";
+        if(this.keyword!=null){
+            info.innerText = "找不到和查詢的" + this.keyword + "相符的結果";
+        }
+        info.style.height = "100%";
+        info.style.justifyContent = "center";
+
+        container.classList.add("main__attraction-element");
+        container.append(info);
+        board.append(container);
+    }
+    json.data.forEach(data => {
+        const container = document.createElement("div");
+        const img = document.createElement("img");
         const name = document.createElement("div");
         const info = document.createElement("div");
         const infoMrt = document.createElement("div");
@@ -90,17 +106,26 @@ async function loadAttraction(){
 
 // Add listener
 function addElementListener(){
-    document.querySelector(".header__navigation-left").addEventListener('click', () => {
+    document.querySelector(".header__navigation-left").addEventListener("click", () => {
         window.location.href = "/";
     });
     
-    document.querySelector(".hero-image__search-button").addEventListener('click', () => {
+    document.querySelector(".hero-image__search-button").addEventListener("click", () => {
+        console.log("eesse");
         searchForMrt();
+    });
+
+    document.querySelector(".hero-image__search-input").addEventListener("keyup", (event) => {
+        console.log("eee");
+        if(event.isComposing) return;
+        if(event.key === "Enter"){
+            searchForMrt();
+        }
     });
     
     // Mrt scrolling operation
     let scrollValue = 0;
-    document.querySelector(".main__mrt-left-button").addEventListener('click', () => {
+    document.querySelector(".main__mrt-left-button").addEventListener("click", () => {
         let board = document.querySelector(".main__mrt-board")
         let element = document.querySelectorAll(".main__mrt-element");
         let cnt = 0;
@@ -119,7 +144,7 @@ function addElementListener(){
         });
     });
     
-    document.querySelector(".main__mrt-right-button").addEventListener('click', () => {
+    document.querySelector(".main__mrt-right-button").addEventListener("click", () => {
         let board = document.querySelector(".main__mrt-board")
         let element = document.querySelectorAll(".main__mrt-element");
         let cnt = 0;
@@ -140,9 +165,22 @@ function addElementListener(){
 
     let mrts = document.querySelectorAll(".main__mrt-element");
     [].forEach.call(mrts, function(mrt){
-        mrt.addEventListener('click', () => {
+        mrt.addEventListener("click", () => {
             document.querySelector(".hero-image__search-input").value = mrt.innerText;
             searchForMrt();
         });
     });
+}
+
+// Add observer
+function addObserver(){
+    const callback = (entries) => {
+        console.log(entries[0]);
+        if(entries[0].isIntersecting){
+            console.log("123");
+            loadAttraction();
+        }
+    };
+    const observer = new IntersectionObserver(callback);
+    observer.observe(document.querySelector(".footer"));
 }
