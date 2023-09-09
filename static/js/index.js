@@ -176,7 +176,6 @@ function addElementListener(){
 function addObserver(){
     const callback = (entries) => {
         if(entries[0].isIntersecting && !this.deletFlag){
-            console.log("asds");
             loadAttraction();
         }
         this.deletFlag = false;
