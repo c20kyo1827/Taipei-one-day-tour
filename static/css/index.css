@@ -136,6 +136,7 @@
     width: 392px;
     height: 40px;
 
+    border:0 ;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
     box-shadow: 0px 0px 20px 0px rgba(170, 187, 204, 1);
@@ -152,9 +153,9 @@
     width: 60px;
     height: 100%;
     
+    border-width: 0px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border-width: 0px;
     background-color: #448899;
     background-image: url("../figure/icon_search.png");
     background-position: center center;
@@ -167,7 +168,6 @@
 /*============*/
 .main{
     margin: auto;
-    height: 1046px;
     box-sizing: border-box;
     padding-top: 40px;
     padding-bottom: 40px;
@@ -219,10 +219,11 @@
 }
 
 .main__mrt-element{
-    width: 62px;
+    max-width: 96px;
     height: 24px;
     padding: 5px 15px 5px 15px;
     white-space: nowrap;
+    overflow-wrap: break-word;
 
     text-align: center;
     font-weight: 500;
@@ -231,12 +232,14 @@
     color: #666666;
     line-height: 13.3px;
 
-    /* display: flex; */
+    display: flex;
+    align-items: center;
 }
 
 /* attraction */
 .main__attraction-board{
-    gap: 30px;
+    /* gap: 30px; */
+    gap: 30px 2.5%;
 
     display: flex;
     justify-content: center;
@@ -346,10 +349,12 @@
         width: 1200px;
     }
     .main__attraction-element{
-        min-width: 270px;
-        max-width: 270px;
-        width: 270px;
-        height: 242px;
+        /* min-width: 270px;
+        max-width: 270px; */
+        /* width: 270px; */
+        /* height: 242px; */
+        width: 22%;
+        aspect-ratio: 270 / 242;
     }
     .main__attraction-image{
         height: 197px;
@@ -367,13 +372,15 @@
         width: 100%;
     }
     .main__attraction-element{
-        min-width: 270px;
-        max-width: 270px;
-        width: 270px;
-        height: 242px;
+        /* min-width: 270px;
+        max-width: 270px; */
+        /* width: 270px; */
+        /* height: 242px; */
+        width: 22%;
+        aspect-ratio: 270 / 242;
     }
     .main__attraction-image{
-        height: 197px;
+        /* height: 197px; */
     }
 }
 
@@ -388,8 +395,8 @@
         width: 100%;
     }
     .main__attraction-element{
-        min-width: 322px;
-        max-width: 322px;
+        /* min-width: 322px;
+        max-width: 322px; */
         width: 322px;
         height: 280px;
     }
