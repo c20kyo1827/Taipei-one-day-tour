@@ -219,14 +219,19 @@
 }
 
 .main__mrt-element{
-    min-width: 62px;
+    width: 62px;
     height: 24px;
-    box-sizing: border-box;
-    padding: 4px;
+    padding: 5px 15px 5px 15px;
+    white-space: nowrap;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 13.3px;
+
+    /* display: flex; */
 }
 
 /* attraction */
