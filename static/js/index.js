@@ -1,13 +1,12 @@
 // Main
-
 document.addEventListener("DOMContentLoaded", async() => {
     this.page = 0;
     this.keyword = null;
+    this.deletFlag = false;
     await initializeMrt();
     await initializeAttraction();
     addElementListener();
     addObserver();
-    console.log("initialize page : " + this.page);
 });
 
 // Function definition
@@ -33,6 +32,7 @@ async function initializeAttraction(){
 
 // Utility
 function searchForMrt(){
+    this.deletFlag = true;
     this.page = 0;
     this.keyword = document.querySelector(".hero-image__search-input").value;
     clearAttraction();
@@ -40,6 +40,7 @@ function searchForMrt(){
 }
 
 function clearAttraction(){
+    console.log(this.doing);
     const board = document.querySelector(".main__attraction-board");
     while(board.firstChild){
         board.removeChild(board.firstChild);
@@ -48,7 +49,6 @@ function clearAttraction(){
 
 async function loadAttraction(){
     let fetchURL = "/api/attractions?page=";
-    console.log("load page : " + this.page);
     if(this.page==null){
         return ;
     }
@@ -56,12 +56,10 @@ async function loadAttraction(){
     if(this.keyword!=null){
         fetchURL += ("&keyword=" + this.keyword);
     }
-    console.log("Fetching the url : " + fetchURL);
     let response = await fetch(fetchURL);
     let json = await response.json();
     const board = document.querySelector(".main__attraction-board");
     if(json.data.length===0){
-        console.log("123");
         const container = document.createElement("div");
         const info = document.createElement("div");
         info.classList.add("main__attraction-info");
@@ -101,7 +99,6 @@ async function loadAttraction(){
         board.append(container);
     });
     this.page = json.nextPage;
-    console.log("json page : " + this.page);
 }
 
 // Add listener
@@ -112,6 +109,7 @@ function addElementListener(){
     
     document.querySelector(".hero-image__search-button").addEventListener("click", () => {
         console.log("eesse");
+        console.log("444");
         searchForMrt();
     });
 
@@ -119,6 +117,7 @@ function addElementListener(){
         console.log("eee");
         if(event.isComposing) return;
         if(event.key === "Enter"){
+            console.log("4445");
             searchForMrt();
         }
     });
@@ -167,6 +166,7 @@ function addElementListener(){
     [].forEach.call(mrts, function(mrt){
         mrt.addEventListener("click", () => {
             document.querySelector(".hero-image__search-input").value = mrt.innerText;
+            console.log("1234");
             searchForMrt();
         });
     });
@@ -175,11 +175,11 @@ function addElementListener(){
 // Add observer
 function addObserver(){
     const callback = (entries) => {
-        console.log(entries[0]);
-        if(entries[0].isIntersecting){
-            console.log("123");
+        if(entries[0].isIntersecting && !this.deletFlag){
+            console.log("asds");
             loadAttraction();
         }
+        this.deletFlag = false;
     };
     const observer = new IntersectionObserver(callback);
     observer.observe(document.querySelector(".footer"));
