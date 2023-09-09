@@ -40,7 +40,6 @@ function searchForMrt(){
 }
 
 function clearAttraction(){
-    console.log(this.doing);
     const board = document.querySelector(".main__attraction-board");
     while(board.firstChild){
         board.removeChild(board.firstChild);
@@ -108,16 +107,12 @@ function addElementListener(){
     });
     
     document.querySelector(".hero-image__search-button").addEventListener("click", () => {
-        console.log("eesse");
-        console.log("444");
         searchForMrt();
     });
 
     document.querySelector(".hero-image__search-input").addEventListener("keyup", (event) => {
-        console.log("eee");
         if(event.isComposing) return;
         if(event.key === "Enter"){
-            console.log("4445");
             searchForMrt();
         }
     });
@@ -166,7 +161,6 @@ function addElementListener(){
     [].forEach.call(mrts, function(mrt){
         mrt.addEventListener("click", () => {
             document.querySelector(".hero-image__search-input").value = mrt.innerText;
-            console.log("1234");
             searchForMrt();
         });
     });
