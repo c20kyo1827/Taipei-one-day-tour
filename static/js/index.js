@@ -1,3 +1,10 @@
+// Global Variable
+let mrtLeftButton = document.querySelector(".main__mrt-left-button");
+let mrtRightButton = document.querySelector(".main__mrt-right-button");
+let mrtBoard = document.querySelector(".main__mrt-board");
+let scrollValue = 0;
+let leftMrt = 0;
+let rightMrt = 0;
 let page = 0;
 let keyword = null;
 
@@ -41,6 +48,8 @@ function scrollToRight(){
 function searchForMrt(){
     
 }
+
+
 
 // Attraction
 function loadAttraction(page, keyword){
@@ -90,8 +99,44 @@ function loadAttraction(page, keyword){
     .catch(error => {
         console.log(error);
     })
-    return result;
 }
+
+// Add listener
+mrtLeftButton.addEventListener('click', () => {
+    let element = document.querySelectorAll(".main__mrt-element");
+    let cnt = 0;
+    let total = 0;
+    for(const e of element.values()){
+        total += e.offsetWidth;
+        if(total-scrollValue >= mrtBoard.offsetWidth){
+            break;
+        }
+        cnt++;
+    }
+    scrollValue = scrollValue==0 ? scrollValue : scrollValue-element[cnt].offsetWidth;
+    mrtBoard.scrollTo({
+        left: scrollValue,
+        behavior: "smooth"
+    });
+});
+
+mrtRightButton.addEventListener('click', () => {
+    let element = document.querySelectorAll(".main__mrt-element");
+    let cnt = 0;
+    let total = 0;
+    for(const e of element.values()){
+        total += e.offsetWidth;
+        if(total-scrollValue >= mrtBoard.offsetWidth){
+            break;
+        }
+        cnt++;
+    }
+    scrollValue = cnt+1>=element.length ? scrollValue : scrollValue+element[cnt+1].offsetWidth;
+    mrtBoard.scrollTo({
+        left: scrollValue,
+        behavior: "smooth"
+    });
+});
 
 // main
 initializeMrt();
