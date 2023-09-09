@@ -1,144 +1,148 @@
-// Global Variable
-let mrtLeftButton = document.querySelector(".main__mrt-left-button");
-let mrtRightButton = document.querySelector(".main__mrt-right-button");
-let mrtBoard = document.querySelector(".main__mrt-board");
-let scrollValue = 0;
-let leftMrt = 0;
-let rightMrt = 0;
-let page = 0;
-let keyword = null;
+// Main
+
+document.addEventListener("DOMContentLoaded", async() => {
+    this.page = 0;
+    this.keyword = null;
+    await initializeMrt();
+    await initializeAttraction();
+    addElementListener();
+    console.log("initialize page : " + this.page);
+});
 
 // Function definition
 // Initialization
-function initializeMrt(){
+async function initializeMrt(){
     console.log("Pre-fetch and initialize the mrts");
     let fetchURL ="/api/mrts";
-    fetch(fetchURL)
-    .then(response => {
-        return response.json();
-    })
-    .then(json => {
-        const board = document.querySelector(".main__mrt-board");
-        json.data.forEach(mrt => {
-            const container = document.createElement("div");
-            container.innerText = mrt;
-            container.classList.add("main__mrt-element");
-            board.append(container);
-        });
-    })
-    .catch(error => {
-        console.log(error);
-    })
+    response = await fetch(fetchURL);
+    json = await response.json();
+    const board = document.querySelector(".main__mrt-board");
+    json.data.forEach(mrt => {
+        const container = document.createElement("div");
+        container.innerText = mrt;
+        container.classList.add("main__mrt-element");
+        board.append(container);
+    });
 }
 
-function initializeAttraction(){
+async function initializeAttraction(){
     console.log("Pre-fetch and initialize the attractions");
-    loadAttraction(page, keyword);
+    await loadAttraction(); // await would make function execute totally
 }
 
-// Mrt
-function scrollToLeft(){
-
-}
-
-function scrollToRight(){
-    
-}
-
+// Utility
 function searchForMrt(){
-    
+    this.page = 0;
+    this.keyword = document.querySelector(".hero-image__search-input").value;
+    clearAttraction();
+    loadAttraction();
 }
 
+function clearAttraction(){
+    const board = document.querySelector(".main__attraction-board");
+    while(board.firstChild){
+        board.removeChild(board.firstChild);
+    }
+}
 
-
-// Attraction
-function loadAttraction(page, keyword){
+async function loadAttraction(){
     let fetchURL = "/api/attractions?page=";
-    if(page==null){
+    console.log("load page : " + this.page);
+    if(this.page==null){
         console.log("Error! You should set the page...");
         return ;
     }
-    fetchURL += page;
-    if(keyword!=null){
-        fetchURL += ("&keyword=" + keyword);
+    fetchURL += this.page;
+    if(this.keyword!=null){
+        fetchURL += ("&keyword=" + this.keyword);
     }
     console.log("Fetching the url : " + fetchURL);
-    let result;
-    fetch(fetchURL)
-    .then(response => {
-        return response.json();
-    })
-    .then(json => {
-        const board = document.querySelector(".main__attraction-board");
-        if(json == null) return;
-        json.data.forEach(data => {
-            const container = document.createElement("div");
-            const img = document.createElement('img');
-            const name = document.createElement("div");
-            const info = document.createElement("div");
-            const infoMrt = document.createElement("div");
-            const infoCategory = document.createElement("div");
-            img.src = data["images"][0];
-            img.classList.add("main__attraction-image");
+    let response = await fetch(fetchURL);
+    let json = await response.json();
+    const board = document.querySelector(".main__attraction-board");
+    await json.data.forEach(data => {
+        const container = document.createElement("div");
+        const img = document.createElement('img');
+        const name = document.createElement("div");
+        const info = document.createElement("div");
+        const infoMrt = document.createElement("div");
+        const infoCategory = document.createElement("div");
+        img.src = data["images"][0];
+        img.classList.add("main__attraction-image");
 
-            name.innerText = data["name"];
-            name.classList.add("main__attraction-name");
-            info.classList.add("main__attraction-info");
-            infoMrt.innerText = data["mrt"];
-            infoCategory.innerText = data["category"];
-            info.append(infoMrt);
-            info.append(infoCategory);
+        name.innerText = data["name"];
+        name.classList.add("main__attraction-name");
+        info.classList.add("main__attraction-info");
+        infoMrt.innerText = data["mrt"];
+        infoCategory.innerText = data["category"];
+        info.append(infoMrt);
+        info.append(infoCategory);
 
-            container.classList.add("main__attraction-element");
-            container.append(img);
-            container.append(name);
-            container.append(info);
-            board.append(container);
-        });
-    })
-    .catch(error => {
-        console.log(error);
-    })
+        container.classList.add("main__attraction-element");
+        container.append(img);
+        container.append(name);
+        container.append(info);
+        board.append(container);
+    });
+    this.page = json.nextPage;
+    console.log("json page : " + this.page);
 }
 
 // Add listener
-mrtLeftButton.addEventListener('click', () => {
-    let element = document.querySelectorAll(".main__mrt-element");
-    let cnt = 0;
-    let total = 0;
-    for(const e of element.values()){
-        total += e.offsetWidth;
-        if(total-scrollValue >= mrtBoard.offsetWidth){
-            break;
-        }
-        cnt++;
-    }
-    scrollValue = scrollValue==0 ? scrollValue : scrollValue-element[cnt].offsetWidth;
-    mrtBoard.scrollTo({
-        left: scrollValue,
-        behavior: "smooth"
+function addElementListener(){
+    document.querySelector(".header__navigation-left").addEventListener('click', () => {
+        window.location.href = "/";
     });
-});
-
-mrtRightButton.addEventListener('click', () => {
-    let element = document.querySelectorAll(".main__mrt-element");
-    let cnt = 0;
-    let total = 0;
-    for(const e of element.values()){
-        total += e.offsetWidth;
-        if(total-scrollValue >= mrtBoard.offsetWidth){
-            break;
-        }
-        cnt++;
-    }
-    scrollValue = cnt+1>=element.length ? scrollValue : scrollValue+element[cnt+1].offsetWidth;
-    mrtBoard.scrollTo({
-        left: scrollValue,
-        behavior: "smooth"
+    
+    document.querySelector(".hero-image__search-button").addEventListener('click', () => {
+        searchForMrt();
     });
-});
+    
+    // Mrt scrolling operation
+    let scrollValue = 0;
+    document.querySelector(".main__mrt-left-button").addEventListener('click', () => {
+        let board = document.querySelector(".main__mrt-board")
+        let element = document.querySelectorAll(".main__mrt-element");
+        let cnt = 0;
+        let total = 0;
+        for(const e of element.values()){
+            total += e.offsetWidth;
+            if(total-scrollValue >= board.offsetWidth){
+                break;
+            }
+            cnt++;
+        }
+        scrollValue = scrollValue==0 ? scrollValue : scrollValue-element[cnt].offsetWidth;
+        board.scrollTo({
+            left: scrollValue,
+            behavior: "smooth"
+        });
+    });
+    
+    document.querySelector(".main__mrt-right-button").addEventListener('click', () => {
+        let board = document.querySelector(".main__mrt-board")
+        let element = document.querySelectorAll(".main__mrt-element");
+        let cnt = 0;
+        let total = 0;
+        for(const e of element.values()){
+            total += e.offsetWidth;
+            if(total-scrollValue >= board.offsetWidth){
+                break;
+            }
+            cnt++;
+        }
+        scrollValue = cnt+1>=element.length ? scrollValue : scrollValue+element[cnt+1].offsetWidth;
+        board.scrollTo({
+            left: scrollValue,
+            behavior: "smooth"
+        });
+    });
 
-// main
-initializeMrt();
-initializeAttraction();
-
+    let mrts = document.querySelectorAll(".main__mrt-element");
+    [].forEach.call(mrts, function(mrt){
+        mrt.addEventListener('click', () => {
+            document.querySelector(".hero-image__search-input").value = mrt.innerText;
+            searchForMrt();
+        });
+    });
+}
