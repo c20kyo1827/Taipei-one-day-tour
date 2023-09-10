@@ -2,7 +2,8 @@
 document.addEventListener("DOMContentLoaded", async() => {
     this.page = 0;
     this.keyword = null;
-    this.deletFlag = false;
+    this.isDeleting = false;
+    this.isObserverCalling = false;
     await initializeMrt();
     await initializeAttraction();
     addElementListener();
@@ -32,11 +33,14 @@ async function initializeAttraction(){
 
 // Utility
 function searchForMrt(){
-    this.deletFlag = true;
+    this.isDeleting = true;
     this.page = 0;
     this.keyword = document.querySelector(".hero-image__search-input").value;
     clearAttraction();
     loadAttraction();
+    setTimeout(() => {
+        this.isDeleting = false;
+    }, 1000);
 }
 
 function clearAttraction(){
@@ -169,10 +173,13 @@ function addElementListener(){
 // Add observer
 function addObserver(){
     const callback = (entries) => {
-        if(entries[0].isIntersecting && !this.deletFlag){
+        if(entries[0].isIntersecting && !this.isDeleting && !this.isObserverCalling){
+            this.isObserverCalling = true;
             loadAttraction();
+            setTimeout(() => {
+                this.isObserverCalling = false;
+            }, 1000);
         }
-        this.deletFlag = false;
     };
     const observer = new IntersectionObserver(callback);
     observer.observe(document.querySelector(".footer"));
