@@ -1,9 +1,22 @@
-{% extends 'base.html' %}
-{%block title%} {%endblock%}
-{%block css%}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta charset="utf-8" />
+    <title>台北一日遊</title>
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-{%endblock%}
-{%block main%}
+</head>
+<body class="body">
+    <header class="header">
+        <nav class="header__navigation">
+            <div class="header__navigation-left">台北一日遊</div>
+            <div class="header__navigation-right">
+                <button class="header__navigation-right-button1 header__navigatio-right-button--setting">預定行程</button>
+                <div>&nbsp&nbsp</div>
+                <button class="header__navigation-right-button2 header__navigatio-right-button--setting">登入/註冊</button>
+            </div>
+        </nav>
+    </header>
     <div class="hero-image">
         <div class="hero-image__slogan">
             <div class="hero-image__slogan-content">
@@ -35,7 +48,11 @@
             </div> -->
         </div>
     </main>
-{%endblock%}
-{%block script%}
+    <footer class="footer">
+        <div class="footer__textbox">
+            COPYRIGHT © 2021 台北一日遊
+        </div>
+    </footer>
     <script src="../static/js/index.js"></script>
-{%endblock%}
+</body>
+</html>

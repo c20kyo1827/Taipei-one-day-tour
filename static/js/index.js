@@ -1,18 +1,21 @@
+// Wrapping namespace
+let indexNamespace = {};
+
 // Main
 document.addEventListener("DOMContentLoaded", async() => {
-    this.page = 0;
-    this.keyword = null;
-    this.isDeleting = false;
-    this.isObserverCalling = false;
-    await initializeMrt();
-    await initializeAttraction();
-    addElementListener();
-    addObserver();
+    indexNamespace.page = 0;
+    indexNamespace.keyword = null;
+    indexNamespace.isDeleting = false;
+    indexNamespace.isObserverCalling = false;
+    await indexNamespace.initializeMrt();
+    await indexNamespace.initializeAttraction();
+    indexNamespace.addElementListener();
+    indexNamespace.addObserver();
 });
 
 // Function definition
 // Initialization
-async function initializeMrt(){
+indexNamespace.initializeMrt = async function initializeMrt(){
     console.log("Pre-fetch and initialize the mrts");
     let fetchURL ="/api/mrts";
     response = await fetch(fetchURL);
@@ -26,38 +29,19 @@ async function initializeMrt(){
     });
 }
 
-async function initializeAttraction(){
+indexNamespace.initializeAttraction = async function initializeAttraction(){
     console.log("Pre-fetch and initialize the attractions");
-    await loadAttraction(); // await would make function execute totally
+    await indexNamespace.loadAttraction(); // await would make function execute totally
 }
 
-// Utility
-function searchForMrt(){
-    this.isDeleting = true;
-    this.page = 0;
-    this.keyword = document.querySelector(".hero-image__search-input").value;
-    clearAttraction();
-    loadAttraction();
-    setTimeout(() => {
-        this.isDeleting = false;
-    }, 1000);
-}
-
-function clearAttraction(){
-    const board = document.querySelector(".main__attraction-board");
-    while(board.firstChild){
-        board.removeChild(board.firstChild);
-    }
-}
-
-async function loadAttraction(){
+indexNamespace.loadAttraction = async function loadAttraction(){
     let fetchURL = "/api/attractions?page=";
-    if(this.page==null){
+    if(indexNamespace.page==null){
         return ;
     }
-    fetchURL += this.page;
-    if(this.keyword!=null){
-        fetchURL += ("&keyword=" + this.keyword);
+    fetchURL += indexNamespace.page;
+    if(indexNamespace.keyword!=null){
+        fetchURL += ("&keyword=" + indexNamespace.keyword);
     }
     let response = await fetch(fetchURL);
     let json = await response.json();
@@ -67,8 +51,8 @@ async function loadAttraction(){
         const info = document.createElement("div");
         info.classList.add("main__attraction-info");
         info.innerText = "查無結果";
-        if(this.keyword!=null){
-            info.innerText = "找不到和查詢的" + this.keyword + "相符的結果";
+        if(indexNamespace.keyword!=null){
+            info.innerText = "找不到和查詢的" + indexNamespace.keyword + "相符的結果";
         }
         info.style.height = "100%";
         info.style.justifyContent = "center";
@@ -101,21 +85,38 @@ async function loadAttraction(){
         container.append(info);
         board.append(container);
     });
-    this.page = json.nextPage;
+    indexNamespace.page = json.nextPage;
 }
 
 // Add listener
-function addElementListener(){
-    document.querySelector(".header__navigation-left").addEventListener("click", () => {
-        window.location.href = "/";
-    });
-    
+indexNamespace.addElementListener = function addElementListener(){
+    // Utility
+    function clearAttraction(){
+        const board = document.querySelector(".main__attraction-board");
+        while(board.firstChild){
+            board.removeChild(board.firstChild);
+        }
+    }
+
+    function searchForMrt(){
+        indexNamespace.isDeleting = true;
+        indexNamespace.page = 0;
+        indexNamespace.keyword = document.querySelector(".hero-image__search-input").value;
+        clearAttraction();
+        indexNamespace.loadAttraction();
+        setTimeout(() => {
+            indexNamespace.isDeleting = false;
+        }, 1000);
+    }
+
     document.querySelector(".hero-image__search-button").addEventListener("click", () => {
+        console.log("click");
         searchForMrt();
     });
 
     document.querySelector(".hero-image__search-input").addEventListener("keyup", (event) => {
         if(event.isComposing) return;
+        console.log("keyup");
         if(event.key === "Enter"){
             searchForMrt();
         }
@@ -171,13 +172,13 @@ function addElementListener(){
 }
 
 // Add observer
-function addObserver(){
+indexNamespace.addObserver = function addObserver(){
     const callback = (entries) => {
-        if(entries[0].isIntersecting && !this.isDeleting && !this.isObserverCalling){
-            this.isObserverCalling = true;
-            loadAttraction();
+        if(entries[0].isIntersecting && !indexNamespace.isDeleting && !indexNamespace.isObserverCalling){
+            indexNamespace.isObserverCalling = true;
+            indexNamespace.loadAttraction();
             setTimeout(() => {
-                this.isObserverCalling = false;
+                indexNamespace.isObserverCalling = false;
             }, 1000);
         }
     };
