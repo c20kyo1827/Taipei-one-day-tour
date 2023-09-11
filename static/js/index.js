@@ -2,7 +2,17 @@
 let indexNamespace = {};
 
 // Main
-document.addEventListener("DOMContentLoaded", async() => {
+// document.addEventListener("DOMContentLoaded", async() => {
+//     indexNamespace.page = 0;
+//     indexNamespace.keyword = null;
+//     indexNamespace.isDeleting = false;
+//     indexNamespace.isObserverCalling = false;
+//     await indexNamespace.initializeMrt();
+//     await indexNamespace.initializeAttraction();
+//     indexNamespace.addElementListener();
+//     indexNamespace.addObserver();
+// });
+window.onload = async function indexLoading(){
     indexNamespace.page = 0;
     indexNamespace.keyword = null;
     indexNamespace.isDeleting = false;
@@ -11,7 +21,7 @@ document.addEventListener("DOMContentLoaded", async() => {
     await indexNamespace.initializeAttraction();
     indexNamespace.addElementListener();
     indexNamespace.addObserver();
-});
+}
 
 // Function definition
 // Initialization
@@ -109,14 +119,13 @@ indexNamespace.addElementListener = function addElementListener(){
         }, 1000);
     }
 
+    console.log("Add event listener");
     document.querySelector(".hero-image__search-button").addEventListener("click", () => {
-        console.log("click");
         searchForMrt();
     });
 
     document.querySelector(".hero-image__search-input").addEventListener("keyup", (event) => {
         if(event.isComposing) return;
-        console.log("keyup");
         if(event.key === "Enter"){
             searchForMrt();
         }
@@ -173,6 +182,7 @@ indexNamespace.addElementListener = function addElementListener(){
 
 // Add observer
 indexNamespace.addObserver = function addObserver(){
+    console.log("Add observer");
     const callback = (entries) => {
         if(entries[0].isIntersecting && !indexNamespace.isDeleting && !indexNamespace.isObserverCalling){
             indexNamespace.isObserverCalling = true;

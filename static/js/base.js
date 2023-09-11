@@ -1,10 +1,24 @@
+// Wrapping namespace
+let baseNamespace = {};
+
 // Main
 document.addEventListener("DOMContentLoaded", async() => {
-    addBaseElementListener();
+    baseNamespace.addElementListener();
+    baseNamespace.moveBasedOneFix();
 });
 
-function addBaseElementListener(){
+
+baseNamespace.addElementListener = function addBaseElementListener(){
     document.querySelector(".header__navigation-left").addEventListener("click", () => {
         window.location.href = "/";
     });
+}
+
+baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
+    let header = document.querySelector(".header");
+    let headerCSS = window.getComputedStyle(header);
+    console.log(header);
+    console.log(headerCSS);
+    let sibling = header.nextElementSibling;
+    sibling.style.marginTop = headerCSS.height;
 }
