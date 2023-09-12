@@ -3,14 +3,15 @@ let indexNamespace = {};
 
 // Main
 // document.addEventListener("DOMContentLoaded", async() => {
-//     indexNamespace.page = 0;
-//     indexNamespace.keyword = null;
-//     indexNamespace.isDeleting = false;
-//     indexNamespace.isObserverCalling = false;
-//     await indexNamespace.initializeMrt();
-//     await indexNamespace.initializeAttraction();
-//     indexNamespace.addElementListener();
-//     indexNamespace.addObserver();
+    // console.log("DOMContentLoaded index");
+    // indexNamespace.page = 0;
+    // indexNamespace.keyword = null;
+    // indexNamespace.isDeleting = false;
+    // indexNamespace.isObserverCalling = false;
+    // await indexNamespace.initializeMrt();
+    // await indexNamespace.initializeAttraction();
+    // indexNamespace.addElementListener();
+    // indexNamespace.addObserver();
 // });
 window.onload = async function indexLoading(){
     indexNamespace.page = 0;
@@ -46,6 +47,7 @@ indexNamespace.initializeAttraction = async function initializeAttraction(){
 
 indexNamespace.loadAttraction = async function loadAttraction(){
     let fetchURL = "/api/attractions?page=";
+    let attractionURL = "/attraction/";
     if(indexNamespace.page==null){
         return ;
     }
@@ -73,13 +75,17 @@ indexNamespace.loadAttraction = async function loadAttraction(){
     }
     json.data.forEach(data => {
         const container = document.createElement("div");
+        const hyperlink = document.createElement("a");
         const img = document.createElement("img");
         const name = document.createElement("div");
         const info = document.createElement("div");
         const infoMrt = document.createElement("div");
         const infoCategory = document.createElement("div");
+        hyperlink.classList.add("main__attraction-image");
+        hyperlink.href = attractionURL + data["id"];
         img.src = data["images"][0];
         img.classList.add("main__attraction-image");
+        hyperlink.append(img);
 
         name.innerText = data["name"];
         name.classList.add("main__attraction-name");
@@ -90,7 +96,7 @@ indexNamespace.loadAttraction = async function loadAttraction(){
         info.append(infoCategory);
 
         container.classList.add("main__attraction-element");
-        container.append(img);
+        container.append(hyperlink);
         container.append(name);
         container.append(info);
         board.append(container);

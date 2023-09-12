@@ -117,14 +117,16 @@
 
 .main__mrt-left-button{
     background-image: url("../figure/arrow\ left.png");
+    padding: 9px 0px 9px 15px;
 }
 
 .main__mrt-right-button{
     background-image: url("../figure/arrow\ right.png");
+    padding: 9px 15px 9px 0px;
 }
 
 .main__mrt-button-setting{
-    width: 50px;
+    min-width: 50px;
     height: 50px;
 
     border-width : 0;
@@ -170,6 +172,7 @@
 .main__attraction-board{
     /* gap: 30px; */
     gap: 30px 2.5%;
+    padding: 15px;
 
     display: flex;
     justify-content: center;
