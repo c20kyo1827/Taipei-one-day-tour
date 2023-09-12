@@ -1,0 +1,69 @@
+/*============*/
+/*  main
+/*============*/
+.main{
+    /* margin: auto; */
+    box-sizing: border-box;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.horizontal-line{
+    border: 1px solid #E8E8E8;
+}
+
+.top-panel{
+    display: flex;
+}
+
+.image-panel{
+    
+}
+
+.image-panel__images{
+    
+}
+
+
+.image-panel__left-button{
+    
+}
+
+.image-panel__right-button{
+    
+}
+
+.order-panel{
+    
+}
+
+.order-panel__order-name{
+    
+}
+
+.order-panel__order-cat-mrt{
+    
+}
+
+.order-panel__order-info{
+    
+}
+
+@media (min-width: 1200px){
+    .main{
+        margin: auto;
+        width: 1200px;
+    }
+}
+
+@media (min-width: 360px) and (max-width: 1200px){
+    .main{
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px){
+    .main{
+        width: 100%;
+    }
+}

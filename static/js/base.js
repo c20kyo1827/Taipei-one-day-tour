@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async() => {
 });
 
 baseNamespace.addElementListener = function addBaseElementListener(){
-    document.querySelector(".header__navigation-left").addEventListener("click", () => {
+    document.querySelector(".navigation__left-title").addEventListener("click", () => {
         window.location.href = "/";
     });
 }
