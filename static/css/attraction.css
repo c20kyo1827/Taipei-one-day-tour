@@ -8,29 +8,34 @@
     padding-bottom: 40px;
 }
 
-.horizontal-line--setting{
+.horizontal-line--basic-setting{
     border: 1px solid #E8E8E8;
+}
+
+.horizontal-line--middle-setting{
+    margin-top: 40px;
 }
 
 
 .top-panel{
+    gap: 30px;
     display: flex;
     align-items: center;
-    display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
 .image-panel{
-    /*Check in media*/
+    flex-grow: 1;
     width: 540px;
     height: 400px;
     padding-left: 15px;
-    padding-right: 30px;
     border-radius: 5px;
 }
 
 .image-panel__images{
+    width: 100%;
+    height: 100%;
     object-fit: cover;
     object-position: center;
 }
@@ -49,26 +54,76 @@
     min-height: 36px;
 }
 
-.order-panel{
+.profile{
+    flex-grow: 1;
     width: 600px;
     height: 400px;
 }
 
-.order-panel__order-name{
-    
+.profile__name{
+    height: 33px;
+
+    font-weight:bold;
+    font-size: 24px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 24px;
 }
 
-.order-panel__order-cat-mrt{
-    
+.profile__cat-mrt{
+    height: 22px;
+    margin-top: 15px;
+
+    font-weight: 500;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 13.3px;
 }
 
-.order-panel__order-info{
-    
+.profile__order-panel{
+    height: 302px;
+    margin-top: 20px;
+    border-radius: 5px;
+
+    background-color: #E8E8E8;
+}
+
+.info{
+    margin-top: 40px;
+    box-sizing: border-box;
+    padding: 10px;
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.info__title{
+    margin-top: 20px;
+
+    font-weight: 700;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 13.3px;
+}
+
+.info__content{
+    font-weight: 400;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 23.17px;
 }
 
 @media (min-width: 1200px){
     .main{
         margin: auto;
+        width: 1200px;
+    }
+    .image-panel{
+        
+    }
+    .info{
         width: 1200px;
     }
 }
@@ -77,10 +132,24 @@
     .main{
         width: 100%;
     }
+    .info{
+        width: 100%;
+    }
 }
 
 @media (max-width: 360px){
     .main{
+        width: 100%;
+    }
+    .image-panel{
+        width: 360px;
+    }
+    .profile{
+        width: 340px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .info{
         width: 100%;
     }
 }
