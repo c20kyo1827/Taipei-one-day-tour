@@ -8,20 +8,31 @@
     padding-bottom: 40px;
 }
 
-.horizontal-line{
+.horizontal-line--setting{
     border: 1px solid #E8E8E8;
 }
 
+
 .top-panel{
     display: flex;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .image-panel{
-    
+    /*Check in media*/
+    width: 540px;
+    height: 400px;
+    padding-left: 15px;
+    padding-right: 30px;
+    border-radius: 5px;
 }
 
 .image-panel__images{
-    
+    object-fit: cover;
+    object-position: center;
 }
 
 
@@ -33,8 +44,14 @@
     
 }
 
+.image-panel__button-setting{
+    min-width: 36px;
+    min-height: 36px;
+}
+
 .order-panel{
-    
+    width: 600px;
+    height: 400px;
 }
 
 .order-panel__order-name{

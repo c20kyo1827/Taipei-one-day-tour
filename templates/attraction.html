@@ -4,29 +4,36 @@
     <link rel="stylesheet" type="text/css" href="../static/css/attraction.css">
 {%endblock%}
 {%block main%}
-    <hr class="horizontal-line">
-    <div class="top-panel">
-        <!-- images -->
-        <div class="top-panel__images">1</div>
-        <!-- name,category,order group -->
-        <div class="top-panel__order-group">
-            <!-- name -->
-            <div>2</div>
-            <!-- category at mrt -->
-            <div>3</div>
-            <!-- order -->
-            <div>4</div>
+    <hr class="horizontal-line--setting">
+    <main class="main">
+        <div class="top-panel">
+            <!-- images -->
+            <div class="image-panel">
+                <img src="https://www.travel.taipei/d_upload_ttn/sceneadmin/pic/11000848.jpg" class="image-panel__images">
+                <div class="image-panel__left-button image-panel__button-setting"></div>
+                <div class="image-panel__right-button image-panel__button-setting"></div>
+                <div></div>
+            </div>
+            <!-- name,category,order group -->
+            <div class="order-panel">
+                <!-- name -->
+                <div>2</div>
+                <!-- category at mrt -->
+                <div>3</div>
+                <!-- order -->
+                <div>4</div>
+            </div>
         </div>
-    </div>
-    <hr class="horizontal-line">
-    <div>
-        <!-- description -->
-        <div>5</div>
-        <!-- address -->
-        <div>6</div>
-        <!-- transport -->
-        <div>7</div>
-    </div>
+        <hr class="horizontal-line--setting">
+        <div>
+            <!-- description -->
+            <div>5</div>
+            <!-- address -->
+            <div>6</div>
+            <!-- transport -->
+            <div>7</div>
+        </div>
+    </main>
 {%endblock%}
 {%block script%}
     <script src="../static/js/attraction.js"></script>
