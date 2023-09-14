@@ -24,12 +24,12 @@ attractionNamespace.loadAttractions = async function loadAttractions(){
 attractionNamespace.addElementListener = function addElementListener(){
 
     // Image scrolling
-    let scrollValue = 0;
+    let scrollIndex = 0;
     document.querySelector(".image-panel__left-button").addEventListener("click", () => {
         let board = document.querySelector(".image-panel__images-group");
-        scrollValue = scrollValue<=0 ? scrollValue : scrollValue-board.offsetWidth;
+        scrollIndex = scrollIndex<=0 ? scrollIndex : scrollIndex-1;
         board.scrollTo({
-            left: scrollValue,
+            left: scrollIndex*board.offsetWidth,
             behavior: "smooth"
         });
     });
@@ -37,10 +37,19 @@ attractionNamespace.addElementListener = function addElementListener(){
     document.querySelector(".image-panel__right-button").addEventListener("click", () => {
         let board = document.querySelector(".image-panel__images-group");
         let element = document.querySelectorAll(".images-group__image");
-        scrollValue = scrollValue>=element[element.length-1].offsetLeft-board.offsetWidth ? scrollValue : scrollValue+board.offsetWidth;
+        scrollIndex = scrollIndex>=element.length-1 ? scrollIndex : scrollIndex+1;
         board.scrollTo({
-            left: scrollValue,
+            left: scrollIndex*board.offsetWidth,
             behavior: "smooth"
+        });
+    });
+
+    // Prevent the image crack
+    window.addEventListener("resize", ()=>{
+        let board = document.querySelector(".image-panel__images-group");
+        board.scrollTo({
+            left: scrollIndex*board.offsetWidth,
+            behavior: "instant"
         });
     });
 }
