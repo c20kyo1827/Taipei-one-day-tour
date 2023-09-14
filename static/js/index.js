@@ -144,11 +144,16 @@ indexNamespace.addElementListener = function addElementListener(){
         let element = document.querySelectorAll(".mrt__element");
         let cnt = 0;
         let total = 0;
-        console.log("board : " + board.offsetWidth);
-        console.log("current value : " + scrollValue);
+        // console.log("board width : " + board.offsetWidth);
+        // console.log("board left : " + board.offsetLeft);
+        // console.log("current value : " + scrollValue);
+        // console.log(element[0].offsetLeft);
+        // console.log(element[1].offsetLeft);
+        // console.log(element[2].offsetLeft);
         for(const e of element.values()){
-            console.log("total : " + total);
-            console.log("cnt : " + cnt);
+            // console.log("total : " + total);
+            // console.log("cnt : " + cnt);
+            // console.log("left : " + e.offsetLeft);
             total += e.offsetWidth;
             if(total-scrollValue >= board.offsetWidth){
                 break;
