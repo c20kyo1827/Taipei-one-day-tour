@@ -43,7 +43,8 @@ attractionNamespace.loadAttractions = async function loadAttractions(){
     const catAndMrt = document.createElement("div");
     name.innerText = json.data.name;
     name.classList.add("profile__name");
-    catAndMrt.innerText = json.data.category + " at " + json.data.mrt;
+    let mrt_name = json.data.mrt==null ? "" : " at " + json.data.mrt;
+    catAndMrt.innerText = json.data.category + mrt_name;
     catAndMrt.classList.add("profile__cat-mrt");
     boardProfile.prepend(catAndMrt, boardProfile.firstElementChild);
     boardProfile.prepend(name, boardProfile.firstElementChild);
