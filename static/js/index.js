@@ -144,7 +144,11 @@ indexNamespace.addElementListener = function addElementListener(){
         let element = document.querySelectorAll(".mrt__element");
         let cnt = 0;
         let total = 0;
+        console.log("board : " + board.offsetWidth);
+        console.log("current value : " + scrollValue);
         for(const e of element.values()){
+            console.log("total : " + total);
+            console.log("cnt : " + cnt);
             total += e.offsetWidth;
             if(total-scrollValue >= board.offsetWidth){
                 break;

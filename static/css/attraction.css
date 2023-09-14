@@ -26,14 +26,29 @@
 }
 
 .image-panel{
+    position: relative;
     flex-grow: 1;
+    box-sizing: border-box;
     width: 540px;
     height: 400px;
     padding-left: 15px;
     border-radius: 5px;
+
+    display: flex;
+    align-items:center;
+    justify-content: space-between
 }
 
-.image-panel__images{
+.image-panel__images-group{
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+.images-group__images{
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -42,16 +57,24 @@
 
 
 .image-panel__left-button{
-    
+    position: absolute;
+    left: 10px;
+
+    background-image: url("../figure/button/arrow\ left.png");
 }
 
 .image-panel__right-button{
-    
+    position: absolute;
+    right: 10px;
+
+    background-image: url("../figure/button/arrow\ right.png");
 }
 
 .image-panel__button-setting{
     min-width: 36px;
     min-height: 36px;
+
+    top: 45%;
 }
 
 .profile{
@@ -82,6 +105,22 @@
 }
 
 .profile__order-panel{
+    height: 302px;
+    margin-top: 20px;
+    border-radius: 5px;
+
+    background-color: #E8E8E8;
+}
+
+.order-panel__title{
+    height: 302px;
+    margin-top: 20px;
+    border-radius: 5px;
+
+    background-color: #E8E8E8;
+}
+
+.order-panel__content{
     height: 302px;
     margin-top: 20px;
     border-radius: 5px;
@@ -120,9 +159,6 @@
         margin: auto;
         width: 1200px;
     }
-    .image-panel{
-        
-    }
     .info{
         width: 1200px;
     }
@@ -131,6 +167,14 @@
 @media (min-width: 360px) and (max-width: 1200px){
     .main{
         width: 100%;
+    }
+    .image-panel{
+        width: 100%;
+        padding-left: 0px;
+    }
+    .profile{
+        margin-left: 10px;
+        margin-right: 10px;
     }
     .info{
         width: 100%;
@@ -143,6 +187,7 @@
     }
     .image-panel{
         width: 360px;
+        padding-left: 0px;
     }
     .profile{
         width: 340px;

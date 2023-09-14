@@ -85,7 +85,7 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     background-color: #448899;
-    background-image: url("../figure/icon_search.png");
+    background-image: url("../figure/button/icon_search.png");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 30px 30px;
@@ -116,12 +116,12 @@
 }
 
 .mrt__left-button{
-    background-image: url("../figure/arrow\ left.png");
+    background-image: url("../figure/button/arrow\ left.png");
     padding: 9px 0px 9px 15px;
 }
 
 .mrt__right-button{
-    background-image: url("../figure/arrow\ right.png");
+    background-image: url("../figure/button/arrow\ right.png");
     padding: 9px 15px 9px 0px;
 }
 
