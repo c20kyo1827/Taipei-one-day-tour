@@ -274,6 +274,9 @@
     .main{
         width: 100%;
     }
+    .horizontal-line--top-setting{
+        display: none;
+    }
     .image-panel{
         width: 100%;
         padding-left: 0px;
