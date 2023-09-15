@@ -10,6 +10,12 @@
 
 .horizontal-line--basic-setting{
     border: 1px solid #E8E8E8;
+    border-top: 0px;
+}
+
+.horizontal-line--top-setting{
+    position: relative;
+    top: 1px;
 }
 
 .horizontal-line--middle-setting{
@@ -215,6 +221,7 @@
     margin-top: 25px;
     margin-left: 20px;
 
+    border:0 ;
     border-radius: 5px;
     background-color: #448899;
 
@@ -283,6 +290,10 @@
 @media (max-width: 360px){
     .main{
         width: 100%;
+        padding-top: 0%;
+    }
+    .horizontal-line--top-setting{
+        display: none;
     }
     .image-panel{
         width: 360px;

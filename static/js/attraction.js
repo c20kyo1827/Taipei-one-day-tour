@@ -70,7 +70,6 @@ attractionNamespace.addElementListener = function addElementListener(){
     // Utility
     let scrollIndex = 0;
     function moveCurrentDot(preIndex){
-        console.log(preIndex + " " + scrollIndex);
         let dot = document.querySelector("#" + CSS.escape(preIndex)+".dot-group__dot");
         dot.classList.remove("dot-group__dot-current");
         dot = document.querySelector("#" + CSS.escape(scrollIndex)+".dot-group__dot");
