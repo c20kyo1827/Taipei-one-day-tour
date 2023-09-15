@@ -1,81 +1,3 @@
-.body{
-    margin: 0px;
-}
-
-/*============*/
-/*  header*/
-/*============*/
-.header{
-    width: 100%;
-    height: 54px;
-    box-sizing: border-box;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    display: flex;
-    justify-content: center;
-}
-
-/* navigation*/
-.header__navigation{
-    display: flex;
-    align-items: center;
-}
-
-.header__navigation-left{
-    flex: none;
-    height: 34px;
-
-    cursor: pointer;
-
-    font-weight: 700;
-    font-size: 30px;
-    font-family: "Noto Sans TC";
-    color: #448899;
-    line-height: 34px;
-
-    display: flex;
-    align-items: center;
-}
-
-.header__navigation-right{
-    flex: auto;
-    width: 175px;
-    height: 34px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
-
-.header__navigatio-right-button--setting{
-    font-weight: 500;
-    font-size: 16px;
-    font-family: "Noto Sans TC";
-    line-height: 13.3px;
-
-    border-width : 0;
-    background-color: #FFFFFF;
-
-    display: flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.header__navigation-right-button1{
-    width: 104px;
-    height: 54px;
-    box-sizing: border-box;
-    padding: 10px;
-}
-
-.header__navigation-right-button2{
-    width: 111px;
-    height: 54px;
-    box-sizing: border-box;
-    padding: 10px;
-}
-
 /*============*/
 /*  hero-image
 /*============*/
@@ -163,7 +85,7 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     background-color: #448899;
-    background-image: url("../figure/icon_search.png");
+    background-image: url("../figure/button/icon_search.png");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 30px 30px;
@@ -173,14 +95,14 @@
 /*  main
 /*============*/
 .main{
-    margin: auto;
+    /* margin: auto; */
     box-sizing: border-box;
     padding-top: 40px;
     padding-bottom: 40px;
 }
 
 /* mrt */
-.main__mrt-list-bar{
+.mrt__list-bar{
     height: 70px;
 
     box-sizing: border-box;
@@ -193,16 +115,18 @@
     justify-content: space-between
 }
 
-.main__mrt-left-button{
-    background-image: url("../figure/arrow\ left.png");
+.mrt__left-button{
+    background-image: url("../figure/button/arrow\ left.png");
+    padding: 9px 0px 9px 15px;
 }
 
-.main__mrt-right-button{
-    background-image: url("../figure/arrow\ right.png");
+.mrt__right-button{
+    background-image: url("../figure/button/arrow\ right.png");
+    padding: 9px 15px 9px 0px;
 }
 
-.main__mrt-button-setting{
-    width: 50px;
+.mrt__button-setting{
+    min-width: 50px;
     height: 50px;
 
     border-width : 0;
@@ -213,7 +137,7 @@
     background-size: 30px 30px;
 }
 
-.main__mrt-board{
+.mrt__list{
     width: 1100px;
 
     display : flex;
@@ -224,7 +148,7 @@
     /* overflow-y: hidden; */
 }
 
-.main__mrt-element{
+.mrt__element{
     max-width: 96px;
     height: 24px;
     padding: 5px 15px 5px 15px;
@@ -245,16 +169,17 @@
 }
 
 /* attraction */
-.main__attraction-board{
+.attraction__board{
     /* gap: 30px; */
-    gap: 30px 2.5%;
+    gap: 30px;
+    padding: 15px;
 
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.main__attraction-element{
+.attraction__element{
     flex-grow: 1;
     position: relative;
 
@@ -264,17 +189,22 @@
     background-color: #E8E8E8;
 }
 
-.main__attraction-image{
+.attraction__element-image{
     width: 100%;
     height: 100%;
     position: absolute;
+
+    cursor: pointer;
 
     /* Should check use this or object-fit: contain; */
     object-fit: cover;
     object-position: center center;
 }
+.attraction__element-image:hover{
+    filter: blur(2px);
+}
 
-.main__attraction-name{
+.attraction__element-name{
     width: 100%;
     /* height: 40px; */
     max-height: 40px;
@@ -291,13 +221,15 @@
     font-family: "Noto Sans TC";
     color: #FFFFFF;
     line-height: 13.3px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 
     display: flex;
     text-align: center;
     align-items: center;
 }
 
-.main__attraction-info{
+.attraction__element-info{
     width: 100%;
     height: 45px;
     position: absolute;
@@ -318,38 +250,7 @@
     justify-content: space-between
 }
 
-/*============*/
-/*  footer
-/*============*/
-.footer{
-    width: 100%;
-    height: 104px;
-
-    background-color: #757575;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.footer__textbox{
-    width: 234px;
-    height: 24px;
-    box-sizing: border-box;
-    padding: 5px;
-
-    font-weight: 700;
-    font-size: 14px;
-    font-family: "Noto Sans TC";
-    line-height: 13.3px;
-
-    color: #FFFFFF;
-}
-
-@media (min-width: 1200px) and (max-width: 1920px){
-    .header__navigation{
-        width: 1200px;
-    }
+@media (min-width: 1200px){
     .hero-image__slogan{
         width: 1180px;
     }
@@ -357,35 +258,32 @@
         margin: auto;
         width: 1200px;
     }
-    .main__attraction-element{
+    .attraction__element{
         /* min-width: 270px;
         max-width: 270px; */
-        width: 270px;
-        height: 242px;
+        width: 268px;
+        height: 240px;
         /* min-width: 22%;
         max-width: 22%;
         aspect-ratio: 270 / 242; */
     }
-    .main__attraction-image{
+    .attraction__element-image{
         height: 197px;
     }
 }
 
 @media (min-width: 360px) and (max-width: 1200px){
-    .header__navigation{
-        width: 100%;
-    }
     .hero-image__slogan{
         width: 100%;
     }
     .main{
         width: 100%;
     }
-    .main__attraction-element{
+    .attraction__element{
         /* min-width: 270px;
         max-width: 270px; */
-        width: 270px;
-        height: 242px;
+        width: 268px;
+        height: 240px;
         /* min-width: 22%;
         max-width: 22%;
         aspect-ratio: 270 / 242; */
@@ -393,22 +291,19 @@
 }
 
 @media (max-width: 360px){
-    .header__navigation{
-        width: 100%;
-    }
     .hero-image__slogan{
         width: 340px;
     }
     .main{
         width: 100%;
     }
-    .main__attraction-element{
+    .attraction__element{
         /* min-width: 322px;
         max-width: 322px; */
-        width: 322px;
-        height: 280px;
+        width: 320px;
+        height: 278px;
     }
-    .main__attraction-image{
+    .attraction__element-image{
         height: 235px;
     }
 }

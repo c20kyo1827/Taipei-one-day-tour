@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{%block title%}景點資訊{%endblock%}
+{%block css%}
+    <link rel="stylesheet" type="text/css" href="../static/css/attraction.css">
+{%endblock%}
+{%block main%}
+    <hr class="horizontal-line--basic-setting horizontal-line--top-setting">
+    <main class="main">
+        <div class="top-panel">
+            <div class="image-panel">
+                <div class="image-panel__images-group">
+                    <!-- image -->
+                </div>
+                <div class="image-panel__left-button image-panel__button-setting"></div>
+                <div class="image-panel__right-button image-panel__button-setting"></div>
+                <div class="image-panel__dot-group">
+                </div>
+            </div>
+            <div class="profile">
+                <!-- name -->
+                <!-- category at mrt -->
+                <div class="profile__order-panel">
+                    <div class="order-panel__row-1 order-panel__text--bold">訂購導覽行程</div>
+                    <div class="order-panel__row-2 order-panel__text--normal">以此景點為中心的一日行程，帶您探索城市角落故事</div>
+                    <div class="order-panel__row-3 order-panel__text--bold">
+                        <div class="order-panel__text--bold">選擇日期&nbsp;:&nbsp;</div>
+                        <input type="date" name="trip-date" lang="en-us" class="order-panel__date order-panel__text--normal">
+                    </div>
+                    <div class="order-panel__row-1 ">
+                        <div class="order-panel__text--bold">選擇時間&nbsp;:&nbsp;</div>
+                        <div class="order-panel__radio-text">
+                            <input type="radio" name="trip-time" id="first-half-day" value="first-half-day" class="order-panel__radio-input" checked>
+                            <label for="first-half-day" class="order-panel__radio-text">上半天</label>
+                        </div>
+                        <div class="order-panel__radio-text">
+                            <input type="radio" name="trip-time" id="second-half-day" value="second-half-day" class="order-panel__radio-input">
+                            <label for="second-half-day" class="order-panel__radio-text">下半天</label>
+                        </div>
+                    </div>
+                    <div class="order-panel__row-1">
+                        <div class="order-panel__text--bold">導覽費用&nbsp;:&nbsp;</div>
+                        <div class="order-panel__text--normal">新台幣</div>
+                        <div class="order-panel__text--normal" id="money-selector">2000</div>
+                        <div class="order-panel__text--normal">元</div>
+                    </div>
+                    <button class="order-panel__button">開始預約行程</button>
+                </div>
+            </div>
+        </div>
+        <hr class="horizontal-line--basic-setting horizontal-line--middle-setting">
+        <div class="info">
+            <!-- description -->
+            <div class="info__title">景點地址：</div>
+            <!-- address -->
+            <div class="info__title">交通方式：</div>
+            <!-- transport -->
+        </div>
+    </main>
+{%endblock%}
+{%block script%}
+    <script src="../static/js/attraction.js"></script>
+{%endblock%}

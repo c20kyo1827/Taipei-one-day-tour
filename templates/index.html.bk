@@ -1,9 +1,22 @@
-{% extends 'base.html' %}
-{%block title%}台北一日遊{%endblock%}
-{%block css%}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta charset="utf-8" />
+    <title>台北一日遊</title>
     <link rel="stylesheet" type="text/css" href="../static/css/index.css">
-{%endblock%}
-{%block main%}
+</head>
+<body class="body">
+    <header class="header">
+        <nav class="header__navigation">
+            <div class="header__navigation-left">台北一日遊</div>
+            <div class="header__navigation-right">
+                <button class="header__navigation-right-button1 header__navigatio-right-button--setting">預定行程</button>
+                <div>&nbsp&nbsp</div>
+                <button class="header__navigation-right-button2 header__navigatio-right-button--setting">登入/註冊</button>
+            </div>
+        </nav>
+    </header>
     <div class="hero-image">
         <div class="hero-image__slogan">
             <div class="hero-image__slogan-content">
@@ -19,12 +32,12 @@
         </div>
     </div>
     <main class="main">
-        <div class="mrt__list-bar">
-            <button type="submit" class="mrt__left-button mrt__button-setting"></button>
-            <div class="mrt__list"></div>
-            <button type="submit" class="mrt__right-button mrt__button-setting"></button>
+        <div class="main__mrt-list-bar">
+            <button type="submit" class="main__mrt-left-button main__mrt-button-setting"></button>
+            <div class="main__mrt-board"></div>
+            <button type="submit" class="main__mrt-right-button main__mrt-button-setting"></button>
         </div>
-        <div class="attraction__board">
+        <div class="main__attraction-board">
             <!-- <div class="main__attraction-element">
                 <img src="https://www.travel.taipei//d_upload_ttn//sceneadmin//image//A0//B0//C1//D356//E17//F185//b1a2de52-4110-4355-a9fb-bf1d0eb627c9.JPG" class="main__attraction-image">
                 <div class="main__attraction-name">111</div>
@@ -35,7 +48,11 @@
             </div> -->
         </div>
     </main>
-{%endblock%}
-{%block script%}
+    <footer class="footer">
+        <div class="footer__textbox">
+            COPYRIGHT © 2021 台北一日遊
+        </div>
+    </footer>
     <script src="../static/js/index.js"></script>
-{%endblock%}
+</body>
+</html>

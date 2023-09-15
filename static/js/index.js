@@ -1,115 +1,131 @@
+// Wrapping namespace
+let indexNamespace = {};
+
 // Main
-document.addEventListener("DOMContentLoaded", async() => {
-    this.page = 0;
-    this.keyword = null;
-    this.isDeleting = false;
-    this.isObserverCalling = false;
-    await initializeMrt();
-    await initializeAttraction();
-    addElementListener();
-    addObserver();
-});
+// document.addEventListener("DOMContentLoaded", async() => {
+    // console.log("DOMContentLoaded index");
+    // indexNamespace.page = 0;
+    // indexNamespace.keyword = null;
+    // indexNamespace.isDeleting = false;
+    // indexNamespace.isObserverCalling = false;
+    // await indexNamespace.initializeMrt();
+    // await indexNamespace.initializeAttraction();
+    // indexNamespace.addElementListener();
+    // indexNamespace.addObserver();
+// });
+window.onload = async function indexLoading(){
+    indexNamespace.page = 0;
+    indexNamespace.keyword = null;
+    indexNamespace.isDeleting = false;
+    indexNamespace.isObserverCalling = false;
+    await indexNamespace.initializeMrt();
+    await indexNamespace.initializeAttraction();
+    indexNamespace.addElementListener();
+    indexNamespace.addObserver();
+}
 
 // Function definition
 // Initialization
-async function initializeMrt(){
+indexNamespace.initializeMrt = async function initializeMrt(){
     console.log("Pre-fetch and initialize the mrts");
     let fetchURL ="/api/mrts";
     response = await fetch(fetchURL);
     json = await response.json();
-    const board = document.querySelector(".main__mrt-board");
+    const board = document.querySelector(".mrt__list");
     json.data.forEach(mrt => {
         const container = document.createElement("div");
         container.innerText = mrt;
-        container.classList.add("main__mrt-element");
+        container.classList.add("mrt__element");
         board.append(container);
     });
 }
 
-async function initializeAttraction(){
+indexNamespace.initializeAttraction = async function initializeAttraction(){
     console.log("Pre-fetch and initialize the attractions");
-    await loadAttraction(); // await would make function execute totally
+    await indexNamespace.loadAttractions(); // await would make function execute totally
 }
 
-// Utility
-function searchForMrt(){
-    this.isDeleting = true;
-    this.page = 0;
-    this.keyword = document.querySelector(".hero-image__search-input").value;
-    clearAttraction();
-    loadAttraction();
-    setTimeout(() => {
-        this.isDeleting = false;
-    }, 1000);
-}
-
-function clearAttraction(){
-    const board = document.querySelector(".main__attraction-board");
-    while(board.firstChild){
-        board.removeChild(board.firstChild);
-    }
-}
-
-async function loadAttraction(){
+indexNamespace.loadAttractions = async function loadAttractions(){
     let fetchURL = "/api/attractions?page=";
-    if(this.page==null){
+    let attractionURL = "/attraction/";
+    if(indexNamespace.page==null){
         return ;
     }
-    fetchURL += this.page;
-    if(this.keyword!=null){
-        fetchURL += ("&keyword=" + this.keyword);
+    fetchURL += indexNamespace.page;
+    if(indexNamespace.keyword!=null){
+        fetchURL += ("&keyword=" + indexNamespace.keyword);
     }
     let response = await fetch(fetchURL);
     let json = await response.json();
-    const board = document.querySelector(".main__attraction-board");
+    const board = document.querySelector(".attraction__board");
     if(json.data.length===0){
         const container = document.createElement("div");
         const info = document.createElement("div");
-        info.classList.add("main__attraction-info");
+        info.classList.add("attraction__element-info");
         info.innerText = "查無結果";
-        if(this.keyword!=null){
-            info.innerText = "找不到和查詢的" + this.keyword + "相符的結果";
+        if(indexNamespace.keyword!=null){
+            info.innerText = "找不到和查詢的" + indexNamespace.keyword + "相符的結果";
         }
         info.style.height = "100%";
         info.style.justifyContent = "center";
 
-        container.classList.add("main__attraction-element");
+        container.classList.add("attraction__element");
         container.append(info);
         board.append(container);
     }
     json.data.forEach(data => {
         const container = document.createElement("div");
+        const hyperlink = document.createElement("a");
         const img = document.createElement("img");
         const name = document.createElement("div");
         const info = document.createElement("div");
         const infoMrt = document.createElement("div");
         const infoCategory = document.createElement("div");
+        hyperlink.classList.add("attraction__element-image");
+        hyperlink.href = attractionURL + data["id"];
         img.src = data["images"][0];
-        img.classList.add("main__attraction-image");
+        img.classList.add("attraction__element-image");
+        hyperlink.append(img);
 
         name.innerText = data["name"];
-        name.classList.add("main__attraction-name");
-        info.classList.add("main__attraction-info");
+        name.classList.add("attraction__element-name");
+        info.classList.add("attraction__element-info");
         infoMrt.innerText = data["mrt"];
         infoCategory.innerText = data["category"];
         info.append(infoMrt);
         info.append(infoCategory);
 
-        container.classList.add("main__attraction-element");
-        container.append(img);
+        container.classList.add("attraction__element");
+        container.append(hyperlink);
         container.append(name);
         container.append(info);
         board.append(container);
     });
-    this.page = json.nextPage;
+    indexNamespace.page = json.nextPage;
 }
 
 // Add listener
-function addElementListener(){
-    document.querySelector(".header__navigation-left").addEventListener("click", () => {
-        window.location.href = "/";
-    });
-    
+indexNamespace.addElementListener = function addElementListener(){
+    // Utility
+    function clearAttraction(){
+        const board = document.querySelector(".attraction__board");
+        while(board.firstChild){
+            board.removeChild(board.firstChild);
+        }
+    }
+
+    function searchForMrt(){
+        indexNamespace.isDeleting = true;
+        indexNamespace.page = 0;
+        indexNamespace.keyword = document.querySelector(".hero-image__search-input").value;
+        clearAttraction();
+        indexNamespace.loadAttractions();
+        setTimeout(() => {
+            indexNamespace.isDeleting = false;
+        }, 1000);
+    }
+
+    console.log("Add event listener");
     document.querySelector(".hero-image__search-button").addEventListener("click", () => {
         searchForMrt();
     });
@@ -123,12 +139,21 @@ function addElementListener(){
     
     // Mrt scrolling operation
     let scrollValue = 0;
-    document.querySelector(".main__mrt-left-button").addEventListener("click", () => {
-        let board = document.querySelector(".main__mrt-board")
-        let element = document.querySelectorAll(".main__mrt-element");
+    document.querySelector(".mrt__left-button").addEventListener("click", () => {
+        let board = document.querySelector(".mrt__list")
+        let element = document.querySelectorAll(".mrt__element");
         let cnt = 0;
         let total = 0;
+        // console.log("board width : " + board.offsetWidth);
+        // console.log("board left : " + board.offsetLeft);
+        // console.log("current value : " + scrollValue);
+        // console.log(element[0].offsetLeft);
+        // console.log(element[1].offsetLeft);
+        // console.log(element[2].offsetLeft);
         for(const e of element.values()){
+            // console.log("total : " + total);
+            // console.log("cnt : " + cnt);
+            // console.log("left : " + e.offsetLeft);
             total += e.offsetWidth;
             if(total-scrollValue >= board.offsetWidth){
                 break;
@@ -142,9 +167,9 @@ function addElementListener(){
         });
     });
     
-    document.querySelector(".main__mrt-right-button").addEventListener("click", () => {
-        let board = document.querySelector(".main__mrt-board")
-        let element = document.querySelectorAll(".main__mrt-element");
+    document.querySelector(".mrt__right-button").addEventListener("click", () => {
+        let board = document.querySelector(".mrt__list")
+        let element = document.querySelectorAll(".mrt__element");
         let cnt = 0;
         let total = 0;
         for(const e of element.values()){
@@ -161,7 +186,7 @@ function addElementListener(){
         });
     });
 
-    let mrts = document.querySelectorAll(".main__mrt-element");
+    let mrts = document.querySelectorAll(".mrt__element");
     [].forEach.call(mrts, function(mrt){
         mrt.addEventListener("click", () => {
             document.querySelector(".hero-image__search-input").value = mrt.innerText;
@@ -171,13 +196,14 @@ function addElementListener(){
 }
 
 // Add observer
-function addObserver(){
+indexNamespace.addObserver = function addObserver(){
+    console.log("Add observer");
     const callback = (entries) => {
-        if(entries[0].isIntersecting && !this.isDeleting && !this.isObserverCalling){
-            this.isObserverCalling = true;
-            loadAttraction();
+        if(entries[0].isIntersecting && !indexNamespace.isDeleting && !indexNamespace.isObserverCalling){
+            indexNamespace.isObserverCalling = true;
+            indexNamespace.loadAttractions();
             setTimeout(() => {
-                this.isObserverCalling = false;
+                indexNamespace.isObserverCalling = false;
             }, 1000);
         }
     };
