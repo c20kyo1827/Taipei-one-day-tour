@@ -2,22 +2,23 @@
     margin: 0px;
 }
 
-/*============*/
+/*====================*/
 /*  header*/
-/*============*/
+/*====================*/
+
 .header{
+    width: 100%;
+    height: 54px;
     position: fixed;
     top: 0px;
     left: 0px;
-    width: 100%;
-    height: 54px;
     box-sizing: border-box;
     background-color: #FFFFFF;
 
     padding-top: 10px;
     padding-bottom: 10px;
 
-    z-index: 1000;
+    z-index: 1;
     display: flex;
     justify-content: center;
 }
@@ -82,9 +83,130 @@
     padding: 10px;
 }
 
-/*============*/
+/*====================*/
+/*  sign-in/sign-up
+/*====================*/
+.sign-container{
+    /* display: none; */
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 2;
+
+    background: rgb(0, 0, 0, 25%);
+
+    justify-content: center;  
+}
+
+/*-----------------------*/
+#sign-container__sign-in{
+    display: flex;
+}
+#sign-container__sign-up{
+    display: none;
+}
+/*-----------------------*/
+.sign-box__bar{
+    height: 10px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
+}
+
+.sign-container__sign-box{
+    width: 340px;
+    height: 275px;
+    /* TODO set height based on sign-in or sign-up */
+    position: relative;
+    top: 80px;
+    gap: 15px;
+
+    border-radius: 6px;
+    background-color: #FFFFFF;
+}
+
+.sign-box__title{
+    width: 100%;
+    height: 27px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+
+    font-weight: 700;
+    font-size: 24px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 24px;
+}
+
+.sign-box__close-button{
+    width: 30px;
+    height: 30px;
+
+    position: absolute;
+    top: 20px;
+    right: 10px;
+
+    background-image: url("../figure/button/icon_close.png");
+    background-size: 16px 16px;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+.sign-box__form{
+    width: 310px;
+    margin: 0 auto;
+}
+
+.sign-box__form-input{
+    width: 100%;
+    height: 47px;
+    margin: 0 auto 10px;
+    box-sizing: border-box;
+}
+.sign-box__form-input-text{
+    font-weight: 500;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #757575;
+    line-height: 13.3px;
+}
+
+.sign-box__form-button{
+    width: 100%;
+    height: 47px;
+
+    border:0 ;
+    border-radius: 5px;
+    background-color: #448899;
+
+    text-align: center;
+    font-weight: 400;
+    font-size: 19px;
+    font-family: "Noto Sans TC";
+    color: #FFFFFF;
+    line-height: 16px;
+}
+
+.sign-box__message{
+    width: 100%;
+    height: 22px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: "Noto Sans TC";
+    color: #666666;
+    line-height: 13.3px;
+}
+
+
+/*====================*/
 /*  footer
-/*============*/
+/*====================*/
+
 .footer{
     width: 100%;
     height: 104px;
