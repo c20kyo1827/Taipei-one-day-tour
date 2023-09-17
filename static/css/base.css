@@ -97,16 +97,17 @@
 
     background: rgb(0, 0, 0, 25%);
 
-    justify-content: center;  
+    display: none;
+    justify-content: center;
 }
 
 /*-----------------------*/
-#sign-container__sign-in{
+/* #sign-container__sign-in{
     display: flex;
 }
 #sign-container__sign-up{
     display: none;
-}
+} */
 /*-----------------------*/
 .sign-box__bar{
     height: 10px;
