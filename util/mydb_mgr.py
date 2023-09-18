@@ -1,12 +1,20 @@
 from mysql.connector import connect
 from mysql.connector import Error
 from mysql.connector import pooling
+import argparse
+import logging
+import sys
 import os
 
 # TODO
 # 1. Use flask_sqlalchemy to modify
 # 2. Create index
 # 3. Use the inner join
+
+logging.root.name = "Mysql db manager"
+logging.basicConfig(level=logging.INFO,
+                format='[%(levelname)-7s] %(name)s - %(message)s',
+                stream=sys.stdout)
 class mydb_mgr:
     def __init__(self):
         self._mypool = None
@@ -28,8 +36,8 @@ class mydb_mgr:
             user=os.getenv("MYSQL_USER","root"),
             password=os.getenv("MYSQL_ROOT_PASSWD","root")
         )
-        print("Connection Pool Name - ", self._mypool.pool_name)
-        print("Connection Pool Size - ", self._mypool.pool_size)
+        logging.info("Connection Pool Name - " + str(self._mypool.pool_name))
+        logging.info("Connection Pool Size - " + str(self._mypool.pool_size))
 
     def connect_and_run(self, func, is_commit=False):
         if self._mypool==None:
@@ -45,7 +53,7 @@ class mydb_mgr:
                     mydb.commit()
 
         except Error as e:
-            print("Error while connecting to MySQL using Connection pool : ", e)
+            logging.error("Error while connecting to MySQL using Connection pool : ", e)
         finally:
             if mydb.is_connected():
                 mycursor.close()
@@ -65,6 +73,8 @@ class mydb_mgr:
             cursor.execute("DROP TABLE IF EXISTS mrt")
             cursor.execute("DROP TABLE IF EXISTS category")
             cursor.execute("DROP TABLE IF EXISTS image")
+            cursor.execute("DROP TABLE IF EXISTS member")
+            # Attractions
             cursor.execute( \
                 "CREATE TABLE attraction( \
                     id bigint NOT NULL, \
@@ -104,6 +114,27 @@ class mydb_mgr:
                     PRIMARY KEY(id) \
                 )" \
             )
+            # Member
+            cursor.execute( \
+                "CREATE TABLE member( \
+                    id bigint AUTO_INCREMENT, \
+                    name varchar(255) NOT NULL, \
+                    account varchar(255) NOT NULL, \
+                    password varchar(255) NOT NULL, \
+                    PRIMARY KEY(id) \
+                )" \
+            )
+            # Order
+            # TODO
+            # Need to add order table and add the table into member table
+        self.connect_and_run(run)
+
+    def runSQLCmd(self, cmd):
+        def run(cursor):
+            cursor.execute("USE website")
+            logging.info("Run the command in mysql : " + cmd)
+            cursor.execute(cmd)
+            logging.info(str(cursor.fetchall()))
         self.connect_and_run(run)
     
     def show(self):
@@ -114,7 +145,7 @@ class mydb_mgr:
                 cmd = "SELECT * FROM " + t
                 cursor.execute(cmd)
                 member_info = cursor.fetchall()
-                for x in member_info: print(x)
+                for x in member_info: logging.info(x)
         self.connect_and_run(run)
 
     def add_attraction_mrt(self, attractions):
@@ -158,6 +189,14 @@ class mydb_mgr:
                     cursor.execute(sql, val)
                 
                 self.connect_and_run(add_image, True)
+
+    def add_member(self, name, account, password):
+        def run(cursor):
+            sql = "INSERT INTO member (name, account, password) VALUES (%s, %s, %s)"
+            val = (name, account, password)
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+        self.connect_and_run(run, True)
 
     def get_attractions_by_page_keyword(self, page, keyword):
         def run(cursor):
@@ -221,14 +260,50 @@ class mydb_mgr:
             cursor.execute(sql, val)
             return cursor.fetchall()
         return self.connect_and_run(run)
+    
+    def get_member(self, account, password=None):
+        def run(cursor):
+            if password==None:
+                sql = "SELECT id, account, name FROM member WHERE account = %s"
+                val = (account, )
+            else:
+                sql = "SELECT id, account, name FROM member WHERE account = %s AND password = %s"
+                val = (account, password)
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+    
+    def update_member(self, account, name):
+        def run(cursor):
+            sql = "UPDATE member SET name=%s WHERE account=%s"
+            val = (name, account)
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+            cursor.execute("SELECT CASE WHEN ROW_COUNT() > 0 THEN 1 ELSE 0 END AS updated")
+            return cursor.fetchall()
+        return self.connect_and_run(run, True)
+
+# The argument parser
+def Argument():
+    parser = argparse.ArgumentParser(description="Mysql db manager")
+    list_of_mode = ["reset"]
+    parser.add_argument('-m', '--mode', type=str, choices=list_of_mode, default="init", help="specify the reset/initial mode")
+    parser.add_argument('-s', '--show', default=False, action="store_true", help="show the current database")
+    parser.add_argument('-c', '--command', type=str, help="run testing commadn for mydb")
+    return parser.parse_args()
 
 if __name__=="__main__":
     flow = mydb_mgr()
-    reset = input("Do you want to reset : ")
-    if reset=="yes":
+    arg = Argument()
+
+    if arg.mode=="reset":
         flow.reset()
     else:
         flow.init()
 
-    print("Show the content : ")
-    flow.show()
+    if arg.show:
+        flow.show()
+
+    if arg.command != None:
+        flow.runSQLCmd(arg.command)

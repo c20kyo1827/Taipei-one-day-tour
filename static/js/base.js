@@ -13,8 +13,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     });
 
     document.querySelector(".navigation__right-option-sign").addEventListener("click", () => {
-        document.querySelector("#sign-container__sign-in.sign-container").style.display = "flex";
-        document.querySelector("#sign-container__sign-up.sign-container").style.display = "none";
+        document.querySelector("#sign-container__sign-in.sign-container").classList.add("sign-container--show");
+        document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
     });
 
     console.log(document.querySelector("#sign-container__sign-in.sign-container"));
@@ -23,8 +23,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     let closeButtons = document.querySelectorAll(".sign-box__close-button");
     [].forEach.call(closeButtons, function(button){
         button.addEventListener("click", () => {
-            document.querySelector("#sign-container__sign-in.sign-container").style.display = "none";
-            document.querySelector("#sign-container__sign-up.sign-container").style.display = "none";
+            document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
+            document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
         });
     });
 
@@ -33,16 +33,16 @@ baseNamespace.addElementListener = function addBaseElementListener(){
         msg.addEventListener("click", () => {
             const idName = msg.parentElement.parentElement.parentElement.id;
             if(idName === "sign-container__sign-in"){
-                document.querySelector("#sign-container__sign-in.sign-container").style.display = "none";
-                document.querySelector("#sign-container__sign-up.sign-container").style.display = "flex";
+                document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
+                document.querySelector("#sign-container__sign-up.sign-container").classList.add("sign-container--show");
                 const container = document.querySelector(".sign-container__sign-box");
                 console.log(container);
                 // window.getComputedStyle(container).height = "275px";
                 console.log(window.getComputedStyle(container).height);
             }
             if(idName === "sign-container__sign-up"){
-                document.querySelector("#sign-container__sign-in.sign-container").style.display = "flex";
-                document.querySelector("#sign-container__sign-up.sign-container").style.display = "none";
+                document.querySelector("#sign-container__sign-in.sign-container").classList.add("sign-container--show");
+                document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
                 const container = document.querySelector(".sign-container__sign-box");
                 console.log(container);
                 // window.getComputedStyle(container).height = "322px";

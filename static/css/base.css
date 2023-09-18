@@ -96,7 +96,6 @@
 /*  sign-in/sign-up
 /*====================*/
 .sign-container{
-    /* display: none; */
     width: 100%;
     height: 100%;
     position: fixed;
@@ -110,10 +109,13 @@
     justify-content: center;
 }
 
+.sign-container--show{
+    display: flex;
+}
 
 .sign-container__sign-box{
     width: 340px;
-    /* height: 275px; */
+    height: 275px;
     position: relative;
     top: 80px;
 
@@ -125,13 +127,13 @@
     align-items: stretch;
 }
 
-/* .sign-container__sign-box--sign-in-size{
+.sign-container__sign-box--sign-in-size{
     height: 275px;
 }
 
 .sign-container__sign-box--sign-up-size{
     height: 332px;
-} */
+}
 
 .sign-box__bar{
     height: 10px;
