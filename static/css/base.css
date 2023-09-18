@@ -69,18 +69,27 @@
     justify-content:center;
 }
 
-.header__right-option-order{
-    width: 104px;
-    height: 54px;
+.navigation__right-option-order{
+    width: 84px;
+    height: 34px;
     box-sizing: border-box;
     padding: 10px;
 }
 
-.header__right-option-sign{
+.navigation__right-option-sign{
+    width: 91px;
+    height: 34px;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.navigation__right-option-sign-out{
     width: 111px;
     height: 54px;
     box-sizing: border-box;
     padding: 10px;
+
+    display: none;
 }
 
 /*====================*/
@@ -101,29 +110,32 @@
     justify-content: center;
 }
 
-/*-----------------------*/
-/* #sign-container__sign-in{
-    display: flex;
-}
-#sign-container__sign-up{
-    display: none;
-} */
-/*-----------------------*/
-.sign-box__bar{
-    height: 10px;
-    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
-}
 
 .sign-container__sign-box{
     width: 340px;
-    height: 275px;
-    /* TODO set height based on sign-in or sign-up */
+    /* height: 275px; */
     position: relative;
     top: 80px;
-    gap: 15px;
 
     border-radius: 6px;
     background-color: #FFFFFF;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+/* .sign-container__sign-box--sign-in-size{
+    height: 275px;
+}
+
+.sign-container__sign-box--sign-up-size{
+    height: 332px;
+} */
+
+.sign-box__bar{
+    height: 10px;
+    background: linear-gradient(270deg, #337788 0%, #66AABB 100%);
 }
 
 .sign-box__title{
@@ -164,6 +176,9 @@
     height: 47px;
     margin: 0 auto 10px;
     box-sizing: border-box;
+
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
 }
 .sign-box__form-input-text{
     font-weight: 500;
@@ -193,7 +208,6 @@
     width: 100%;
     height: 22px;
     margin-top: 10px;
-    margin-bottom: 10px;
 
     text-align: center;
     font-weight: 500;
