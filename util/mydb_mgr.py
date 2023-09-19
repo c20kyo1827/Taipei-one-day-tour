@@ -36,8 +36,8 @@ class mydb_mgr:
             user=os.getenv("MYSQL_USER","root"),
             password=os.getenv("MYSQL_ROOT_PASSWD","root")
         )
-        logging.info("Connection Pool Name - " + str(self._mypool.pool_name))
-        logging.info("Connection Pool Size - " + str(self._mypool.pool_size))
+        logging.info("Connection Pool Name - {}".format(self._mypool.pool_name))
+        logging.info("Connection Pool Size - {}".format(self._mypool.pool_size))
 
     def connect_and_run(self, func, is_commit=False):
         if self._mypool==None:
@@ -53,7 +53,7 @@ class mydb_mgr:
                     mydb.commit()
 
         except Error as e:
-            logging.error("Error while connecting to MySQL using Connection pool : ", e)
+            logging.error("Error while connecting to MySQL using Connection pool : {}".format(e))
         finally:
             if mydb.is_connected():
                 mycursor.close()
@@ -140,7 +140,7 @@ class mydb_mgr:
     def show(self):
         def run(cursor):
             cursor.execute("USE website")
-            table = ["attraction", "mrt", "category", "image"]
+            table = ["attraction", "mrt", "category", "image", "member"]
             for t in table:
                 cmd = "SELECT * FROM " + t
                 cursor.execute(cmd)
