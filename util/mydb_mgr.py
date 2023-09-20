@@ -129,6 +129,7 @@ class mydb_mgr:
             # Need to add order table and add the table into member table
         self.connect_and_run(run)
 
+    # Test & Debug
     def runSQLCmd(self, cmd):
         def run(cursor):
             cursor.execute("USE website")
@@ -148,6 +149,7 @@ class mydb_mgr:
                 for x in member_info: logging.info(x)
         self.connect_and_run(run)
 
+    # Main api
     def add_attraction_mrt(self, attractions):
         for info in attractions:
             def add_attraction(cursor):
