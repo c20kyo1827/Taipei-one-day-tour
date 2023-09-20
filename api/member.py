@@ -1,4 +1,6 @@
 from flask import Blueprint, jsonify, request
+import string
+import jwt
 import sys
 import os
 import re
@@ -22,26 +24,33 @@ def register():
                 return True
             else:
                 return False
-        if is_valid_email(request.form.get("email")):
+        # TODO
+        # Check the password
+        def is_valid_password(password):
+            has_upper = any(char.isupper() for char in password)
+            has_symbol = any(char in string.punctuation for char in password)
+            is_match_size = len(password)>=8 and len(password)<=20
+            return [has_upper, has_symbol, is_match_size]
+        if is_valid_email(request.form.get("email")) == False:
             return \
                 jsonify({ \
                     "error": True, \
-                    "message": "Non-valid email format" \
-                }), 500
+                    "message": "無效的信箱" \
+                }), 400
         member = mydb.get_member(request.form.get("email"))
         print(member)
-        if not member:
+        if member:
+            return \
+                jsonify({ \
+                    "error": True, \
+                    "message": "信箱重複" \
+                }), 400
+        else:
             mydb.add_member(request.form.get("name"), request.form.get("email"), request.form.get("password"))
             return \
                 jsonify({ \
                     "ok": True \
-                }), 500
-        else:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Duplicate email" \
-                }), 500
+                }), 200
     except:
         return \
             jsonify({ \
@@ -50,17 +59,22 @@ def register():
             }), 500
 
 @app_member.route('/user/auth', methods=["GET"])
-def auth_get_sign_info():
+def auth_get_sign_in():
     try:
         # TODO
-        # return token
-        member = mydb.get_member(request.args.get("email"), request.args.get("password"))
-        print(member)
-        return \
-            jsonify({ \
-                "error": True, \
-                "message": "123" \
-            }), 500
+        # Get the token
+        # Decode the token
+        email = ""
+        password = ""
+        member = mydb.get_member(email, password)
+        if not member:
+            return jsonify({"data" : None})
+        return jsonify({"data":{ \
+                            "id" : member[0][0], \
+                            "name" : member[0][2], \
+                            "email" : member[0][1] \
+                        } \
+                    })
     except:
         print
         return \
@@ -71,17 +85,29 @@ def auth_get_sign_info():
     
     
 @app_member.route('/user/auth', methods=["PUT"])
-def auth_sign_up():
+def auth_sign_in():
     try:
-        # TODO
-        # return token
+        
+        print(request.form.get("email"))
+        print(request.form.get("password"))
         member = mydb.get_member(request.form.get("email"), request.form.get("password"))
         print(member)
-        return \
-            jsonify({ \
-                "error": True, \
-                "message": "1234" \
-            }), 500
+        if not member:
+            return \
+                jsonify({ \
+                    "error": True, \
+                    "message": "帳號或密碼錯誤" \
+                }), 400
+        else:
+            # TODO
+            # encode the email and password to token
+            # set header
+            # set cookie
+            token = ""
+            return \
+                jsonify({ \
+                    "token": token\
+                }), 200
     except:
         return \
             jsonify({ \
