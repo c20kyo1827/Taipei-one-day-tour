@@ -24,6 +24,9 @@ baseNamespace.addElementListener = function addBaseElementListener(){
         button.addEventListener("click", () => {
             document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
             document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
+            const rootId = button.parentElement.parentElement.id;
+            baseNamespace.subBoxHeight(rootId);
+            baseNamespace.removeMessage();
         });
     });
 
@@ -107,15 +110,40 @@ baseNamespace.appendMessage = function appendMessage(rootId, newDiv){
         console.log(msg.parentElement.parentElement.parentElement);
         if(msg.parentElement.parentElement.parentElement.id === rootId){
             const parentElement = msg.parentElement;
-            const rootElement = msg.parentElement.parentElement.parentElement;
-            console.log(parentElement);
-            console.log(rootElement);
-            console.log(newDiv);
-            const newHeight = rootElement.clientHeight + msg.clientHeight;
-            rootElement.style.height = `${newHeight}px`;
-            console.log(rootElement.clientHeight);
-            console.log(msg.clientHeight);
             parentElement.insertBefore(newDiv, msg);
+            baseNamespace.addBoxHeight(rootId);
+        }
+    });
+}
+
+baseNamespace.removeMessage = function removeMessage(){
+    let msg = document.querySelector("#sign-message");
+    const parentElement = msg.parentElement;
+    parentElement.removeChild(msg);
+}
+
+baseNamespace.addBoxHeight = function addBoxHeight(rootId){
+    let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
+    [].forEach.call(changeMsg, function(msg){
+        console.log(rootId + " " + msg);
+        console.log(msg.parentElement.parentElement.parentElement);
+        if(msg.parentElement.parentElement.parentElement.id === rootId){
+            const boxElement = msg.parentElement.parentElement;
+            const newHeight = parseFloat(window.getComputedStyle(boxElement).height) + 
+                                parseFloat(getComputedStyle(msg).height) + parseFloat(getComputedStyle(msg).marginTop);
+            boxElement.style.height = `${newHeight}px`;
+        }
+    });
+}
+
+baseNamespace.subBoxHeight = function subBoxHeight(rootId){
+    let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
+    [].forEach.call(changeMsg, function(msg){
+        if(msg.parentElement.parentElement.parentElement.id === rootId){
+            const boxElement = msg.parentElement.parentElement;
+            const newHeight = parseFloat(window.getComputedStyle(boxElement).height) -
+                                (parseFloat(getComputedStyle(msg).height) + parseFloat(getComputedStyle(msg).marginTop));
+            boxElement.style.height = `${newHeight}px`;
         }
     });
 }
