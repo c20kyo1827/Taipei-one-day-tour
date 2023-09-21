@@ -18,25 +18,25 @@ def register():
         print(request.form.get("name"))
         print(request.form.get("email"))
         print(request.form.get("password"))
-        def is_valid_email(email):
-            email_pattern = r"^[0-9a-zA-Z][0-9a-zA-Z.]+@[0-9a-zA-Z]+\.[a-zA-Z]{2,}$"
-            if re.match(email_pattern, email) and not re.search(r'\.\.', email):
-                return True
-            else:
-                return False
+        # def is_valid_email(email):
+        #     email_pattern = r"^[0-9a-zA-Z][0-9a-zA-Z.]+@[0-9a-zA-Z]+\.[a-zA-Z]{2,}$"
+        #     if re.match(email_pattern, email) and not re.search(r'\.\.', email):
+        #         return True
+        #     else:
+        #         return False
+        # if is_valid_email(request.form.get("email")) == False:
+        #     return \
+        #         jsonify({ \
+        #             "error": True, \
+        #             "message": "無效的信箱" \
+        #         }), 400
         # TODO
         # Check the password
-        def is_valid_password(password):
-            has_upper = any(char.isupper() for char in password)
-            has_symbol = any(char in string.punctuation for char in password)
-            is_match_size = len(password)>=8 and len(password)<=20
-            return [has_upper, has_symbol, is_match_size]
-        if is_valid_email(request.form.get("email")) == False:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "無效的信箱" \
-                }), 400
+        # def is_valid_password(password):
+        #     has_upper = any(char.isupper() for char in password)
+        #     has_symbol = any(char in string.punctuation for char in password)
+        #     is_match_size = len(password)>=8 and len(password)<=20
+        #     return [has_upper, has_symbol, is_match_size]
         member = mydb.get_member(request.form.get("email"))
         print(member)
         if member:

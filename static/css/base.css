@@ -103,6 +103,7 @@
     left: 0px;
     z-index: 2;
 
+    box-shadow: 0px 4px 60px 0px #AAAAAA;
     background: rgb(0, 0, 0, 25%);
 
     display: none;
@@ -124,7 +125,6 @@
 
     display: flex;
     flex-direction: column;
-    align-items: stretch;
 }
 
 .sign-container__sign-box--sign-in-size{
@@ -171,6 +171,9 @@
 .sign-box__form{
     width: 310px;
     margin: 0 auto;
+}
+.sign-box__form--cursor{
+    cursor: pointer;
 }
 
 .sign-box__form-input{
