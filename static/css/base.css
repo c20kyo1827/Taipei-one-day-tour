@@ -172,9 +172,6 @@
     width: 310px;
     margin: 0 auto;
 }
-.sign-box__form--cursor{
-    cursor: pointer;
-}
 
 .sign-box__form-input{
     width: 100%;
@@ -221,7 +218,9 @@
     color: #666666;
     line-height: 13.3px;
 }
-
+.sign-box__message--cursor{
+    cursor: pointer;
+}
 
 /*====================*/
 /*  footer

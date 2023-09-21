@@ -27,7 +27,7 @@ baseNamespace.addElementListener = function addBaseElementListener(){
         });
     });
 
-    const messages = document.querySelectorAll(".sign-box__form--cursor");
+    const messages = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(messages, function(msg){
         msg.addEventListener("click", () => {
             const rootId = msg.parentElement.parentElement.parentElement.id;
@@ -101,14 +101,20 @@ baseNamespace.handleSign = function handleSign(rootId){
 }
 
 baseNamespace.appendMessage = function appendMessage(rootId, newDiv){
-    let changeMsg = document.querySelectorAll(".sign-box__form--cursor");
+    let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(changeMsg, function(msg){
         console.log(rootId + " " + msg);
         console.log(msg.parentElement.parentElement.parentElement);
         if(msg.parentElement.parentElement.parentElement.id === rootId){
             const parentElement = msg.parentElement;
+            const rootElement = msg.parentElement.parentElement.parentElement;
             console.log(parentElement);
+            console.log(rootElement);
             console.log(newDiv);
+            const newHeight = rootElement.clientHeight + msg.clientHeight;
+            rootElement.style.height = `${newHeight}px`;
+            console.log(rootElement.clientHeight);
+            console.log(msg.clientHeight);
             parentElement.insertBefore(newDiv, msg);
         }
     });
