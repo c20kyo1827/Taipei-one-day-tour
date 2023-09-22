@@ -109,7 +109,6 @@
     display: none;
     justify-content: center;
 }
-
 .sign-container--show{
     display: flex;
 }
@@ -126,13 +125,19 @@
     display: flex;
     flex-direction: column;
 }
-
-.sign-container__sign-box--sign-in-size{
+.sign-container__sign-box--sign-in-default-size{
     height: 275px;
 }
-
-.sign-container__sign-box--sign-up-size{
+.sign-container__sign-box--sign-in-message-size{
+    /* add the sign-box__message height & margin-top */
+    height: 307px;
+}
+.sign-container__sign-box--sign-up-default-size{
     height: 332px;
+}
+.sign-container__sign-box--sign-up-message-size{
+    /* add the sign-box__message height & margin-top */
+    height: 364px;
 }
 
 .sign-box__bar{
@@ -220,6 +225,12 @@
 }
 .sign-box__message--cursor{
     cursor: pointer;
+}
+.sign-box__message--hide{
+    display: none;
+}
+.sign-box__message--show{
+    display: block;
 }
 
 /*====================*/

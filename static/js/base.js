@@ -13,23 +13,25 @@ baseNamespace.addElementListener = function addBaseElementListener(){
         window.location.href = "/";
     });
 
-    // Sign-in/Sign-up 
+    // Sign-in/Sign-up
+    // Initialize
     document.querySelector(".navigation__right-option-sign").addEventListener("click", () => {
         document.querySelector("#sign-container__sign-in.sign-container").classList.add("sign-container--show");
         document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
     });
 
+    // Close
     const closeButtons = document.querySelectorAll(".sign-box__close-button");
     [].forEach.call(closeButtons, function(button){
         button.addEventListener("click", () => {
             document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
             document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
             const rootId = button.parentElement.parentElement.id;
-            baseNamespace.subBoxHeight(rootId);
-            baseNamespace.removeMessage();
+            baseNamespace.removeMessage(rootId);
         });
     });
 
+    // Change between sign-in between sign-up
     const messages = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(messages, function(msg){
         msg.addEventListener("click", () => {
@@ -68,12 +70,7 @@ baseNamespace.handleSign = function handleSign(rootId){
         const password = document.querySelector("input[name='password'][id='sign-box__form-sign-in']").value;
         console.log(email);
         if(email=="" || password==""){
-            const msg = document.createElement("div");
-            msg.classList.add("sign-box__message");
-            msg.setAttribute("id", "sign-message");
-            msg.innerText = "信箱或密碼不可為空";
-            console.log(msg);
-            baseNamespace.appendMessage(rootId, msg);
+            baseNamespace.addMessage(rootId, "信箱或密碼不可為空");
             return;
         }
     }
@@ -82,47 +79,42 @@ baseNamespace.handleSign = function handleSign(rootId){
         const email = document.querySelector("input[name='email'][id='sign-box__form-sign-up']").value;
         const password = document.querySelector("input[name='password'][id='sign-box__form-sign-up']").value;
         if(name=="" || email=="" || password==""){
-            const msg = document.createElement("div");
-            msg.classList.add("sign-box__message");
-            msg.setAttribute("id", "sign-message");
-            msg.innerText = "姓名或信箱或密碼不可為空";
-            console.log(msg);
-            baseNamespace.appendMessage(rootId, msg);
+            baseNamespace.addMessage(rootId, "姓名或信箱或密碼不可為空");
             return;
         }
         const pattern = /^[0-9a-zA-Z][0-9a-zA-Z.]+@[0-9a-zA-Z]+\.[a-zA-Z]{2,}$/;
         if(!pattern.test(email)){
-            const msg = document.createElement("div");
-            msg.classList.add("sign-box__message");
-            msg.setAttribute("id", "sign-message");
-            msg.innerText = "無效的信箱";
-            console.log(msg);
-            baseNamespace.appendMessage(rootId, msg);
+            baseNamespace.addMessage(rootId, "無效的信箱");
             return;
         }
     }
 }
 
-baseNamespace.appendMessage = function appendMessage(rootId, newDiv){
-    let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
+baseNamespace.addMessage = function addMessage(rootId, content){
+    let changeMsg = document.querySelectorAll("#sign-box__message-info");
     [].forEach.call(changeMsg, function(msg){
-        console.log(rootId + " " + msg);
-        console.log(msg.parentElement.parentElement.parentElement);
         if(msg.parentElement.parentElement.parentElement.id === rootId){
-            const parentElement = msg.parentElement;
-            parentElement.insertBefore(newDiv, msg);
-            baseNamespace.addBoxHeight(rootId);
+            baseNamespace.addBoxHeight(rootId, msg.innerText);
+            msg.classList.add("sign-box__message--show");
+            msg.classList.remove("sign-box__message--hide");
+            msg.innerText = content;
         }
     });
 }
 
-baseNamespace.removeMessage = function removeMessage(){
-    let msg = document.querySelector("#sign-message");
-    const parentElement = msg.parentElement;
-    parentElement.removeChild(msg);
+baseNamespace.removeMessage = function removeMessage(rootId){
+    let changeMsg = document.querySelectorAll("#sign-box__message-info");
+    [].forEach.call(changeMsg, function(msg){
+        baseNamespace.subBoxHeight(rootId, msg.innerText);
+        msg.classList.remove("sign-box__message--show");
+        msg.classList.add("sign-box__message--hide");
+        msg.innerText = "";
+    });
+    
 }
 
-baseNamespace.addBoxHeight = function addBoxHeight(rootId){
+baseNamespace.addBoxHeight = function addBoxHeight(rootId, content){
+    if(content !== "") return;
     let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(changeMsg, function(msg){
         console.log(rootId + " " + msg);
@@ -136,7 +128,8 @@ baseNamespace.addBoxHeight = function addBoxHeight(rootId){
     });
 }
 
-baseNamespace.subBoxHeight = function subBoxHeight(rootId){
+baseNamespace.subBoxHeight = function subBoxHeight(rootId, msgCurContent){
+    if(msgCurContent === "") return;
     let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(changeMsg, function(msg){
         if(msg.parentElement.parentElement.parentElement.id === rootId){
@@ -149,9 +142,8 @@ baseNamespace.subBoxHeight = function subBoxHeight(rootId){
 }
 
 // TODO
-// Adjust the size
-// Append msg div before the last msg div
+// Refactor the sign-box show and hide
 
-// Remove the error msg when
+// Remove the msg content when
 //  1. Click X
 //  2. Change between sign-in and sign-up
