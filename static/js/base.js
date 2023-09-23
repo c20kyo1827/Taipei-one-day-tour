@@ -134,6 +134,7 @@ baseNamespace.handleSign = function handleSign(rootId){
         ).then( (response) => {
             if(!("ok" in response)){
                 baseNamespace.addMessage(rootId, response.message, true);
+                baseNamespace.clearInput();
                 return;
             }
             baseNamespace.addMessage(rootId, "註冊成功", false);
