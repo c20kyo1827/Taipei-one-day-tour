@@ -116,11 +116,13 @@ baseNamespace.handleSign = function handleSign(rootId){
         const password = document.getElementById("sign-up-password").value;
         if(name=="" || email=="" || password==""){
             baseNamespace.addMessage(rootId, "姓名或信箱或密碼不可為空", true);
+            baseNamespace.clearInput();
             return;
         }
         const pattern = /^[0-9a-zA-Z][0-9a-zA-Z.]+@[0-9a-zA-Z]+\.[a-zA-Z]{2,}$/;
         if(!pattern.test(email)){
             baseNamespace.addMessage(rootId, "無效的信箱", true);
+            baseNamespace.clearInput();
             return;
         }
         baseNamespace.signUp(
