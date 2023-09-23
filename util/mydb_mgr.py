@@ -197,8 +197,6 @@ class mydb_mgr:
             sql = "INSERT INTO member (name, email, password) VALUES (%s, %s, %s)"
             val = (name, email, password)
             cursor.execute("USE website")
-            print(sql)
-            print(val)
             cursor.execute(sql, val)
         self.connect_and_run(run, True)
 
