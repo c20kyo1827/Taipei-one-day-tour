@@ -26,6 +26,7 @@ baseNamespace.addElementListener = function addBaseElementListener(){
             const rootId = button.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.hideMessageBox();
+            baseNamespace.clearInput();
         });
     });
 
@@ -36,9 +37,11 @@ baseNamespace.addElementListener = function addBaseElementListener(){
             const rootId = msg.parentElement.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.toggleMessageBox(rootId);
+            baseNamespace.clearInput();
         });
     });
 
+    // Submit
     const signButton = document.querySelectorAll(".sign-box__form-button");
     [].forEach.call(signButton, function(button){
         button.addEventListener("click", () => {
@@ -47,7 +50,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
         })
     });
 }
-
+// Utitlity
+// Initialization
 baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
     let header = document.querySelector(".header");
     let headerCSS = window.getComputedStyle(header);
@@ -56,17 +60,37 @@ baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
     sibling.style.marginTop = headerCSS.height;
 }
 
+// Handle function
 baseNamespace.handleSign = function handleSign(rootId){
     if(rootId === "sign-container__sign-in"){
+        baseNamespace.removeMessage(rootId);
         const email = document.getElementById("sign-in-email").value;
         const password = document.getElementById("sign-in-password").value;
-        console.log(email);
         if(email=="" || password==""){
             baseNamespace.addMessage(rootId, "信箱或密碼不可為空", true);
             return;
         }
+        baseNamespace.signIn(
+            JSON.stringify({
+                "email": email,
+                "password": password
+            })
+        ).then( (response) => {
+            if(!("token" in response)){
+                baseNamespace.addMessage(rootId, response.message, true);
+                return;
+            }
+            console.log(response.token);
+            baseNamespace.addMessage(rootId, "登入成功", false);
+            console.log(localStorage);
+            localStorage.setItem('jwtToken', response.token);
+            console.log(localStorage);
+            baseNamespace.clearInput();
+            return;
+        });
     }
     if(rootId === "sign-container__sign-up"){
+        baseNamespace.removeMessage(rootId);
         const name = document.getElementById("sign-up-name").value;
         const email = document.getElementById("sign-up-email").value;
         const password = document.getElementById("sign-up-password").value;
@@ -79,9 +103,70 @@ baseNamespace.handleSign = function handleSign(rootId){
             baseNamespace.addMessage(rootId, "無效的信箱", true);
             return;
         }
+        baseNamespace.signUp(
+            JSON.stringify({
+                "name": name,
+                "email": email,
+                "password": password
+            })
+        ).then( (response) => {
+            if(!("ok" in response)){
+                baseNamespace.addMessage(rootId, response.message, true);
+                return;
+            }
+            baseNamespace.addMessage(rootId, "註冊成功", false);
+            baseNamespace.clearInput();
+            return;
+        });
     }
 }
 
+baseNamespace.signIn = async function signIn(signBody){
+    let fetchURL ="/api/user/auth";
+    response = await fetch(fetchURL,
+        {
+            method: "PUT",
+            body: signBody,
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8"
+            }
+        }
+    );
+    json = await response.json();
+    return json;
+}
+
+baseNamespace.signUp = async function signUp(signBody){
+    let fetchURL ="/api/user";
+    response = await fetch(fetchURL,
+        {
+            method: "POST",
+            body: signBody,
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8"
+            }
+        }
+    );
+    json = await response.json();
+    return json;
+}
+
+baseNamespace.getAuthorization = async function getAuthorization(){
+    let fetchURL ="/api/user/auth";
+    response = await fetch(fetchURL,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.jwtToken
+            }
+        }
+    );
+    json = await response.json();
+    return json;
+}
+
+// Message Box utility
 baseNamespace.toggleMessageBox = function toggleMessageBox(rootId){
     if(rootId === "sign-container__sign-in"){
         document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
@@ -98,6 +183,7 @@ baseNamespace.hideMessageBox = function hideMessageBox(){
     document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
 }
 
+// Message content utility
 baseNamespace.addMessage = function addMessage(rootId, content, isFail){
     if(content === "") return;
     let changeMsg = document.querySelectorAll("#sign-box__message-info");
@@ -129,14 +215,11 @@ baseNamespace.removeMessage = function removeMessage(rootId){
         msg.classList.add("sign-box__message--hide");
         msg.innerText = "";
     });
-    
 }
 
 baseNamespace.addBoxHeight = function addBoxHeight(rootId){
     let changeMsg = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(changeMsg, function(msg){
-        console.log(rootId + " " + msg);
-        console.log(msg.parentElement.parentElement.parentElement);
         if(msg.parentElement.parentElement.parentElement.id === rootId){
             const boxElement = msg.parentElement.parentElement;
             const newHeight = parseFloat(window.getComputedStyle(boxElement).height) + 
@@ -156,4 +239,12 @@ baseNamespace.subBoxHeight = function subBoxHeight(rootId){
             boxElement.style.height = `${newHeight}px`;
         }
     });
+}
+
+baseNamespace.clearInput = function clearInput(){
+    document.getElementById("sign-in-email").value = "";
+    document.getElementById("sign-in-password").value = "";
+    document.getElementById("sign-up-name").value = "";
+    document.getElementById("sign-up-email").value = "";
+    document.getElementById("sign-up-password").value = "";
 }

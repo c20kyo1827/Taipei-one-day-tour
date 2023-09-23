@@ -21,11 +21,10 @@ logging.basicConfig(level=logging.INFO,
 secret_key = "f1#39gA9psa"
 
 @app_member.route('/user', methods=["POST"])
-def register():
+def sign_up():
     try:
-        print(request.form.get("name"))
-        print(request.form.get("email"))
-        print(request.form.get("password"))
+        if request.is_json==False:
+            raise Exception("Request is not json")
         # TODO
         # Check the password
         # def is_valid_password(password):
@@ -33,8 +32,7 @@ def register():
         #     has_symbol = any(char in string.punctuation for char in password)
         #     is_match_size = len(password)>=8 and len(password)<=20
         #     return [has_upper, has_symbol, is_match_size]
-        member = mydb.get_member(request.form.get("email"))
-        print(member)
+        member = mydb.get_member(request.json.get("email"))
         if member:
             return \
                 jsonify({ \
@@ -42,12 +40,13 @@ def register():
                     "message": "信箱重複" \
                 }), 400
         else:
-            mydb.add_member(request.form.get("name"), request.form.get("email"), request.form.get("password"))
+            mydb.add_member(request.json.get("name"), request.json.get("email"), request.json.get("password"))
             return \
                 jsonify({ \
                     "ok": True \
                 }), 200
-    except:
+    except Exception as e:
+        logging.error("Error while signing up : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \
@@ -71,8 +70,8 @@ def auth_get_sign_in():
                             "email" : member[0][1] \
                         } \
                     })
-    except:
-        print
+    except Exception as e:
+        logging.error("Error while authorizing : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \
@@ -83,10 +82,7 @@ def auth_get_sign_in():
 @app_member.route('/user/auth', methods=["PUT"])
 def auth_sign_in():
     try:
-        print(request.form.get("email"))
-        print(request.form.get("password"))
-        member = mydb.get_member(request.form.get("email"), request.form.get("password"))
-        print(member)
+        member = mydb.get_member(request.json.get("email"), request.json.get("password"))
         if not member:
             return \
                 jsonify({ \
@@ -115,7 +111,8 @@ def auth_sign_in():
                 jsonify({ \
                     "token": token\
                 }), 200
-    except:
+    except Exception as e:
+        logging.error("Error while signing in : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \
