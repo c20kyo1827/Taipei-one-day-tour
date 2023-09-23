@@ -1,9 +1,10 @@
 from flask import Blueprint, jsonify, request
+from datetime import datetime, timedelta
 import string
+import logging
 import jwt
 import sys
 import os
-import re
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PARENT_DIR)
 from util import mydb_mgr
@@ -12,24 +13,19 @@ app_member = Blueprint('app_member', __name__)
 mydb = mydb_mgr.mydb_mgr()
 mydb.init()
 
+logging.root.name = "Member API"
+logging.basicConfig(level=logging.INFO,
+                format='[%(levelname)-7s] %(name)s - %(message)s',
+                stream=sys.stdout)
+
+secret_key = "f1#39gA9psa"
+
 @app_member.route('/user', methods=["POST"])
 def register():
     try:
         print(request.form.get("name"))
         print(request.form.get("email"))
         print(request.form.get("password"))
-        # def is_valid_email(email):
-        #     email_pattern = r"^[0-9a-zA-Z][0-9a-zA-Z.]+@[0-9a-zA-Z]+\.[a-zA-Z]{2,}$"
-        #     if re.match(email_pattern, email) and not re.search(r'\.\.', email):
-        #         return True
-        #     else:
-        #         return False
-        # if is_valid_email(request.form.get("email")) == False:
-        #     return \
-        #         jsonify({ \
-        #             "error": True, \
-        #             "message": "無效的信箱" \
-        #         }), 400
         # TODO
         # Check the password
         # def is_valid_password(password):
@@ -87,7 +83,6 @@ def auth_get_sign_in():
 @app_member.route('/user/auth', methods=["PUT"])
 def auth_sign_in():
     try:
-        
         print(request.form.get("email"))
         print(request.form.get("password"))
         member = mydb.get_member(request.form.get("email"), request.form.get("password"))
@@ -99,11 +94,23 @@ def auth_sign_in():
                     "message": "帳號或密碼錯誤" \
                 }), 400
         else:
-            # TODO
-            # encode the email and password to token
-            # set header
-            # set cookie
-            token = ""
+            payload = {
+                "id" : member[0][0],
+                "name" : member[0][2],
+                "email" : member[0][1],
+                "password" : request.form.get("password"),
+                "exp": datetime.utcnow() + timedelta(days=7)
+            }
+            try:
+                token = jwt.encode(payload, secret_key, algorithm='HS256')
+            except Exception as e:
+                logging.error("Error while creating token : {}".format(e))
+                return \
+                    jsonify({ \
+                        "error": True, \
+                        "message": "Error while creating token" \
+                    }), 400
+            
             return \
                 jsonify({ \
                     "token": token\

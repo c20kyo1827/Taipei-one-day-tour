@@ -89,6 +89,8 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 30px 30px;
+
+    cursor: pointer;
 }
 
 /*============*/
@@ -135,6 +137,8 @@
     background-position: center center;
     background-repeat: no-repeat;
     background-size: 30px 30px;
+
+    cursor: pointer;
 }
 
 .mrt__list{

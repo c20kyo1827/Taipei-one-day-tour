@@ -58,8 +58,8 @@ baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
 
 baseNamespace.handleSign = function handleSign(rootId){
     if(rootId === "sign-container__sign-in"){
-        const email = document.querySelector("input[name='email'][id='sign-box__form-sign-in']").value;
-        const password = document.querySelector("input[name='password'][id='sign-box__form-sign-in']").value;
+        const email = document.getElementById("sign-in-email").value;
+        const password = document.getElementById("sign-in-password").value;
         console.log(email);
         if(email=="" || password==""){
             baseNamespace.addMessage(rootId, "信箱或密碼不可為空", true);
@@ -67,9 +67,9 @@ baseNamespace.handleSign = function handleSign(rootId){
         }
     }
     if(rootId === "sign-container__sign-up"){
-        const name = document.querySelector("input[name='name'][id='sign-box__form-sign-up']").value;
-        const email = document.querySelector("input[name='email'][id='sign-box__form-sign-up']").value;
-        const password = document.querySelector("input[name='password'][id='sign-box__form-sign-up']").value;
+        const name = document.getElementById("sign-up-name").value;
+        const email = document.getElementById("sign-up-email").value;
+        const password = document.getElementById("sign-up-password").value;
         if(name=="" || email=="" || password==""){
             baseNamespace.addMessage(rootId, "姓名或信箱或密碼不可為空", true);
             return;
@@ -157,10 +157,3 @@ baseNamespace.subBoxHeight = function subBoxHeight(rootId){
         }
     });
 }
-
-// TODO
-// Refactor the sign-box show and hide
-
-// Remove the msg content when
-//  1. Click X
-//  2. Change between sign-in and sign-up

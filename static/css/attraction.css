@@ -205,12 +205,16 @@
     width: 22px;
     height: 22px;
     accent-color: #448899;
+
+    cursor: pointer;
 }
 
 .order-panel__radio-text{
     height: 14px;
     display: flex;
     align-items:center;
+
+    cursor: pointer;
 }
 
 .order-panel__button{
@@ -231,6 +235,8 @@
     font-family: "Noto Sans TC";
     color: #FFFFFF;
     line-height: 16px;
+
+    cursor: pointer;
 }
 
 /* info */
