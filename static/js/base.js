@@ -105,6 +105,8 @@ baseNamespace.handleSign = function handleSign(rootId){
             baseNamespace.addMessage(rootId, "登入成功", false);
             localStorage.setItem("jwtToken", response.token);
             baseNamespace.changeSignButton();
+            baseNamespace.removeMessage(rootId);
+            baseNamespace.hideMessageBox();
             baseNamespace.clearInput();
             return;
         });
