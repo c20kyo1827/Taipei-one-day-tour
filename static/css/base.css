@@ -232,6 +232,12 @@
 .sign-box__message--show{
     display: block;
 }
+.sign-box__message--success{
+    color: green;
+}
+.sign-box__message--fail{
+    color: red;
+}
 
 /*====================*/
 /*  footer
