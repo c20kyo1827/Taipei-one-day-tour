@@ -3,8 +3,9 @@ let baseNamespace = {};
 
 // Main
 document.addEventListener("DOMContentLoaded", async() => {
-    baseNamespace.addElementListener();
+    baseNamespace.checkSignState();
     baseNamespace.moveBasedOneFix();
+    baseNamespace.addElementListener();
 });
 
 baseNamespace.addElementListener = function addBaseElementListener(){
@@ -17,6 +18,11 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     // Initialize
     document.querySelector(".navigation__right-option-sign").addEventListener("click", () => {
         baseNamespace.toggleMessageBox("sign-container__sign-up");
+    });
+
+    document.querySelector(".navigation__right-option-sign-out").addEventListener("click", () => {
+        localStorage.removeItem("jwtToken");
+        baseNamespace.resetSignButton();
     });
 
     // Close
@@ -34,6 +40,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     const messages = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(messages, function(msg){
         msg.addEventListener("click", () => {
+            // Prevent click after signing in
+            if(baseNamespace.checkSignState()) return;
             const rootId = msg.parentElement.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.toggleMessageBox(rootId);
@@ -45,6 +53,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     const signButton = document.querySelectorAll(".sign-box__form-button");
     [].forEach.call(signButton, function(button){
         button.addEventListener("click", () => {
+            // Prevent click after signing in
+            if(baseNamespace.checkSignState()) return;
             const rootId = button.parentElement.parentElement.parentElement.id;
             baseNamespace.handleSign(rootId);
         })
@@ -52,6 +62,18 @@ baseNamespace.addElementListener = function addBaseElementListener(){
 }
 // Utitlity
 // Initialization
+baseNamespace.checkSignState = function checkSignState(){
+    if(localStorage.getItem("jwtToken") === null){
+        return false;
+    }
+    let json = baseNamespace.getAuthorization();
+    if((json.data !== null) && !("error" in json)){
+        baseNamespace.changeSignButton();
+        return true;
+    }
+    return false;
+}
+
 baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
     let header = document.querySelector(".header");
     let headerCSS = window.getComputedStyle(header);
@@ -80,11 +102,9 @@ baseNamespace.handleSign = function handleSign(rootId){
                 baseNamespace.addMessage(rootId, response.message, true);
                 return;
             }
-            console.log(response.token);
             baseNamespace.addMessage(rootId, "登入成功", false);
-            console.log(localStorage);
-            localStorage.setItem('jwtToken', response.token);
-            console.log(localStorage);
+            localStorage.setItem("jwtToken", response.token);
+            baseNamespace.changeSignButton();
             baseNamespace.clearInput();
             return;
         });
@@ -153,17 +173,19 @@ baseNamespace.signUp = async function signUp(signBody){
 
 baseNamespace.getAuthorization = async function getAuthorization(){
     let fetchURL ="/api/user/auth";
-    response = await fetch(fetchURL,
+    fetch(fetchURL,
         {
-            method: "PUT",
+            method: "GET",
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
-                "Authorization": "Bearer " + localStorage.jwtToken
+                "Authorization": "Bearer " + localStorage.getItem("jwtToken")
             }
         }
-    );
-    json = await response.json();
-    return json;
+    )
+    .then( (response) => {return response.json()})
+    .then( (json) => {
+        return json;
+    })
 }
 
 // Message Box utility
@@ -241,10 +263,22 @@ baseNamespace.subBoxHeight = function subBoxHeight(rootId){
     });
 }
 
+// Input content utility
 baseNamespace.clearInput = function clearInput(){
     document.getElementById("sign-in-email").value = "";
     document.getElementById("sign-in-password").value = "";
     document.getElementById("sign-up-name").value = "";
     document.getElementById("sign-up-email").value = "";
     document.getElementById("sign-up-password").value = "";
+}
+
+// Button utility
+baseNamespace.changeSignButton = function changeSignButton(){
+    document.querySelector(".navigation__right-option-sign").classList.remove("navigation__right-option-sign--show");
+    document.querySelector(".navigation__right-option-sign-out").classList.add("navigation__right-option-sign--show");
+}
+
+baseNamespace.resetSignButton = function resetSignButton(){
+    document.querySelector(".navigation__right-option-sign").classList.add("navigation__right-option-sign--show");
+    document.querySelector(".navigation__right-option-sign-out").classList.remove("navigation__right-option-sign--show");
 }

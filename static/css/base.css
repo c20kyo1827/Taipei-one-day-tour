@@ -83,15 +83,19 @@
     height: 34px;
     box-sizing: border-box;
     padding: 10px;
-}
 
+    display: none;
+}
 .navigation__right-option-sign-out{
-    width: 111px;
-    height: 54px;
+    width: 91px;
+    height: 34px;
     box-sizing: border-box;
     padding: 10px;
 
     display: none;
+}
+.navigation__right-option-sign--show{
+    display: block;
 }
 
 /*====================*/

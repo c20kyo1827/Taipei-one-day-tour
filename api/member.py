@@ -9,18 +9,18 @@ PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PARENT_DIR)
 from util import mydb_mgr
 
-app_member = Blueprint('app_member', __name__)
+app_member = Blueprint("app_member", __name__)
 mydb = mydb_mgr.mydb_mgr()
 mydb.init()
 
 logging.root.name = "Member API"
 logging.basicConfig(level=logging.INFO,
-                format='[%(levelname)-7s] %(name)s - %(message)s',
+                format="[%(levelname)-7s] %(name)s - %(message)s",
                 stream=sys.stdout)
 
 secret_key = "f1#39gA9psa"
 
-@app_member.route('/user', methods=["POST"])
+@app_member.route("/user", methods=["POST"])
 def sign_up():
     try:
         if request.is_json==False:
@@ -53,21 +53,26 @@ def sign_up():
                 "message": "Server internal error" \
             }), 500
 
-@app_member.route('/user/auth', methods=["GET"])
+@app_member.route("/user/auth", methods=["GET"])
 def auth_get_sign_in():
     try:
-        # TODO
-        # Get the token
-        # Decode the token
-        email = ""
-        password = ""
-        member = mydb.get_member(email, password)
-        if not member:
+        auth_header = request.headers.get("Authorization")
+
+        if auth_header is None:
             return jsonify({"data" : None})
+
+        split_header = auth_header.split()
+        if len(split_header) != 2 or split_header[0].lower() != "bearer":
+            return jsonify({"data" : None})
+
+        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
+        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+            return jsonify({"data" : None})
+
         return jsonify({"data":{ \
-                            "id" : member[0][0], \
-                            "name" : member[0][2], \
-                            "email" : member[0][1] \
+                            "id" : payload["id"], \
+                            "name" : payload["name"], \
+                            "email" : payload["email"] \
                         } \
                     })
     except Exception as e:
@@ -79,7 +84,7 @@ def auth_get_sign_in():
             }), 500
     
     
-@app_member.route('/user/auth', methods=["PUT"])
+@app_member.route("/user/auth", methods=["PUT"])
 def auth_sign_in():
     try:
         member = mydb.get_member(request.json.get("email"), request.json.get("password"))
@@ -94,11 +99,11 @@ def auth_sign_in():
                 "id" : member[0][0],
                 "name" : member[0][2],
                 "email" : member[0][1],
-                "password" : request.form.get("password"),
+                "password" : request.json.get("password"),
                 "exp": datetime.utcnow() + timedelta(days=7)
             }
             try:
-                token = jwt.encode(payload, secret_key, algorithm='HS256')
+                token = jwt.encode(payload, secret_key, algorithm="HS256")
             except Exception as e:
                 logging.error("Error while creating token : {}".format(e))
                 return \
