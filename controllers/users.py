@@ -1,26 +1,22 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-import string
 import logging
 import jwt
 import sys
-import os
-PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PARENT_DIR)
 from models import mydb_mgr
 
-app_member = Blueprint("app_member", __name__)
+blueprint_users = Blueprint("blueprint_users", __name__)
 mydb = mydb_mgr.mydb_mgr()
 mydb.init()
 
-logging.root.name = "Member API"
+logging.root.name = "User API"
 logging.basicConfig(level=logging.INFO,
                 format="[%(levelname)-7s] %(name)s - %(message)s",
                 stream=sys.stdout)
 
 secret_key = "f1#39gA9psa"
 
-@app_member.route("/user", methods=["POST"])
+@blueprint_users.route("/user", methods=["POST"])
 def sign_up():
     try:
         if request.is_json==False:
@@ -53,7 +49,7 @@ def sign_up():
                 "message": "Server internal error" \
             }), 500
 
-@app_member.route("/user/auth", methods=["GET"])
+@blueprint_users.route("/user/auth", methods=["GET"])
 def auth_get_sign_in():
     try:
         auth_header = request.headers.get("Authorization")
@@ -84,7 +80,7 @@ def auth_get_sign_in():
             }), 500
     
     
-@app_member.route("/user/auth", methods=["PUT"])
+@blueprint_users.route("/user/auth", methods=["PUT"])
 def auth_sign_in():
     try:
         member = mydb.get_member(request.json.get("email"), request.json.get("password"))
