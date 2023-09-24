@@ -1,7 +1,7 @@
 from flask import *
-from api.attraction import app_attraction
-from api.mrts import app_mrts
-from api.member import app_member
+from controllers.attraction import app_attraction
+from controllers.mrts import app_mrts
+from controllers.member import app_member
 from flask_cors import CORS
 app=Flask(__name__)
 app.config["JSON_AS_ASCII"]=False

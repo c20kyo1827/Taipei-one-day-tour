@@ -7,7 +7,7 @@ import sys
 import os
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PARENT_DIR)
-from util import mydb_mgr
+from models import mydb_mgr
 
 app_member = Blueprint("app_member", __name__)
 mydb = mydb_mgr.mydb_mgr()
