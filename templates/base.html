@@ -13,11 +13,42 @@
             <div class="navigation__left-title">台北一日遊</div>
             <div class="navigation__right-option">
                 <button class="navigation__right-option-order navigation__right-button--setting">預定行程</button>
-                <div>&nbsp&nbsp</div>
-                <button class="navigation__right-option-sign navigation__right-button--setting">登入/註冊</button>
+                <!-- <div>&nbsp&nbsp</div> -->
+                <button class="navigation__right-option-sign navigation__right-button--setting navigation__right-option-sign--show">登入/註冊</button>
+                <button class="navigation__right-option-sign-out navigation__right-button--setting">登出系統</button>
             </div>
         </nav>
     </header>
+    <div></div> <!-- Add a empty element to shift all element -->
+    <div class="sign-container" id="sign-container__sign-in">
+        <div class="sign-container__sign-box sign-container__sign-box--sign-in-default-size">
+            <div class="sign-box__bar"></div>
+            <div class="sign-box__title">登入會員帳號</div>
+            <div class="sign-box__close-button"></div>
+            <div class="sign-box__form">
+                <input type="email" class="sign-box__form-input sign-box__form-input-text" id="sign-in-email" placeholder="輸入電子信箱" name="email" required>
+                <input type="password" class="sign-box__form-input sign-box__form-input-text" id="sign-in-password" placeholder="輸入密碼" name="password" required>
+                <button type="submit" class="sign-box__form-button">登入帳戶</button>
+                <div class="sign-box__message sign-box__message--hide" id="sign-box__message-info"></div>
+                <div class="sign-box__message sign-box__message--cursor">還沒有帳戶?點此註冊</div>
+            </div>
+        </div>
+    </div>
+    <div class="sign-container" id="sign-container__sign-up">
+        <div class="sign-container__sign-box sign-container__sign-box--sign-up-default-size">
+            <div class="sign-box__bar"></div>
+            <div class="sign-box__title">註冊會員帳號</div>
+            <div class="sign-box__close-button"></div>
+            <div class="sign-box__form">
+                <input type="text" class="sign-box__form-input sign-box__form-input-text" id="sign-up-name" placeholder="輸入姓名" name="name" required>
+                <input type="email" class="sign-box__form-input sign-box__form-input-text" id="sign-up-email" placeholder="輸入電子郵件" name="email" required>
+                <input type="password" class="sign-box__form-input sign-box__form-input-text" id="sign-up-password" placeholder="輸入密碼" name="password" required>
+                <button type="submit" class="sign-box__form-button">註冊新帳戶</button>
+                <div class="sign-box__message sign-box__message--hide" id="sign-box__message-info"></div>
+                <div class="sign-box__message sign-box__message--cursor">已經有帳戶了?點此登入</div>
+            </div>
+        </div>
+    </div>
     {%block main%} {%endblock%}
     <footer class="footer">
         <div class="footer__textbox">

@@ -137,4 +137,19 @@ attractionNamespace.addElementListener = function addElementListener(){
             });
         });
     });
+
+    // document.querySelector("image-panel__images-group").addEventListener("mouseover", ()=>{
+    //     setInterval(()=>{
+    //         let board = document.querySelector(".image-panel__images-group");
+    //         let element = document.querySelectorAll(".images-group__image");
+    //         let oldIndex = scrollIndex;
+    //         scrollIndex++;
+    //         scrollIndex = scrollIndex%element.length;
+    //         moveCurrentDot(oldIndex);
+    //         board.scrollTo({
+    //             left: scrollIndex*board.offsetWidth,
+    //             behavior: "smooth"
+    //         });
+    //     }, 3000);
+    // });
 }
