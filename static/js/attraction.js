@@ -3,8 +3,18 @@ let attractionNamespace = {};
 
 // Main
 window.onload = async function indexLoading(){
+    attractionNamespace.initialization();
     await attractionNamespace.loadAttractions();
     attractionNamespace.addElementListener();
+}
+
+attractionNamespace.initialization = function initialization(){
+    // Date
+    let date = new Date();
+    const dateInput = document.querySelector(".order-panel__date");
+    dateInput.min = date.getFullYear().toString() + '-' +
+                    (date.getMonth() + 1).toString().padStart(2, 0) + '-' +
+                    date.getDate().toString().padStart(2, 0);
 }
 
 attractionNamespace.loadAttractions = async function loadAttractions(){

@@ -29,6 +29,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     const closeButtons = document.querySelectorAll(".sign-box__close-button");
     [].forEach.call(closeButtons, function(button){
         button.addEventListener("click", () => {
+            // Animation for sign-in
+            document.querySelector(".sign-container__sign-box--sign-in-default-size").classList.add("sign-container__sign-box--appear-animation");
             const rootId = button.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.hideMessageBox();
@@ -40,6 +42,8 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     const messages = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(messages, function(msg){
         msg.addEventListener("click", () => {
+            // Animation for sign-in
+            document.querySelector(".sign-container__sign-box--sign-in-default-size").classList.remove("sign-container__sign-box--appear-animation");
             // Prevent click after signing in
             if(baseNamespace.checkSignState()) return;
             const rootId = msg.parentElement.parentElement.parentElement.id;
@@ -59,6 +63,40 @@ baseNamespace.addElementListener = function addBaseElementListener(){
             baseNamespace.handleSign(rootId);
         })
     });
+
+    // Password show/hide
+    const eyeIcon = document.querySelectorAll(".sign-box__form-eye");
+    [].forEach.call(eyeIcon, function(eye){
+        eye.addEventListener("click", () => {
+            if(eye.id === "sign-in-eye"){
+                const passwordInput = document.getElementById("sign-in-password")
+                if(eye.classList.contains("fa-eye")){
+                    eye.classList.add("fa-eye-slash");
+                    eye.classList.remove("fa-eye");
+                    passwordInput.setAttribute("type", "text");
+                }
+                else{
+                    eye.classList.remove("fa-eye-slash");
+                    eye.classList.add("fa-eye");
+                    passwordInput.setAttribute("type", "password");
+                }
+            }
+            if(eye.id === "sign-up-eye"){
+                const passwordInput = document.getElementById("sign-up-password")
+                if(eye.classList.contains("fa-eye")){
+                    eye.classList.add("fa-eye-slash");
+                    eye.classList.remove("fa-eye");
+                    passwordInput.setAttribute("type", "text");
+                }
+                else{
+                    eye.classList.remove("fa-eye-slash");
+                    eye.classList.add("fa-eye");
+                    passwordInput.setAttribute("type", "password");
+                }
+            }
+        })
+    });
+    
 }
 // Utitlity
 // Initialization

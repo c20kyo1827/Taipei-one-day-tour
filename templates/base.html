@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <title>{%block title%} {%endblock%}</title>
     <link rel="stylesheet" type="text/css" href="../static/css/base.css">
+    <script src="https://kit.fontawesome.com/46aeea356d.js" crossorigin="anonymous"></script>
     {%block css%} {%endblock%}
 </head>
 <body class="body">
@@ -21,13 +22,16 @@
     </header>
     <div></div> <!-- Add a empty element to shift all element -->
     <div class="sign-container" id="sign-container__sign-in">
-        <div class="sign-container__sign-box sign-container__sign-box--sign-in-default-size">
+        <div class="sign-container__sign-box sign-container__sign-box--sign-in-default-size sign-container__sign-box--appear-animation">
             <div class="sign-box__bar"></div>
             <div class="sign-box__title">登入會員帳號</div>
             <div class="sign-box__close-button"></div>
             <div class="sign-box__form">
                 <input type="email" class="sign-box__form-input sign-box__form-input-text" id="sign-in-email" placeholder="輸入電子信箱" name="email" required>
-                <input type="password" class="sign-box__form-input sign-box__form-input-text" id="sign-in-password" placeholder="輸入密碼" name="password" required>
+                <div class="sign-box__form-password-box">
+                    <input type="password" class="sign-box__form-input sign-box__form-input-text" id="sign-in-password" placeholder="輸入密碼" name="password" required>
+                    <i class="fa-solid fa-eye sign-box__form-eye" id="sign-in-eye"></i>
+                </div>
                 <button type="submit" class="sign-box__form-button">登入帳戶</button>
                 <div class="sign-box__message sign-box__message--hide" id="sign-box__message-info"></div>
                 <div class="sign-box__message sign-box__message--cursor">還沒有帳戶?點此註冊</div>
@@ -42,7 +46,10 @@
             <div class="sign-box__form">
                 <input type="text" class="sign-box__form-input sign-box__form-input-text" id="sign-up-name" placeholder="輸入姓名" name="name" required>
                 <input type="email" class="sign-box__form-input sign-box__form-input-text" id="sign-up-email" placeholder="輸入電子郵件" name="email" required>
-                <input type="password" class="sign-box__form-input sign-box__form-input-text" id="sign-up-password" placeholder="輸入密碼" name="password" required>
+                <div class="sign-box__form-password-box">
+                    <input type="password" class="sign-box__form-input sign-box__form-input-text" id="sign-up-password" placeholder="輸入密碼" name="password" required>
+                    <i class="fa-solid fa-eye sign-box__form-eye" id="sign-up-eye"></i>
+                </div>
                 <button type="submit" class="sign-box__form-button">註冊新帳戶</button>
                 <div class="sign-box__message sign-box__message--hide" id="sign-box__message-info"></div>
                 <div class="sign-box__message sign-box__message--cursor">已經有帳戶了?點此登入</div>

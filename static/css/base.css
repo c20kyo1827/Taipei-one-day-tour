@@ -43,6 +43,10 @@
 
     display: flex;
     align-items: center;
+    
+}
+.navigation__left-title:hover{
+    color: #bedbe2;
 }
 
 .navigation__right-option{
@@ -69,6 +73,9 @@
     justify-content:center;
 
     cursor: pointer;
+}
+.navigation__right-button--setting:hover{
+    color: #9e9e9e;
 }
 
 .navigation__right-option-order{
@@ -131,6 +138,9 @@
     display: flex;
     flex-direction: column;
 }
+.sign-container__sign-box--appear-animation{
+    animation: signBoxAppear .2s ease-in;
+}
 .sign-container__sign-box--sign-in-default-size{
     height: 275px;
 }
@@ -180,6 +190,10 @@
 
     cursor: pointer;
 }
+.sign-box__close-button:hover{
+    border-radius: 5px;
+    box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
+}
 
 .sign-box__form{
     width: 310px;
@@ -202,6 +216,25 @@
     color: #757575;
     line-height: 13.3px;
 }
+.sign-box__form-password-box{
+    position: relative;
+    z-index: 3;
+}
+
+.sign-box__form-eye{
+    /* set parent's z-index to prevent reference grandparent */
+    position: absolute;
+    top: 30%;
+    right: 5%;
+    width: 20px;
+    height: 20px;
+
+    cursor: pointer;
+
+    color: #757575;
+}
+
+
 
 .sign-box__form-button{
     width: 100%;
@@ -220,6 +253,9 @@
 
     cursor: pointer;
 }
+.sign-box__form-button:hover{
+    box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
+}
 
 .sign-box__message{
     width: 100%;
@@ -235,6 +271,9 @@
 }
 .sign-box__message--cursor{
     cursor: pointer;
+}
+.sign-box__message--cursor:hover{
+    color: #9e9e9e;
 }
 .sign-box__message--hide{
     display: none;
@@ -293,5 +332,28 @@
 @media (max-width: 360px){
     .navigation{
         width: 100%;
+    }
+}
+
+@keyframes signBoxAppear {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    25% {
+        transform: scale(0.25);
+        opacity: 0.25;
+    }
+    50% {
+        transform: scale(0.5);
+        opacity: 0.5;
+    }
+    75% {
+        transform: scale(0.75);
+        opacity: 0.75;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
     }
 }
