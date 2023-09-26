@@ -53,7 +53,9 @@ class mydb_mgr:
                     mydb.commit()
 
         except Error as e:
+            mydb.rollback()
             logging.error("Error while connecting to MySQL using Connection pool : {}".format(e))
+            logging.info("Rollback...")
         finally:
             if mydb.is_connected():
                 mycursor.close()
@@ -124,9 +126,19 @@ class mydb_mgr:
                     PRIMARY KEY(id) \
                 )" \
             )
+            # Book
+            cursor.execute( \
+                "CREATE TABLE book( \
+                    id bigint AUTO_INCREMENT, \
+                    attraction_id bigint NOT NULL, \
+                    book_date date NOT NULL, \
+                    book_time varchar(255) NOT NULL, \
+                    price bigint NOT NULL, \
+                    FOREIGN KEY(attraction_id) REFERENCES attraction(id), \
+                    PRIMARY KEY(id) \
+                )" \
+            )
             # Order
-            # TODO
-            # Need to add order table and add the table into member table
         self.connect_and_run(run)
 
     # Test & Debug
