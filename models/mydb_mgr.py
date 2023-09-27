@@ -127,6 +127,8 @@ class mydb_mgr:
                 )" \
             )
             # Book
+            # TODO
+            # Support multiple booking info
             cursor.execute( \
                 "CREATE TABLE book( \
                     id bigint AUTO_INCREMENT, \
