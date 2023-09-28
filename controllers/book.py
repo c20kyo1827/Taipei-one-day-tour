@@ -47,6 +47,7 @@ def getBooking():
 
         # TODO
         # Get the mysql data
+        print("123")
         return \
             jsonify({ \
                 "data": None

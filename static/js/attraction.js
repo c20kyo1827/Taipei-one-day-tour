@@ -11,7 +11,7 @@ window.onload = async function indexLoading(){
 attractionNamespace.initialization = function initialization(){
     // Date
     let date = new Date();
-    const dateInput = document.querySelector(".order-panel__date");
+    const dateInput = document.querySelector(".book-panel__date");
     dateInput.min = date.getFullYear().toString() + '-' +
                     (date.getMonth() + 1).toString().padStart(2, 0) + '-' +
                     date.getDate().toString().padStart(2, 0);
@@ -87,7 +87,7 @@ attractionNamespace.addElementListener = function addElementListener(){
         dot.classList.add("dot-group__dot-current");
     }
 
-    // Order time
+    // Book time
     document.querySelector("input[value=first-half-day]").addEventListener("click", () => {
         const money = document.querySelector("#money-selector");
         money.innerText = 2000;
@@ -162,4 +162,54 @@ attractionNamespace.addElementListener = function addElementListener(){
     //         });
     //     }, 3000);
     // });
+
+    // Booking button
+    document.querySelector(".book-panel__button").addEventListener("click", () => {
+        if(!baseNamespace.checkSignState())
+            baseNamespace.showBox("sign-container__sign-in");
+        const bookingBody = attractionNamespace.collectBookData();
+        attractionNamespace.newBooking(bookingBody);
+    });
+}
+
+// Utility
+attractionNamespace.collectBookData = function collectBookData(){
+    const htmlTokens = window.location.href.split("/");
+    const attractionId = htmlTokens[htmlTokens.length-1];
+    const date = document.querySelector(".book-panel__date");
+    const timeInput = document.querySelectorAll(".book-panel__radio-input");
+    const money = document.querySelector("#money-selector");
+    let time = "";
+    for(const day of timeInput){
+        if(day.checked && day.value === "first-half-day"){
+            time = "morning";
+        }
+        if(day.checked && day.value === "second-half-day"){
+            time = "afternoon";
+        }
+    }
+    return JSON.stringify({
+        "attractionId": attractionId,
+        "date": date.value=="" ? date.min : date.value,
+        "time": time,
+        "price": money.innerText
+    });
+}
+
+attractionNamespace.newBooking = function newBooking(bookingBody){
+    let fetchURL ="/api/booking";
+    fetch(fetchURL,
+        {
+            method: "POST",
+            body: bookingBody,
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+            }
+        }
+    )
+    .then( (response) => {return response.json()})
+    .then( (json) => {
+        return json;
+    })
 }

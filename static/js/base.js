@@ -17,12 +17,13 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     // Sign-in/Sign-up
     // Initialize
     document.querySelector(".navigation__right-option-sign").addEventListener("click", () => {
-        baseNamespace.toggleMessageBox("sign-container__sign-up");
+        baseNamespace.showBox("sign-container__sign-in");
     });
 
     document.querySelector(".navigation__right-option-sign-out").addEventListener("click", () => {
         localStorage.removeItem("jwtToken");
         baseNamespace.resetSignButton();
+        window.location.href = "/";
     });
 
     // Close
@@ -97,6 +98,13 @@ baseNamespace.addElementListener = function addBaseElementListener(){
         })
     });
     
+    // Booking
+    document.querySelector(".navigation__right-option-book").addEventListener("click", () => {
+        if(baseNamespace.checkSignState())
+            window.location.href = "/booking";
+        else
+            baseNamespace.showBox("sign-container__sign-in");
+    });
 }
 // Utitlity
 // Initialization
@@ -232,6 +240,17 @@ baseNamespace.getAuthorization = async function getAuthorization(){
 }
 
 // Message Box utility
+baseNamespace.showBox = function showBox(rootId){
+    if(rootId === "sign-container__sign-up"){
+        document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
+        document.querySelector("#sign-container__sign-up.sign-container").classList.add("sign-container--show");
+    }
+    if(rootId === "sign-container__sign-in"){
+        document.querySelector("#sign-container__sign-in.sign-container").classList.add("sign-container--show");
+        document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
+    }
+}
+
 baseNamespace.toggleMessageBox = function toggleMessageBox(rootId){
     if(rootId === "sign-container__sign-in"){
         document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");

@@ -132,10 +132,12 @@ class mydb_mgr:
             cursor.execute( \
                 "CREATE TABLE book( \
                     id bigint AUTO_INCREMENT, \
+                    member_id bigint NOT NULL, \
                     attraction_id bigint NOT NULL, \
                     book_date date NOT NULL, \
-                    book_time varchar(255) NOT NULL, \
+                    book_time SET('morning', 'afternoon') NOT NULL, \
                     price bigint NOT NULL, \
+                    FOREIGN KEY(member_id) REFERENCES member(id), \
                     FOREIGN KEY(attraction_id) REFERENCES attraction(id), \
                     PRIMARY KEY(id) \
                 )" \
