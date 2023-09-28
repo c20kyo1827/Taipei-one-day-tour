@@ -47,7 +47,13 @@ def getBooking():
 
         # TODO
         # Get the mysql data
-        print("123")
+        book = mydb.get_booking(payload["id"])
+        print(book)
+        if book!=[]:
+            return \
+                jsonify({ \
+                    "data": None
+                }), 200
         return \
             jsonify({ \
                 "data": None
@@ -91,9 +97,7 @@ def newBooking():
 
         # TODO
         # POST DATA
-        print(request.json)
-        # Successful to insert mysql
-        # Fail to insert mysql
+        mydb.add_book(payload["id"], request.json.get("attractionId"), request.json.get("date"), request.json.get("time"), request.json.get("price"))
         return \
             jsonify({ \
                 "ok": True

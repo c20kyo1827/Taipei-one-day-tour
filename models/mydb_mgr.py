@@ -10,6 +10,9 @@ import os
 # 1. Use flask_sqlalchemy to modify
 # 2. Create index
 # 3. Use the inner join
+# 4. Handle error when inserting/deleting error => connect_and_run()
+#       Should throw exception?
+#       Reuturn error message?
 
 logging.root.name = "Mysql db manager"
 logging.basicConfig(level=logging.INFO,
@@ -128,7 +131,7 @@ class mydb_mgr:
             )
             # Book
             # TODO
-            # Support multiple booking info
+            # Support multiple booking
             cursor.execute( \
                 "CREATE TABLE book( \
                     id bigint AUTO_INCREMENT, \
@@ -152,7 +155,7 @@ class mydb_mgr:
             logging.info("Run the command in mysql : " + cmd)
             cursor.execute(cmd)
             logging.info(str(cursor.fetchall()))
-        self.connect_and_run(run)
+        self.connect_and_run(run, True)
     
     def show(self):
         def run(cursor):
@@ -166,6 +169,7 @@ class mydb_mgr:
         self.connect_and_run(run)
 
     # Main api
+    # Set function
     def add_attraction_mrt(self, attractions):
         for info in attractions:
             def add_attraction(cursor):
@@ -216,6 +220,40 @@ class mydb_mgr:
             cursor.execute(sql, val)
         self.connect_and_run(run, True)
 
+    def delete_book_all(self, member_id):
+        def run(cursor):
+            # TODO
+            # Support multiple booking
+            sql = "DELETE FROM book WHERE member_id = %s"
+            val = (member_id, )
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+        self.connect_and_run(run, True)
+
+    def delete_book_by_id(self, book_id):
+        def run(cursor):
+            # TODO
+            # Support multiple booking
+            sql = "DELETE FROM book WHERE id = %s"
+            val = (book_id, )
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+        self.connect_and_run(run, True)
+
+    def add_book(self, member_id, attraction_id, date, time, price):
+        def run(cursor):
+            # TODO
+            # Support multiple booking
+            sql = "INSERT INTO book (member_id, attraction_id, book_date, book_time, price) VALUES (%s, %s, %s, %s, %s)"
+            val = (member_id, attraction_id, date, time, price)
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+        # TODO
+        # Check the column exists or not => exist not to delete
+        self.delete_book_all(member_id) # Should be remove after supporting multiple booking
+        self.connect_and_run(run, True)
+
+    # Get function
     def get_attractions_by_page_keyword(self, page, keyword):
         def run(cursor):
             cursor.execute("USE website")
@@ -287,6 +325,17 @@ class mydb_mgr:
             else:
                 sql = "SELECT id, email, name FROM member WHERE email = %s AND password = %s"
                 val = (email, password)
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+    
+    def get_booking(self, member_id):
+        # TODO
+        # Support multiple booking
+        def run(cursor):
+            sql = "SELECT * FROM book WHERE member_id = %s"
+            val = (member_id, )
             cursor.execute("USE website")
             cursor.execute(sql, val)
             return cursor.fetchall()
