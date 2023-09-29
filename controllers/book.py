@@ -1,3 +1,4 @@
+import json
 from flask import Blueprint, jsonify, request
 from datetime import datetime
 import logging
@@ -47,12 +48,28 @@ def getBooking():
 
         # TODO
         # Get the mysql data
-        book = mydb.get_booking(payload["id"])
-        print(book)
-        if book!=[]:
+        bookGroup = mydb.get_booking(payload["id"])
+        print(bookGroup)
+        data = []
+        for bookInfo in bookGroup:
+            data.append(
+                {
+                    "attraction":{
+                        "id":bookInfo[2],
+                        "name":bookInfo[6],
+                        "address":bookInfo[7],
+                        "image":bookInfo[8]
+                    },
+                    "data":bookInfo[3],
+                    "time":bookInfo[4],
+                    "price":bookInfo[5]
+                }
+            )
+        print(data)
+        if data!=[]:
             return \
                 jsonify({ \
-                    "data": None
+                    "data": list(data)
                 }), 200
         return \
             jsonify({ \
@@ -60,7 +77,7 @@ def getBooking():
             }), 200
 
     except Exception as e:
-        logging.error("Error while authorizing : {}".format(e))
+        logging.error("Error while get booking : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \
@@ -104,7 +121,7 @@ def newBooking():
             }), 200
 
     except Exception as e:
-        logging.error("Error while authorizing : {}".format(e))
+        logging.error("Error while new booking : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \
@@ -147,7 +164,7 @@ def deleteBooking():
             }), 200
 
     except Exception as e:
-        logging.error("Error while authorizing : {}".format(e))
+        logging.error("Error while deleting booking : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \

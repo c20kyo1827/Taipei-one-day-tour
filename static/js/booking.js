@@ -33,11 +33,11 @@ bookNamespace.addElementListener = function addElementListener(){
 // TODO
 // Support the multiple booking order
 bookNamespace.createBookInfo = function createBookInfo(bookingData){
+    console.log(bookingData);
     // Empty
     if(bookingData.data === null){
-
+        ;
     }
-    
 }
 
 bookNamespace.getBooking = function getBooking(){
