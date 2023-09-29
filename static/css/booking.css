@@ -2,6 +2,7 @@
 /* the layout of the delete button which should be wrap on the next line after the media size = mobile */
     /* Change the position in the mobile size */
     /* Need to check the meeting video to get the correct behaviour */
+/* Sould check the attaction info spec => the margin between the location the corresponding under horizontal line */
 
 .main{
     /* margin: auto; */
@@ -21,7 +22,7 @@
 }
 
 .horizontal-line--middle-setting{
-    margin-top: 40px;
+    margin: 0;
 }
 
 .book-panel__text--title{
@@ -70,6 +71,7 @@
 .book-panel__title--other{
     padding-left: 10px;
     padding-right: 10px;
+    box-sizing: border-box;
 }
 
 .book-panel__group{
