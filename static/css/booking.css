@@ -25,6 +25,9 @@
 .book-panel__title{
     height: 27px;
 
+    padding-top: 40px;
+    
+
     display: flex;
     align-items:center;
     justify-content:center;
@@ -46,8 +49,41 @@
 }
 
 .book-panel__group{
+    padding-top: 20px;
+    padding-bottom: 40px;
     padding-left: 10px;
     padding-right: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.book-panel__group--setting-gap{
+    column-gap: 40px;
+}
+
+.book-panel__group-attraction{
+    padding-top: 10px;
+    display: flex;
+}
+
+.group-attraction__image-box{
+    
+}
+
+.group-attraction__info-box{
+    
+}
+
+.info-box__title{
+    
+}
+
+.info-box__row{
+    word-break: break-all;
+    word-wrap: break-word;
+    display: flex;
+    align-items:center;
 }
 
 .book-panel__input-row{

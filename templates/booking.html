@@ -7,32 +7,47 @@
     <hr class="horizontal-line--basic-setting horizontal-line--top-setting">
     <main class="main">
         <div class="book-panel__title">
-            <div class="book-panel__title--text book-panel__title--top">您好，XXX，待的預定行程</div>
+            <div class="book-panel__title--text book-panel__title--top">您好，，待的預定行程</div>
         </div>
         <div class="book-panel__group">
-            <div>
-                圖片
-            </div>
-            <div>
-                <div>台北一日遊</div>
-                <div>日期</div>
-                <div>時間</div>
-                <div>費用</div>
-                <div>地點</div>
-                <div>刪除icon</div>
+            <div class="book-panel__group-attraction">
+                <div class="group-attraction__image-box">
+                    <!-- <img> -->
+                    <div>圖片</div>
+                </div>
+                <div class="group-attraction__info-box">
+                    <div class="info-box__title">台北一日遊</div>
+                    <div class="info-box__row">
+                        <div class="info-box__row-lable">日期</div>
+                        <div class="info-box__row-content">123</div>
+                    </div>
+                    <div class="info-box__row">
+                        <div class="info-box__row-lable">時間</div>
+                        <div class="info-box__row-content">123</div>
+                    </div>
+                    <div class="info-box__row">
+                        <div class="info-box__row-lable">費用</div>
+                        <div class="info-box__row-content">123</div>
+                    </div>
+                    <div class="info-box__row">
+                        <div class="info-box__row-lable">地點</div>
+                        <div class="info-box__row-content">123</div>
+                    </div>
+                    <div>刪除icon</div>
+                </div>
             </div>
         </div>
         <hr>
         <div class="book-panel__title">
             <div class="book-panel__title--text book-panel__title--other">您的連絡資訊</div>
         </div>
-        <div class="book-panel__group">
+        <div class="book-panel__group book-panel__group--setting-gap">
             <div class="book-panel__input-row book-panel__input-row--text">
-                <label for="book-name" class="book-panel__text--bold">姓名</label>
+                <label for="book-name" class="book-panel__text--bold">聯絡姓名</label>
                 <input type="text" id="book-name">
             </div>
             <div class="book-panel__input-row book-panel__input-row--text">
-                <label for="book-email" class="book-panel__text--bold">信箱</label>
+                <label for="book-email" class="book-panel__text--bold">聯絡信箱</label>
                 <input type="text" id="book-email">
             </div>
             <div class="book-panel__input-row book-panel__input-row--text">
@@ -45,18 +60,18 @@
         <div class="book-panel__title">
             <div class="book-panel__title--text book-panel__title--other">信用卡付款資訊</div>
         </div>
-        <div class="book-panel__group">
+        <div class="book-panel__group book-panel__group--setting-gap">
             <div class="book-panel__input-row book-panel__input-row--text">
                 <label for="card-code" class="book-panel__text--bold">卡片號碼</label>
-                <input type="password" name="text" id="card-code">
+                <input type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="**** **** **** ****" id="card-code">
             </div>
             <div class="book-panel__input-row book-panel__input-row--text">
                 <label for="card-date" class="book-panel__text--bold">過期時間</label>
-                <input type="date" name="text" lang="en-us" min="YYYY-MM" max="YYYY-MM" id="card-date">
+                <input type="text" id="card-date" placeholder="MM / YY">
             </div>
             <div class="book-panel__input-row book-panel__input-row--text">
                 <label for="card-password" class="book-panel__text--bold">驗證密碼</label>
-                <input type="password" name="text" placeholder="CVV" id="card-password">
+                <input type="password" placeholder="CVV" id="card-password">
             </div>
         </div>
         <hr>
