@@ -238,6 +238,9 @@
 
     cursor: pointer;
 }
+.book-panel__button:hover{
+    box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
+}
 
 /* info */
 .info{

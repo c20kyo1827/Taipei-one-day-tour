@@ -1,3 +1,8 @@
+/* the book button should be align on ther right side of group but still need to consider the padding with the book-panel__group */
+/* the layout of the delete button which should be wrap on the next line after the media size = mobile */
+    /* Change the position in the mobile size */
+    /* Need to check the meeting video to get the correct behaviour */
+
 .main{
     /* margin: auto; */
     box-sizing: border-box;
@@ -19,6 +24,36 @@
     margin-top: 40px;
 }
 
+.book-panel__text--title{
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #666666;
+}
+
+.book-panel__text--big{
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #666666;
+}
+
+.book-panel__text--small{
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #666666;
+}
+
 /*============*/
 /*  book-panel
 /*============*/
@@ -26,21 +61,10 @@
     height: 27px;
 
     padding-top: 40px;
-    
 
     display: flex;
     align-items:center;
     justify-content:center;
-}
-
-.book-panel__title--text{
-    text-align: left;
-    font-family: Noto Sans TC;
-    font-size: 19px;
-    font-weight: 700;
-    line-height: 16px;
-    letter-spacing: 0em;
-    text-align: left;
 }
 
 .book-panel__title--other{
@@ -53,30 +77,57 @@
     padding-bottom: 40px;
     padding-left: 10px;
     padding-right: 10px;
+
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    row-gap: 15px;
+
+    position: relative;
+    box-sizing: border-box;
 }
 
 .book-panel__group--setting-gap{
     column-gap: 40px;
 }
 
+.book-panel__group-delete-icon{
+    width: 30px;
+    height: 30px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+    
+    background-image: url("../figure/button/delete.png");
+}
+
 .book-panel__group-attraction{
     padding-top: 10px;
     display: flex;
+    flex-wrap: wrap;
 }
 
 .group-attraction__image-box{
-    
+    height: 200px;
 }
 
 .group-attraction__info-box{
-    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    row-gap: 10px;
 }
 
 .info-box__title{
-    
+    margin-bottom: 10px;
+    font-family: Noto Sans TC;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #448899;
 }
 
 .info-box__row{
@@ -96,13 +147,31 @@
     text-align: left;
 }
 
-.book-panel__input-row--text{
-    font-family: Noto Sans TC;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 13px;
-    letter-spacing: 0em;
-    text-align: left;
+.book-panel__input-box{
+    width: 200px;
+    height: 38px;
+    border-radius: 5px;
+    border: 1px;
+    gap: 4px;
+    border: 1px solid #E8E8E8;
+}
+
+.book-panel__button{
+    width: 173px;
+    height: 36px;
+
+    /* position: absolute;
+    right: 0; */
+
+    padding: 10px 20px 10px 20px;
+    border: 0;
+    border-radius: 5px;
+    background-color: #448899;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+.book-panel__button:hover{
+    box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
 }
 
 @media (min-width: 1200px){
@@ -120,6 +189,9 @@
         margin: auto;
         width: 1000px;
     }
+    .group-attraction__image-box{
+        width: 250px;
+    }
 }
 
 @media (min-width: 1000px) and (max-width: 1200px){
@@ -136,6 +208,9 @@
         margin: auto;
         width: 1000px;
     }
+    .group-attraction__image-box{
+        width: 250px;
+    }
 }
 
 @media (min-width: 360px) and (max-width: 1000px){
@@ -151,6 +226,13 @@
     .book-panel__group{
         width: 100%;
     }
+    .group-attraction__image-box{
+        width: 100%;
+    }
+    .book-panel__group-delete-icon{
+        top: initial;
+        bottom: 0;
+    }
 }
 
 @media (max-width: 360px){
@@ -165,5 +247,12 @@
     }
     .book-panel__group{
         width: 100%;
+    }
+    .group-attraction__image-box{
+        width: 100%;
+    }
+    .book-panel__group-delete-icon{
+        top: initial;
+        bottom: 0;
     }
 }

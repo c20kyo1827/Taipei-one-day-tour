@@ -13,14 +13,31 @@ bookNamespace.initialization = function initialization(){
         window.location.href = "/";
     else{
         const bookingData = bookNamespace.getBooking();
-        console.log(bookingData);
+        bookNamespace.createBookInfo(bookingData);
     }
 }
 
 bookNamespace.addElementListener = function addElementListener(){
-    // Close
+    // Delete
+    document.querySelector(".book-panel__group-delete-icon").addEventListener("click", () => {
+        
+    });
+    // Book
+    document.querySelector(".book-panel__button").addEventListener("click", () => {
+        // TODO
+        // Make the order based on the book info
+    });
+}
+
+// Utility
+// TODO
+// Support the multiple booking order
+bookNamespace.createBookInfo = function createBookInfo(bookingData){
+    // Empty
+    if(bookingData.data === null){
+
+    }
     
-    // Order
 }
 
 bookNamespace.getBooking = function getBooking(){
