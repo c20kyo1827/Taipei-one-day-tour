@@ -28,16 +28,16 @@
         </div>
         <div class="book-panel__group">
             <div class="book-panel__input-row book-panel__input-row--text">
-                <div class="book-panel__text--bold">姓名</div>
-                <input type="date" name="text">
+                <label for="book-name" class="book-panel__text--bold">姓名</label>
+                <input type="text" id="book-name">
             </div>
             <div class="book-panel__input-row book-panel__input-row--text">
-                <div class="book-panel__text--bold">信箱</div>
-                <input type="date" name="text">
+                <label for="book-email" class="book-panel__text--bold">信箱</label>
+                <input type="text" id="book-email">
             </div>
             <div class="book-panel__input-row book-panel__input-row--text">
-                <div class="book-panel__text--bold">手機號碼</div>
-                <input type="date" name="text">
+                <label for="book-cellphone" class="book-panel__text--bold">手機號碼</label>
+                <input type="text" id="book-cellphone">
             </div>
             <div>請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。</div>
         </div>
@@ -46,10 +46,18 @@
             <div class="book-panel__title--text book-panel__title--other">信用卡付款資訊</div>
         </div>
         <div class="book-panel__group">
-            
-            <div>卡片號碼</div>
-            <div>過期時間</div>
-            <div>驗證密碼</div>
+            <div class="book-panel__input-row book-panel__input-row--text">
+                <label for="card-code" class="book-panel__text--bold">卡片號碼</label>
+                <input type="password" name="text" id="card-code">
+            </div>
+            <div class="book-panel__input-row book-panel__input-row--text">
+                <label for="card-date" class="book-panel__text--bold">過期時間</label>
+                <input type="date" name="text" lang="en-us" min="YYYY-MM" max="YYYY-MM" id="card-date">
+            </div>
+            <div class="book-panel__input-row book-panel__input-row--text">
+                <label for="card-password" class="book-panel__text--bold">驗證密碼</label>
+                <input type="password" name="text" placeholder="CVV" id="card-password">
+            </div>
         </div>
         <hr>
         <div>
