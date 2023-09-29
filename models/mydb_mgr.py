@@ -334,7 +334,12 @@ class mydb_mgr:
         # TODO
         # Support multiple booking
         def run(cursor):
-            sql = "SELECT * FROM book WHERE member_id = %s"
+            sql = "SELECT tableB.*, tableA.name, tableA.address, tableI.url FROM book tableB\
+                    LEFT JOIN image tableI \
+                        ON tableI.attraction_id=tableB.attraction_id \
+                    LEFT JOIN attraction tableA \
+                        ON tableA.id=tableB.attraction_id \
+                    WHERE tableB.member_id=%s LIMIT 1"
             val = (member_id, )
             cursor.execute("USE website")
             cursor.execute(sql, val)
