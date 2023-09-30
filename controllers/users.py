@@ -42,7 +42,8 @@ def sign_up():
                     "ok": True \
                 }), 200
     except Exception as e:
-        logging.error("Error while signing up : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while signing up : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
@@ -65,7 +66,6 @@ def auth_get_sign_in():
         if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
             return jsonify({"data" : None})
 
-        print(payload)
         return jsonify({"data":{ \
                             "id" : payload["id"], \
                             "name" : payload["name"], \
@@ -73,7 +73,8 @@ def auth_get_sign_in():
                         } \
                     })
     except Exception as e:
-        logging.error("Error while get authorizing : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while get authorizing : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
@@ -114,7 +115,8 @@ def auth_sign_in():
                     "token": token\
                 }), 200
     except Exception as e:
-        logging.error("Error while put signing in : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while signing in : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \

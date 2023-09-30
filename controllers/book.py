@@ -47,23 +47,23 @@ def getBooking():
                 }), 403
 
         bookGroup = mydb.get_booking(payload["id"])
-        print(bookGroup)
         data = []
         for bookInfo in bookGroup:
+            attraction = {
+                "id":bookInfo[2],
+                "name":bookInfo[6],
+                "address":bookInfo[7],
+                "image":bookInfo[8]
+            }
             data.append(
                 {
-                    "attraction":{
-                        "id":bookInfo[2],
-                        "name":bookInfo[6],
-                        "address":bookInfo[7],
-                        "image":bookInfo[8]
-                    },
+                    "attraction":attraction,
                     "data":bookInfo[3],
-                    "time":bookInfo[4],
+                    "time":' '.join(bookInfo[4]),
                     "price":bookInfo[5]
                 }
             )
-        print(data)
+        
         if data!=[]:
             return \
                 jsonify({ \
@@ -75,7 +75,8 @@ def getBooking():
             }), 200
 
     except Exception as e:
-        logging.error("Error while get booking : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while getting booking : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
@@ -119,7 +120,8 @@ def newBooking():
             }), 200
 
     except Exception as e:
-        logging.error("Error while new booking : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while newing booking : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
@@ -162,7 +164,8 @@ def deleteBooking():
             }), 200
 
     except Exception as e:
-        logging.error("Error while deleting booking : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while deleting booking : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
