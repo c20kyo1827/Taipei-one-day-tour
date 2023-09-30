@@ -162,12 +162,14 @@
     border: 1px solid #E8E8E8;
 }
 
+.book-panel__price-row{
+    position: absolute;
+    right: 10px;
+}
+
 .book-panel__button{
     width: 173px;
     height: 36px;
-
-    /* position: absolute;
-    right: 0; */
 
     padding: 10px 20px 10px 20px;
     border: 0;
@@ -175,6 +177,13 @@
     background-color: #448899;
     color: #FFFFFF;
     cursor: pointer;
+
+    font-family: Noto Sans TC;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 16px;
+    letter-spacing: 0em;
+    text-align: center;
 }
 .book-panel__button:hover{
     box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
