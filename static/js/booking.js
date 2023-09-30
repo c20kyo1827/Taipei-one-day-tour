@@ -20,7 +20,7 @@ bookNamespace.initialization = function initialization(){
                 // Book
                 bookNamespace.getBooking()
                 .then((bookingData) => {
-                    // bookNamespace.createBookInfo(bookingData);
+                    bookNamespace.createBookInfo(bookingData);
                 })
             }
         })
@@ -74,6 +74,76 @@ bookNamespace.createBookInfo = function createBookInfo(bookingData){
         const boardProfile = document.querySelector(".main");
         boardProfile.appendChild(emptyRow);
     }
+    bookNamespace.createBookginAttraction(bookingData);
+    bookNamespace.createContactInfo(bookingData);
+    bookNamespace.createPayInfo(bookingData);
+}
+
+bookNamespace.createBookginAttraction = function createBookginAttraction(bookingData){
+    const bookGroup = document.createElement("div");
+    bookGroup.classList.add("book-panel__group");
+
+    const boardProfile = document.querySelector(".main");
+    boardProfile.appendChild(bookGroup);
+}
+
+bookNamespace.createContactInfo = function createContactInfo(bookingData){
+    const hLine = document.createElement("hr");
+    hLine.classList.add("horizontal-line--middle-setting");
+
+    const titleRow = document.createElement("div");
+    titleRow.classList.add("book-panel__title");
+    const titleInfo = document.createElement("div");
+    titleInfo.classList.add("book-panel__text--title");
+    titleInfo.classList.add("book-panel__title--other");
+    titleInfo.innerText = "您的連絡資訊";
+    titleRow.appendChild(titleInfo);
+
+    const bookGroup = document.createElement("div");
+    bookGroup.classList.add("book-panel__group");
+    bookGroup.classList.add("book-panel__group--setting-gap");
+    const text = ["聯絡姓名\u00A0:\u00A0", "聯絡信箱\u00A0:\u00A0", "手機號碼\u00A0:\u00A0"];
+    const name = ["book-name", "book-email", "book-cellphone"];
+    for(let i=0 ; i<text.length ; i++){
+        const inputRow = document.createElement("div");
+        inputRow.classList.add("book-panel__input-row");
+        inputRow.classList.add("book-panel__text--small");
+        const label = document.createElement("label");
+        label.classList.add("book-panel__text--big");
+        label.htmlFor = name[i];
+        label.innerText = text[i];
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = label.htmlFor;
+        input.classList.add("book-panel__input-box");
+        inputRow.append(label);
+        inputRow.append(input);
+        bookGroup.append(inputRow);
+    }
+    
+    const boardProfile = document.querySelector(".main");
+    boardProfile.appendChild(hLine);
+    boardProfile.appendChild(bookGroup);
+}
+
+bookNamespace.createPayInfo = function createPayInfo(bookingData){
+    const hLine = document.createElement("hr");
+    hLine.classList.add("horizontal-line--middle-setting");
+
+    const titleRow = document.createElement("div");
+    titleRow.classList.add("book-panel__title");
+    const titleInfo = document.createElement("div");
+    titleInfo.classList.add("book-panel__text--title");
+    titleInfo.classList.add("book-panel__title--other");
+    titleInfo.innerText = "您的連絡資訊";
+    titleRow.appendChild(titleInfo);
+
+    const bookGroup = document.createElement("div");
+    bookGroup.classList.add("book-panel__group");
+
+    const boardProfile = document.querySelector(".main");
+    boardProfile.appendChild(hLine);
+    boardProfile.appendChild(bookGroup);
 }
 
 bookNamespace.getBooking = function getBooking(){
