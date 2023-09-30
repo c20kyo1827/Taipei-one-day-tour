@@ -58,13 +58,14 @@ def auth_get_sign_in():
             return jsonify({"data" : None})
 
         split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
+        if len(split_header) != 2 or split_header[0].lower() != "bearer" or split_header[1].lower() == "null":
             return jsonify({"data" : None})
 
         payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
         if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
             return jsonify({"data" : None})
 
+        print(payload)
         return jsonify({"data":{ \
                             "id" : payload["id"], \
                             "name" : payload["name"], \
@@ -72,7 +73,7 @@ def auth_get_sign_in():
                         } \
                     })
     except Exception as e:
-        logging.error("Error while authorizing : {}".format(e))
+        logging.error("Error while get authorizing : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \
@@ -113,7 +114,7 @@ def auth_sign_in():
                     "token": token\
                 }), 200
     except Exception as e:
-        logging.error("Error while signing in : {}".format(e))
+        logging.error("Error while put signing in : {}".format(e))
         return \
             jsonify({ \
                 "error": True, \

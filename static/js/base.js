@@ -3,7 +3,6 @@ let baseNamespace = {};
 
 // Main
 document.addEventListener("DOMContentLoaded", async() => {
-    baseNamespace.checkSignState();
     baseNamespace.moveBasedOneFix();
     baseNamespace.addElementListener();
 });
@@ -46,7 +45,6 @@ baseNamespace.addElementListener = function addBaseElementListener(){
             // Animation for sign-in
             document.querySelector(".sign-container__sign-box--sign-in-default-size").classList.remove("sign-container__sign-box--appear-animation");
             // Prevent click after signing in
-            if(baseNamespace.checkSignState()) return;
             const rootId = msg.parentElement.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.toggleMessageBox(rootId);
@@ -59,7 +57,6 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     [].forEach.call(signButton, function(button){
         button.addEventListener("click", () => {
             // Prevent click after signing in
-            if(baseNamespace.checkSignState()) return;
             const rootId = button.parentElement.parentElement.parentElement.id;
             baseNamespace.handleSign(rootId);
         })
@@ -100,24 +97,30 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     
     // Booking
     document.querySelector(".navigation__right-option-book").addEventListener("click", () => {
-        if(baseNamespace.checkSignState())
-            window.location.href = "/booking";
-        else
-            baseNamespace.showBox("sign-container__sign-in");
+        baseNamespace.checkSignState()
+        .then((isLogin) => {
+            if(isLogin)
+                window.location.href = "/booking";
+            else
+                baseNamespace.showBox("sign-container__sign-in");
+        })
+        
     });
 }
 // Utitlity
 // Initialization
-baseNamespace.checkSignState = function checkSignState(){
+baseNamespace.checkSignState = async function checkSignState(){
     if(localStorage.getItem("jwtToken") === null){
         return false;
     }
-    let json = baseNamespace.getAuthorization();
+    let json = await baseNamespace.getAuthorization();
     if((json.data !== null) && !("error" in json)){
         baseNamespace.changeSignButton();
         return true;
     }
-    return false;
+    else{
+        return false;
+    }
 }
 
 baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
@@ -194,7 +197,7 @@ baseNamespace.handleSign = function handleSign(rootId){
 
 baseNamespace.signIn = async function signIn(signBody){
     let fetchURL ="/api/user/auth";
-    response = await fetch(fetchURL,
+    const response = await fetch(fetchURL,
         {
             method: "PUT",
             body: signBody,
@@ -203,13 +206,13 @@ baseNamespace.signIn = async function signIn(signBody){
             }
         }
     );
-    json = await response.json();
+    const json = await response.json();
     return json;
 }
 
 baseNamespace.signUp = async function signUp(signBody){
     let fetchURL ="/api/user";
-    response = await fetch(fetchURL,
+    const response = await fetch(fetchURL,
         {
             method: "POST",
             body: signBody,
@@ -218,13 +221,13 @@ baseNamespace.signUp = async function signUp(signBody){
             }
         }
     );
-    json = await response.json();
+    const json = await response.json();
     return json;
 }
 
 baseNamespace.getAuthorization = async function getAuthorization(){
     let fetchURL ="/api/user/auth";
-    fetch(fetchURL,
+    const response = await fetch(fetchURL,
         {
             method: "GET",
             headers: {
@@ -232,11 +235,9 @@ baseNamespace.getAuthorization = async function getAuthorization(){
                 "Authorization": "Bearer " + localStorage.getItem("jwtToken")
             }
         }
-    )
-    .then( (response) => {return response.json()})
-    .then( (json) => {
-        return json;
-    })
+    );
+    const json = await response.json();
+    return json;
 }
 
 // Message Box utility

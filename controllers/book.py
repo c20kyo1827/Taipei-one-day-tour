@@ -46,8 +46,6 @@ def getBooking():
                     "message": "Havn't logged in" \
                 }), 403
 
-        # TODO
-        # Get the mysql data
         bookGroup = mydb.get_booking(payload["id"])
         print(bookGroup)
         data = []
@@ -69,7 +67,7 @@ def getBooking():
         if data!=[]:
             return \
                 jsonify({ \
-                    "data": list(data)
+                    "data": data
                 }), 200
         return \
             jsonify({ \
