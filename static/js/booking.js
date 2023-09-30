@@ -18,8 +18,10 @@ bookNamespace.initialization = function initialization(){
                 // User
                 bookNamespace.createUserInfo();
                 // Book
-                const bookingData = bookNamespace.getBooking();
-                bookNamespace.createBookInfo(bookingData);
+                bookNamespace.getBooking()
+                .then((bookingData) => {
+                    bookNamespace.createBookInfo(bookingData);
+                })
             }
         })
     
@@ -39,18 +41,19 @@ bookNamespace.addElementListener = function addElementListener(){
 
 // Utility
 bookNamespace.createUserInfo = function createUserInfo(){
-    // const userInfo = baseNamespace.getAuthorization();
-    // console.log(userInfo);
-    const titleRow = document.createElement("div");
-    titleRow.classList.add("book-panel__title");
-    const titleInfo = document.createElement("div");
-    titleInfo.classList.add("book-panel__text--title");
-    titleInfo.classList.add("book-panel__title--top");
-    titleInfo.innerText = "您好，" + name + "，待的預定行程如下:";
-    titleRow.appendChild(titleInfo);
+    baseNamespace.getAuthorization()
+    .then((userInfo) => {
+        const titleRow = document.createElement("div");
+        titleRow.classList.add("book-panel__title");
+        const titleInfo = document.createElement("div");
+        titleInfo.classList.add("book-panel__text--title");
+        titleInfo.classList.add("book-panel__title--top");
+        titleInfo.innerText = "您好，" + userInfo.data.name + "，待預訂的行程如下:";
+        titleRow.appendChild(titleInfo);
 
-    const boardProfile = document.querySelector(".main");
-    boardProfile.appendChild(titleRow);
+        const boardProfile = document.querySelector(".main");
+        boardProfile.appendChild(titleRow);
+    })
 }
 
 // TODO
@@ -59,13 +62,23 @@ bookNamespace.createBookInfo = function createBookInfo(bookingData){
     console.log(bookingData);
     // Empty
     if(bookingData.data === null){
-        document.createElement("div");
+        const emptyRow = document.createElement("div");
+        emptyRow.classList.add("book-panel__title");
+        emptyRow.classList.add("book-panel__text--small");
+        
+        const emptyInfo = document.createElement("div");
+        emptyInfo.classList.add("book-panel__text--small");
+        emptyInfo.innerText = "目前沒有任何待預訂的行程";
+        emptyRow.appendChild(emptyInfo);
+
+        const boardProfile = document.querySelector(".main");
+        boardProfile.appendChild(titleRow);
     }
 }
 
 bookNamespace.getBooking = function getBooking(){
     let fetchURL ="/api/booking";
-    fetch(fetchURL,
+    return fetch(fetchURL,
         {
             method: "GET",
             headers: {
@@ -75,14 +88,11 @@ bookNamespace.getBooking = function getBooking(){
         }
     )
     .then( (response) => {return response.json()})
-    .then( (json) => {
-        return json;
-    })
 }
 
 bookNamespace.deleteBooking = function deleteBooking(){
     let fetchURL ="/api/booking";
-    fetch(fetchURL,
+    return fetch(fetchURL,
         {
             method: "DELET",
             headers: {
@@ -92,7 +102,4 @@ bookNamespace.deleteBooking = function deleteBooking(){
         }
     )
     .then( (response) => {return response.json()})
-    .then( (json) => {
-        return json;
-    })
 }
