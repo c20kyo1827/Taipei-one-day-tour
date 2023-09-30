@@ -20,7 +20,7 @@ bookNamespace.initialization = function initialization(){
                 // Book
                 bookNamespace.getBooking()
                 .then((bookingData) => {
-                    bookNamespace.createBookInfo(bookingData);
+                    // bookNamespace.createBookInfo(bookingData);
                 })
             }
         })
@@ -67,12 +67,12 @@ bookNamespace.createBookInfo = function createBookInfo(bookingData){
         emptyRow.classList.add("book-panel__text--small");
         
         const emptyInfo = document.createElement("div");
-        emptyInfo.classList.add("book-panel__text--small");
+        emptyInfo.classList.add("book-panel__title--top");
         emptyInfo.innerText = "目前沒有任何待預訂的行程";
         emptyRow.appendChild(emptyInfo);
 
         const boardProfile = document.querySelector(".main");
-        boardProfile.appendChild(titleRow);
+        boardProfile.appendChild(emptyRow);
     }
 }
 
