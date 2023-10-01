@@ -46,8 +46,8 @@ bookNamespace.addElementListener = function addElementListener(){
 }
 
 // Utility
-bookNamespace.createUserInfo = function createUserInfo(){
-    baseNamespace.getAuthorization()
+bookNamespace.createUserInfo = async function createUserInfo(){
+    await baseNamespace.getAuthorization()
     .then((userInfo) => {
         const titleRow = document.createElement("div");
         titleRow.classList.add("book-panel__title");
