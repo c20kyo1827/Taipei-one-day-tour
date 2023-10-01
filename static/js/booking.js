@@ -55,12 +55,10 @@ bookNamespace.createUserInfo = function createUserInfo(){
     })
 }
 
-// TODO
-// Support the multiple booking order
 bookNamespace.createBookInfo = function createBookInfo(bookingData){
     console.log(bookingData);
     // Empty
-    if(bookingData.data === null){
+    if(bookingData.data === null || "error" in bookingData){
         const emptyRow = document.createElement("div");
         emptyRow.classList.add("book-panel__title");
         emptyRow.classList.add("book-panel__text--small");
@@ -73,14 +71,59 @@ bookNamespace.createBookInfo = function createBookInfo(bookingData){
         const boardProfile = document.querySelector(".main");
         boardProfile.appendChild(emptyRow);
     }
-    bookNamespace.createBookginAttraction(bookingData);
+    // TODO
+    // Support the multiple booking order
+    bookNamespace.createBookginAttraction(bookingData.data[0]);
     bookNamespace.createContactInfo();
-    bookNamespace.createPayInfo(bookingData.data[0].time);
+    bookNamespace.createPayInfo(bookingData.data[0].price);
 }
 
 bookNamespace.createBookginAttraction = function createBookginAttraction(bookingData){
     const bookGroup = document.createElement("div");
     bookGroup.classList.add("book-panel__group");
+
+    const attractionGroup = document.createElement("div");
+    attractionGroup.classList.add("book-panel__group-attraction");
+    const imageBox = document.createElement("div");
+    imageBox.classList.add("group-attraction__image-box");
+    const image = document.createElement("img");
+    image.classList.add("group-attraction__image");
+    image.src = bookingData.attraction.image;
+    imageBox.appendChild(image);
+    attractionGroup.appendChild(imageBox);
+
+    const attractionBox = document.createElement("div");
+    attractionBox.classList.add("group-attraction__info-box");
+    const title = document.createElement("div");
+    title.classList.add("info-box__title");
+    title.innerText = "台北一日遊\u00A0:\u00A0" + bookingData.attraction.name;
+    attractionBox.appendChild(title);
+    let d = bookingData.date;
+    const date = new Date(d);
+    console.log(date);
+    const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    const timeString = bookingData.time==="morning" ? "早上9點到下午4點" : "下午4點到晚上9點";
+    const text = ["日期\u00A0:\u00A0", "時間\u00A0:\u00A0", "費用\u00A0:\u00A0", "地點\u00A0:\u00A0"];
+    const name = [dateString, timeString, bookingData.price, bookingData.attraction.address];
+    for(let i=0 ; i<text.length ; i++){
+        const infoRow = document.createElement("div");
+        infoRow.classList.add("info-box__row");
+        const label = document.createElement("label");
+        label.classList.add("info-box__row-lable");
+        label.classList.add("book-panel__text--big");
+        label.innerText = text[i];
+        const content = document.createElement("div");
+        content.classList.add("info-box__row-content");
+        content.innerText = name[i];
+        infoRow.appendChild(label);
+        infoRow.appendChild(content);
+        attractionBox.appendChild(infoRow);
+    }
+    attractionGroup.appendChild(attractionBox);
+    const deleteIcon = document.createElement("div");
+    deleteIcon.classList.add("book-panel__group-delete-icon");
+    attractionGroup.appendChild(deleteIcon);
+    bookGroup.appendChild(attractionGroup);
 
     const boardProfile = document.querySelector(".main");
     boardProfile.appendChild(bookGroup);
@@ -115,15 +158,15 @@ bookNamespace.createContactInfo = function createContactInfo(){
         input.type = "text";
         input.id = label.htmlFor;
         input.classList.add("book-panel__input-box");
-        inputRow.append(label);
-        inputRow.append(input);
-        bookGroup.append(inputRow);
+        inputRow.appendChild(label);
+        inputRow.appendChild(input);
+        bookGroup.appendChild(inputRow);
     }
     const notice = document.createElement("div");
     notice.classList.add("book-panel__text--big");
     notice.id = "book-notice";
     notice.innerText = "請保持手機暢通，準時到達，導覽人員將用手機與您聯繫，務必留下正確的聯絡方式。";
-    bookGroup.append(notice);
+    bookGroup.appendChild(notice);
     
     const boardProfile = document.querySelector(".main");
     boardProfile.appendChild(hLine);
@@ -131,7 +174,7 @@ bookNamespace.createContactInfo = function createContactInfo(){
     boardProfile.appendChild(bookGroup);
 }
 
-bookNamespace.createPayInfo = function createPayInfo(time){
+bookNamespace.createPayInfo = function createPayInfo(price){
     const hLine1 = document.createElement("hr");
     hLine1.classList.add("horizontal-line--middle-setting");
 
@@ -173,9 +216,9 @@ bookNamespace.createPayInfo = function createPayInfo(time){
         if(input.id === "card-password"){
             input.placeholder = "CVV";
         }
-        inputRow.append(label);
-        inputRow.append(input);
-        bookGroup1.append(inputRow);
+        inputRow.appendChild(label);
+        inputRow.appendChild(input);
+        bookGroup1.appendChild(inputRow);
     }
 
     const hLine2 = document.createElement("hr");
@@ -193,16 +236,15 @@ bookNamespace.createPayInfo = function createPayInfo(time){
     const priceInfo2 = document.createElement("div");
     priceInfo2.classList.add("book-panel__text--big");
     priceInfo2.id = "money-selector";
-    if(time === "morning") priceInfo2.innerHTML = "2000元";
-    else priceInfo2.innerHTML = "2500元";
+    priceInfo2.innerHTML = price;
     priceRow.appendChild(priceInfo1);
     priceRow.appendChild(priceInfo2);
     const priceButton = document.createElement("button");
     priceButton.classList.add("book-panel__button");
     priceButton.innerText = "確認訂購並付款";
-    priceGroup.append(priceRow);
-    priceGroup.append(priceButton);
-    bookGroup2.append(priceGroup);
+    priceGroup.appendChild(priceRow);
+    priceGroup.appendChild(priceButton);
+    bookGroup2.appendChild(priceGroup);
     bookGroup2.style.position = "relative";
     bookGroup2.style.marginBottom = "40px";
 
