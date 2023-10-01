@@ -15,7 +15,6 @@ bookNamespace.initialization = async function initialization(){
         if(!isLogin)
             window.location.href = "/";
         else{
-            
             bookNamespace.getBooking()
             .then((bookingData) => {
                 // User
@@ -59,7 +58,7 @@ bookNamespace.createUserInfo = async function createUserInfo(){
         titleRow.appendChild(titleInfo);
 
         const boardProfile = document.querySelector(".main");
-        boardProfile.appendChild(titleRow);
+        boardProfile.insertBefore(titleRow, boardProfile.firstChild);
     })
 }
 
