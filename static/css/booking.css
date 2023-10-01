@@ -26,7 +26,7 @@
 }
 
 .book-panel__text--title{
-    font-family: Noto Sans TC;
+    font-family: "Noto Sans TC";
     font-size: 19px;
     font-weight: 700;
     line-height: 16px;
@@ -36,7 +36,7 @@
 }
 
 .book-panel__text--big{
-    font-family: Noto Sans TC;
+    font-family: "Noto Sans TC";
     font-size: 16px;
     font-weight: 700;
     line-height: 13px;
@@ -46,7 +46,7 @@
 }
 
 .book-panel__text--small{
-    font-family: Noto Sans TC;
+    font-family: "Noto Sans TC";
     font-size: 16px;
     font-weight: 500;
     line-height: 13px;
@@ -116,6 +116,16 @@
     row-gap: 30px;
 }
 
+.info-box__row-content{
+    font-family: "Noto Sans TC";
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 13px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #666666;
+}
+
 .group-attraction__image-box{
     height: 200px;
 }
@@ -129,6 +139,7 @@
 }
 
 .group-attraction__info-box{
+    height: 200px;
     display: flex;
     flex-direction: column;
     justify-content: top;
@@ -139,10 +150,10 @@
     height: 24px;
 
     margin-bottom: 10px;
-    font-family: Noto Sans TC;
+    font-family: "Noto Sans TC";
     font-size: 16px;
     font-weight: 700;
-    line-height: 13px;
+    line-height: 13.3px;
     letter-spacing: 0em;
     text-align: left;
     color: #448899;
@@ -177,8 +188,15 @@
 }
 
 .book-panel__price-row{
+    width: 174px;
     position: absolute;
     right: 10px;
+}
+
+.book-panel__price-info{
+    width: 100%;
+    height: 20px;
+    text-align: right;
 }
 
 .book-panel__button{
@@ -192,7 +210,7 @@
     color: #FFFFFF;
     cursor: pointer;
 
-    font-family: Noto Sans TC;
+    font-family: "Noto Sans TC";
     font-size: 19px;
     font-weight: 400;
     line-height: 16px;
@@ -246,6 +264,10 @@
     .main{
         width: 100%;
     }
+    .horizontal-line--middle-setting{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
     .book-panel__title--top{
         width: 100%;
         padding-left: 10px;
@@ -271,6 +293,10 @@
 @media (max-width: 360px){
     .main{
         width: 100%;
+    }
+    .horizontal-line--middle-setting{
+        margin-left: 10px;
+        margin-right: 10px;
     }
     .book-panel__title--top{
         width: 100%;

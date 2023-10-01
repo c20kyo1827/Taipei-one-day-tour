@@ -54,7 +54,7 @@ bookNamespace.createUserInfo = async function createUserInfo(){
         const titleInfo = document.createElement("div");
         titleInfo.classList.add("book-panel__text--title");
         titleInfo.classList.add("book-panel__title--top");
-        titleInfo.innerText = "您好，" + userInfo.data.name + "，待預訂的行程如下:";
+        titleInfo.innerText = "您好，" + userInfo.data.name + "，待預訂的行程如下\u00A0:\u00A0";
         titleRow.appendChild(titleInfo);
 
         const boardProfile = document.querySelector(".main");
@@ -105,10 +105,10 @@ bookNamespace.createBookginAttraction = function createBookginAttraction(booking
     title.innerText = "台北一日遊\u00A0:\u00A0" + bookingData.attraction.name;
     attractionBox.appendChild(title);
     const date = new Date(bookingData.date);
-    const dateString = date.getFullYear() + "-" + (date.getMonth() + 1).toString()  + "-" + date.getDate();
+    const dateString = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2)  + "-" + ("0" + date.getDate()).slice(-2);
     const timeString = bookingData.time==="morning" ? "早上9點到下午4點" : "下午4點到晚上9點";
     const text = ["日期\u00A0:\u00A0", "時間\u00A0:\u00A0", "費用\u00A0:\u00A0", "地點\u00A0:\u00A0"];
-    const name = [dateString, timeString, bookingData.price, bookingData.attraction.address];
+    const name = [dateString, timeString, "新台幣" + bookingData.price + "元", bookingData.attraction.address];
     for(let i=0 ; i<text.length ; i++){
         const infoRow = document.createElement("div");
         infoRow.classList.add("info-box__row");
@@ -242,15 +242,12 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     priceGroup.classList.add("book-panel__price-row");
     const priceRow = document.createElement("div");
     priceRow.classList.add("book-panel__input-row");
-    const priceInfo1 = document.createElement("div");
-    priceInfo1.classList.add("book-panel__text--big");
-    priceInfo1.innerText = "總價\u00A0:\u00A0新台幣";
-    const priceInfo2 = document.createElement("div");
-    priceInfo2.classList.add("book-panel__text--big");
-    priceInfo2.id = "money-selector";
-    priceInfo2.innerHTML = price;
-    priceRow.appendChild(priceInfo1);
-    priceRow.appendChild(priceInfo2);
+    priceRow.style.justifyAlign = "right";
+    const priceInfo = document.createElement("div");
+    priceInfo.classList.add("book-panel__text--big");
+    priceInfo.classList.add("book-panel__price-info");
+    priceInfo.innerText = "總價\u00A0:\u00A0新台幣\u00A0" + price + "\u00A0元";
+    priceRow.appendChild(priceInfo);
     const priceButton = document.createElement("button");
     priceButton.classList.add("book-panel__button");
     priceButton.innerText = "確認訂購並付款";
