@@ -165,13 +165,18 @@ attractionNamespace.addElementListener = function addElementListener(){
 
     // Booking button
     document.querySelector(".book-panel__button").addEventListener("click", () => {
-        if(!baseNamespace.checkSignState())
-            baseNamespace.showBox("sign-container__sign-in");
-        const bookingBody = attractionNamespace.collectBookData();
-        attractionNamespace.newBooking(bookingBody)
-        .then((json) =>{
-            if((json !== null || json !== undefined) && "ok" in json){
-                window.location.href = "/booking";
+        baseNamespace.checkSignState()
+        .then((isLogin) => {
+            if(!isLogin)
+                baseNamespace.showBox("sign-container__sign-in");
+            else{
+                const bookingBody = attractionNamespace.collectBookData();
+                attractionNamespace.newBooking(bookingBody)
+                .then((json) =>{
+                    if((json !== null || json !== undefined) && "ok" in json){
+                        window.location.href = "/booking";
+                    }
+                })
             }
         })
     });
