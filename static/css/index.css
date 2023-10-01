@@ -144,8 +144,7 @@
     cursor: pointer;
 }
 .mrt__button-setting:hover{
-    border-radius:50%;
-    box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
+    opacity: 0.4;
 }
 
 

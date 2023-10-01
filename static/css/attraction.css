@@ -200,6 +200,10 @@
 .book-panel__date{
     height: 35px;
 }
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 0.4;
+    cursor: pointer;
+}
 
 .book-panel__radio-input{
     width: 22px;
