@@ -105,7 +105,7 @@ bookNamespace.createBookginAttraction = function createBookginAttraction(booking
     title.innerText = "台北一日遊\u00A0:\u00A0" + bookingData.attraction.name;
     attractionBox.appendChild(title);
     const date = new Date(bookingData.date);
-    const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
+    const dateString = date.getFullYear() + "-" + (date.getMonth() + 1).toString()  + "-" + date.getDate();
     const timeString = bookingData.time==="morning" ? "早上9點到下午4點" : "下午4點到晚上9點";
     const text = ["日期\u00A0:\u00A0", "時間\u00A0:\u00A0", "費用\u00A0:\u00A0", "地點\u00A0:\u00A0"];
     const name = [dateString, timeString, bookingData.price, bookingData.attraction.address];
