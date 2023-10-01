@@ -3,7 +3,7 @@ let baseNamespace = {};
 
 // Main
 document.addEventListener("DOMContentLoaded", async() => {
-    baseNamespace.moveBasedOneFix();
+    baseNamespace.initialization();
     baseNamespace.addElementListener();
 });
 
@@ -104,7 +104,6 @@ baseNamespace.addElementListener = function addBaseElementListener(){
             else
                 baseNamespace.showBox("sign-container__sign-in");
         })
-        
     });
 }
 // Utitlity
@@ -123,12 +122,21 @@ baseNamespace.checkSignState = async function checkSignState(){
     }
 }
 
-baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
+baseNamespace.initialization = function initialization(){
+    // Move based one fix
     let header = document.querySelector(".header");
     let headerCSS = window.getComputedStyle(header);
     let sibling = header.nextElementSibling;
     if(window.getComputedStyle(sibling).position === "fixed") return;
     sibling.style.marginTop = headerCSS.height;
+
+    baseNamespace.checkSignState()
+    .then((isLogin) => {
+        if(isLogin)
+            baseNamespace.changeSignButton();
+        else
+            baseNamespace.resetSignButton();
+    })
 }
 
 // Handle function
@@ -182,7 +190,7 @@ baseNamespace.handleSign = function handleSign(rootId){
                 "email": email,
                 "password": password
             })
-        ).then( (response) => {
+        ).then((response) => {
             if(!("ok" in response)){
                 baseNamespace.addMessage(rootId, response.message, true);
                 baseNamespace.clearInput();

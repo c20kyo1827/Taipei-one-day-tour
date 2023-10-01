@@ -168,7 +168,12 @@ attractionNamespace.addElementListener = function addElementListener(){
         if(!baseNamespace.checkSignState())
             baseNamespace.showBox("sign-container__sign-in");
         const bookingBody = attractionNamespace.collectBookData();
-        attractionNamespace.newBooking(bookingBody);
+        attractionNamespace.newBooking(bookingBody)
+        .then((json) =>{
+            if((json !== null || json !== undefined) && "ok" in json){
+                window.location.href = "/booking";
+            }
+        })
     });
 }
 
@@ -196,9 +201,9 @@ attractionNamespace.collectBookData = function collectBookData(){
     });
 }
 
-attractionNamespace.newBooking = function newBooking(bookingBody){
+attractionNamespace.newBooking = async function newBooking(bookingBody){
     let fetchURL ="/api/booking";
-    fetch(fetchURL,
+    return fetch(fetchURL,
         {
             method: "POST",
             body: bookingBody,
@@ -209,7 +214,4 @@ attractionNamespace.newBooking = function newBooking(bookingBody){
         }
     )
     .then( (response) => {return response.json()})
-    .then( (json) => {
-        return json;
-    })
 }

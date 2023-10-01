@@ -4,11 +4,11 @@ bookNamespace.isLogin = false;
 
 // Main
 window.onload = async function indexLoading(){
-    bookNamespace.initialization();
+    await bookNamespace.initialization();
     bookNamespace.addElementListener();
 }
 
-bookNamespace.initialization = function initialization(){
+bookNamespace.initialization = async function initialization(){
     // Check authorization => return
     baseNamespace.checkSignState()
     .then((isLogin) => {
@@ -28,9 +28,16 @@ bookNamespace.initialization = function initialization(){
 
 bookNamespace.addElementListener = function addElementListener(){
     // Delete
-    // document.querySelector(".book-panel__group-delete-icon").addEventListener("click", () => {
-        
-    // });
+    // const deletIcon = document.querySelector(".book-panel__group-delete-icon");
+    // if(deletIcon !== null){
+    //     deletIcon.addEventListener("click", () => {
+    //         bookNamespace.deleteBooking()
+    //         .then((json) =>{
+    //             console.log(json);
+    //         })
+    //     });
+    // }
+    
     // Book
     // document.querySelector(".book-panel__button").addEventListener("click", () => {
     //     // TODO
@@ -56,7 +63,6 @@ bookNamespace.createUserInfo = function createUserInfo(){
 }
 
 bookNamespace.createBookInfo = function createBookInfo(bookingData){
-    console.log(bookingData);
     // Empty
     if(bookingData.data === null || "error" in bookingData){
         const emptyRow = document.createElement("div");
@@ -98,9 +104,7 @@ bookNamespace.createBookginAttraction = function createBookginAttraction(booking
     title.classList.add("info-box__title");
     title.innerText = "台北一日遊\u00A0:\u00A0" + bookingData.attraction.name;
     attractionBox.appendChild(title);
-    let d = bookingData.date;
-    const date = new Date(d);
-    console.log(date);
+    const date = new Date(bookingData.date);
     const dateString = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
     const timeString = bookingData.time==="morning" ? "早上9點到下午4點" : "下午4點到晚上9點";
     const text = ["日期\u00A0:\u00A0", "時間\u00A0:\u00A0", "費用\u00A0:\u00A0", "地點\u00A0:\u00A0"];
@@ -120,8 +124,16 @@ bookNamespace.createBookginAttraction = function createBookginAttraction(booking
         attractionBox.appendChild(infoRow);
     }
     attractionGroup.appendChild(attractionBox);
-    const deleteIcon = document.createElement("div");
+    const deleteIcon = document.createElement("buton");
     deleteIcon.classList.add("book-panel__group-delete-icon");
+    deleteIcon.onclick = function clickDelete(){
+        bookNamespace.deleteBooking()
+        .then((json) =>{
+            if((json !== null || json !== undefined) && "ok" in json){
+                location.reload();
+            }
+        })
+    }
     attractionGroup.appendChild(deleteIcon);
     bookGroup.appendChild(attractionGroup);
 
@@ -256,7 +268,7 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     boardProfile.appendChild(bookGroup2);
 }
 
-bookNamespace.getBooking = function getBooking(){
+bookNamespace.getBooking = async function getBooking(){
     let fetchURL ="/api/booking";
     return fetch(fetchURL,
         {
@@ -270,11 +282,11 @@ bookNamespace.getBooking = function getBooking(){
     .then( (response) => {return response.json()})
 }
 
-bookNamespace.deleteBooking = function deleteBooking(){
+bookNamespace.deleteBooking = async function deleteBooking(){
     let fetchURL ="/api/booking";
     return fetch(fetchURL,
         {
-            method: "DELET",
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json; charset=UTF-8",
                 "Authorization": "Bearer " + localStorage.getItem("jwtToken")

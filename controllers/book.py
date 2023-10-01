@@ -58,7 +58,7 @@ def getBooking():
             data.append(
                 {
                     "attraction":attraction,
-                    "data":bookInfo[3],
+                    "date":bookInfo[3].isoformat(),
                     "time":' '.join(bookInfo[4]),
                     "price":bookInfo[5]
                 }
@@ -158,6 +158,7 @@ def deleteBooking():
 
         # TODO
         # DELETE DATA
+        mydb.delete_book_all(payload["id"])
         return \
             jsonify({ \
                 "ok": True
