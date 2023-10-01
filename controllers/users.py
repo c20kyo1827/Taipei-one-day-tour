@@ -1,26 +1,22 @@
 from flask import Blueprint, jsonify, request
 from datetime import datetime, timedelta
-import string
 import logging
 import jwt
 import sys
-import os
-PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PARENT_DIR)
-from util import mydb_mgr
+from models import mydb_mgr
 
-app_member = Blueprint("app_member", __name__)
+blueprint_users = Blueprint("blueprint_users", __name__)
 mydb = mydb_mgr.mydb_mgr()
 mydb.init()
 
-logging.root.name = "Member API"
+logging.root.name = "User API"
 logging.basicConfig(level=logging.INFO,
                 format="[%(levelname)-7s] %(name)s - %(message)s",
                 stream=sys.stdout)
 
 secret_key = "f1#39gA9psa"
 
-@app_member.route("/user", methods=["POST"])
+@blueprint_users.route("/user", methods=["POST"])
 def sign_up():
     try:
         if request.is_json==False:
@@ -46,14 +42,15 @@ def sign_up():
                     "ok": True \
                 }), 200
     except Exception as e:
-        logging.error("Error while signing up : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while signing up : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
                 "message": "Server internal error" \
             }), 500
 
-@app_member.route("/user/auth", methods=["GET"])
+@blueprint_users.route("/user/auth", methods=["GET"])
 def auth_get_sign_in():
     try:
         auth_header = request.headers.get("Authorization")
@@ -62,7 +59,7 @@ def auth_get_sign_in():
             return jsonify({"data" : None})
 
         split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
+        if len(split_header) != 2 or split_header[0].lower() != "bearer" or split_header[1].lower() == "null":
             return jsonify({"data" : None})
 
         payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
@@ -76,7 +73,8 @@ def auth_get_sign_in():
                         } \
                     })
     except Exception as e:
-        logging.error("Error while authorizing : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while get authorizing : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \
@@ -84,7 +82,7 @@ def auth_get_sign_in():
             }), 500
     
     
-@app_member.route("/user/auth", methods=["PUT"])
+@blueprint_users.route("/user/auth", methods=["PUT"])
 def auth_sign_in():
     try:
         member = mydb.get_member(request.json.get("email"), request.json.get("password"))
@@ -117,7 +115,8 @@ def auth_sign_in():
                     "token": token\
                 }), 200
     except Exception as e:
-        logging.error("Error while signing in : {}".format(e))
+        exc_type, _, exc_tb = sys.exc_info()
+        logging.error("Error while signing in : {error}, type : {type} at line : {line}".format(error=e, type=exc_type, line=exc_tb.tb_lineno))
         return \
             jsonify({ \
                 "error": True, \

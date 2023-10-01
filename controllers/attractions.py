@@ -1,11 +1,7 @@
 from flask import Blueprint, jsonify, request
-import os
-import sys
-PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, PARENT_DIR)
-from util import mydb_mgr
+from models import mydb_mgr
 
-app_attraction = Blueprint('app_attraction', __name__)
+blueprint_attractions = Blueprint('blueprint_attractions', __name__)
 mydb = mydb_mgr.mydb_mgr()
 mydb.init()
 
@@ -14,7 +10,7 @@ mydb.init()
 # It looks like that there are so many redundant steps
 # Consider the flask_sqlalchemy
 
-@app_attraction.route('/attractions')
+@blueprint_attractions.route('/attractions')
 def attractions():
     try:
         if request.args.get("page").isdigit():
@@ -62,7 +58,7 @@ def attractions():
                 "message": "Server internal error" \
             }), 500
 
-@app_attraction.route('/attraction/<int:attractionId>')
+@blueprint_attractions.route('/attraction/<int:attractionId>')
 def attraction(attractionId):
     try:
         if isinstance(attractionId,int):

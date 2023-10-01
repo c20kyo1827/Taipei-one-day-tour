@@ -27,7 +27,6 @@ window.onload = async function indexLoading(){
 // Function definition
 // Initialization
 indexNamespace.initializeMrt = async function initializeMrt(){
-    console.log("Pre-fetch and initialize the mrts");
     let fetchURL ="/api/mrts";
     response = await fetch(fetchURL);
     json = await response.json();
@@ -41,7 +40,6 @@ indexNamespace.initializeMrt = async function initializeMrt(){
 }
 
 indexNamespace.initializeAttraction = async function initializeAttraction(){
-    console.log("Pre-fetch and initialize the attractions");
     await indexNamespace.loadAttractions(); // await would make function execute totally
 }
 
@@ -125,7 +123,6 @@ indexNamespace.addElementListener = function addElementListener(){
         }, 1000);
     }
 
-    console.log("Add event listener");
     document.querySelector(".hero-image__search-button").addEventListener("click", () => {
         searchForMrt();
     });
@@ -197,7 +194,6 @@ indexNamespace.addElementListener = function addElementListener(){
 
 // Add observer
 indexNamespace.addObserver = function addObserver(){
-    console.log("Add observer");
     const callback = (entries) => {
         if(entries[0].isIntersecting && !indexNamespace.isDeleting && !indexNamespace.isObserverCalling){
             indexNamespace.isObserverCalling = true;

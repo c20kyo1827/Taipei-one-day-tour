@@ -3,7 +3,7 @@ import json
 import sys
 PARENT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, PARENT_DIR)
-from util import mydb_mgr
+from models import mydb_mgr
 
 # TODO
 # Check the comman, colon, and space in the string.

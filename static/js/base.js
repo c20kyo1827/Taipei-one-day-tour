@@ -3,8 +3,7 @@ let baseNamespace = {};
 
 // Main
 document.addEventListener("DOMContentLoaded", async() => {
-    baseNamespace.checkSignState();
-    baseNamespace.moveBasedOneFix();
+    baseNamespace.initialization();
     baseNamespace.addElementListener();
 });
 
@@ -17,18 +16,21 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     // Sign-in/Sign-up
     // Initialize
     document.querySelector(".navigation__right-option-sign").addEventListener("click", () => {
-        baseNamespace.toggleMessageBox("sign-container__sign-up");
+        baseNamespace.showBox("sign-container__sign-in");
     });
 
     document.querySelector(".navigation__right-option-sign-out").addEventListener("click", () => {
         localStorage.removeItem("jwtToken");
         baseNamespace.resetSignButton();
+        window.location.href = "/";
     });
 
     // Close
     const closeButtons = document.querySelectorAll(".sign-box__close-button");
     [].forEach.call(closeButtons, function(button){
         button.addEventListener("click", () => {
+            // Animation for sign-in
+            document.querySelector(".sign-container__sign-box--sign-in-default-size").classList.add("sign-container__sign-box--appear-animation");
             const rootId = button.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.hideMessageBox();
@@ -40,8 +42,9 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     const messages = document.querySelectorAll(".sign-box__message--cursor");
     [].forEach.call(messages, function(msg){
         msg.addEventListener("click", () => {
+            // Animation for sign-in
+            document.querySelector(".sign-container__sign-box--sign-in-default-size").classList.remove("sign-container__sign-box--appear-animation");
             // Prevent click after signing in
-            if(baseNamespace.checkSignState()) return;
             const rootId = msg.parentElement.parentElement.parentElement.id;
             baseNamespace.removeMessage(rootId);
             baseNamespace.toggleMessageBox(rootId);
@@ -54,32 +57,86 @@ baseNamespace.addElementListener = function addBaseElementListener(){
     [].forEach.call(signButton, function(button){
         button.addEventListener("click", () => {
             // Prevent click after signing in
-            if(baseNamespace.checkSignState()) return;
             const rootId = button.parentElement.parentElement.parentElement.id;
             baseNamespace.handleSign(rootId);
+        })
+    });
+
+    // Password show/hide
+    const eyeIcon = document.querySelectorAll(".sign-box__form-eye");
+    [].forEach.call(eyeIcon, function(eye){
+        eye.addEventListener("click", () => {
+            if(eye.id === "sign-in-eye"){
+                const passwordInput = document.getElementById("sign-in-password")
+                if(eye.classList.contains("fa-eye")){
+                    eye.classList.add("fa-eye-slash");
+                    eye.classList.remove("fa-eye");
+                    passwordInput.setAttribute("type", "text");
+                }
+                else{
+                    eye.classList.remove("fa-eye-slash");
+                    eye.classList.add("fa-eye");
+                    passwordInput.setAttribute("type", "password");
+                }
+            }
+            if(eye.id === "sign-up-eye"){
+                const passwordInput = document.getElementById("sign-up-password")
+                if(eye.classList.contains("fa-eye")){
+                    eye.classList.add("fa-eye-slash");
+                    eye.classList.remove("fa-eye");
+                    passwordInput.setAttribute("type", "text");
+                }
+                else{
+                    eye.classList.remove("fa-eye-slash");
+                    eye.classList.add("fa-eye");
+                    passwordInput.setAttribute("type", "password");
+                }
+            }
+        })
+    });
+    
+    // Booking
+    document.querySelector(".navigation__right-option-book").addEventListener("click", () => {
+        baseNamespace.checkSignState()
+        .then((isLogin) => {
+            if(isLogin)
+                window.location.href = "/booking";
+            else
+                baseNamespace.showBox("sign-container__sign-in");
         })
     });
 }
 // Utitlity
 // Initialization
-baseNamespace.checkSignState = function checkSignState(){
+baseNamespace.checkSignState = async function checkSignState(){
     if(localStorage.getItem("jwtToken") === null){
         return false;
     }
-    let json = baseNamespace.getAuthorization();
+    let json = await baseNamespace.getAuthorization();
     if((json.data !== null) && !("error" in json)){
         baseNamespace.changeSignButton();
         return true;
     }
-    return false;
+    else{
+        return false;
+    }
 }
 
-baseNamespace.moveBasedOneFix = function moveBasedOneFix(){
+baseNamespace.initialization = function initialization(){
+    // Move based one fix
     let header = document.querySelector(".header");
     let headerCSS = window.getComputedStyle(header);
     let sibling = header.nextElementSibling;
     if(window.getComputedStyle(sibling).position === "fixed") return;
     sibling.style.marginTop = headerCSS.height;
+
+    baseNamespace.checkSignState()
+    .then((isLogin) => {
+        if(isLogin)
+            baseNamespace.changeSignButton();
+        else
+            baseNamespace.resetSignButton();
+    })
 }
 
 // Handle function
@@ -133,7 +190,7 @@ baseNamespace.handleSign = function handleSign(rootId){
                 "email": email,
                 "password": password
             })
-        ).then( (response) => {
+        ).then((response) => {
             if(!("ok" in response)){
                 baseNamespace.addMessage(rootId, response.message, true);
                 baseNamespace.clearInput();
@@ -148,7 +205,7 @@ baseNamespace.handleSign = function handleSign(rootId){
 
 baseNamespace.signIn = async function signIn(signBody){
     let fetchURL ="/api/user/auth";
-    response = await fetch(fetchURL,
+    const response = await fetch(fetchURL,
         {
             method: "PUT",
             body: signBody,
@@ -157,13 +214,13 @@ baseNamespace.signIn = async function signIn(signBody){
             }
         }
     );
-    json = await response.json();
+    const json = await response.json();
     return json;
 }
 
 baseNamespace.signUp = async function signUp(signBody){
     let fetchURL ="/api/user";
-    response = await fetch(fetchURL,
+    const response = await fetch(fetchURL,
         {
             method: "POST",
             body: signBody,
@@ -172,13 +229,13 @@ baseNamespace.signUp = async function signUp(signBody){
             }
         }
     );
-    json = await response.json();
+    const json = await response.json();
     return json;
 }
 
 baseNamespace.getAuthorization = async function getAuthorization(){
     let fetchURL ="/api/user/auth";
-    fetch(fetchURL,
+    const response = await fetch(fetchURL,
         {
             method: "GET",
             headers: {
@@ -186,14 +243,23 @@ baseNamespace.getAuthorization = async function getAuthorization(){
                 "Authorization": "Bearer " + localStorage.getItem("jwtToken")
             }
         }
-    )
-    .then( (response) => {return response.json()})
-    .then( (json) => {
-        return json;
-    })
+    );
+    const json = await response.json();
+    return json;
 }
 
 // Message Box utility
+baseNamespace.showBox = function showBox(rootId){
+    if(rootId === "sign-container__sign-up"){
+        document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");
+        document.querySelector("#sign-container__sign-up.sign-container").classList.add("sign-container--show");
+    }
+    if(rootId === "sign-container__sign-in"){
+        document.querySelector("#sign-container__sign-in.sign-container").classList.add("sign-container--show");
+        document.querySelector("#sign-container__sign-up.sign-container").classList.remove("sign-container--show");
+    }
+}
+
 baseNamespace.toggleMessageBox = function toggleMessageBox(rootId){
     if(rootId === "sign-container__sign-in"){
         document.querySelector("#sign-container__sign-in.sign-container").classList.remove("sign-container--show");

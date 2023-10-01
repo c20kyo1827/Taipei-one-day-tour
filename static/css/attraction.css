@@ -141,8 +141,8 @@
     line-height: 13.3px;
 }
 
-/* order panel */
-.profile__order-panel{
+/* book panel */
+.profile__book-panel{
     height: 302px;
     margin-top: 20px;
     border-radius: 5px;
@@ -151,7 +151,7 @@
     overflow: hidden;
 }
 
-.order-panel__row-1{
+.book-panel__row-1{
     height: 22px;
     margin-top: 15px;
     margin-left: 20px;
@@ -161,7 +161,7 @@
     align-items:center;
 }
 
-.order-panel__row-2{
+.book-panel__row-2{
     height: 24px;
     margin-top: 15px;
     margin-left: 20px;
@@ -171,7 +171,7 @@
     align-items:center;
 }
 
-.order-panel__row-3{
+.book-panel__row-3{
     height: 35px;
     margin-top: 15px;
     margin-left: 20px;
@@ -181,7 +181,7 @@
     align-items:center;
 }
 
-.order-panel__text--bold{
+.book-panel__text--bold{
     font-weight: bold;
     font-size: 16px;
     font-family: "Noto Sans TC";
@@ -189,7 +189,7 @@
     line-height: 13.3px;
 }
 
-.order-panel__text--normal{
+.book-panel__text--normal{
     font-weight: 500;
     font-size: 16px;
     font-family: "Noto Sans TC";
@@ -197,11 +197,11 @@
     line-height: 13.3px;
 }
 
-.order-panel__date{
+.book-panel__date{
     height: 35px;
 }
 
-.order-panel__radio-input{
+.book-panel__radio-input{
     width: 22px;
     height: 22px;
     accent-color: #448899;
@@ -209,7 +209,7 @@
     cursor: pointer;
 }
 
-.order-panel__radio-text{
+.book-panel__radio-text{
     height: 14px;
     display: flex;
     align-items:center;
@@ -217,7 +217,7 @@
     cursor: pointer;
 }
 
-.order-panel__button{
+.book-panel__button{
     width: 154px;
     height: 36px;
     padding: 10px, 20px, 10px, 20px;
@@ -237,6 +237,9 @@
     line-height: 16px;
 
     cursor: pointer;
+}
+.book-panel__button:hover{
+    box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
 }
 
 /* info */
