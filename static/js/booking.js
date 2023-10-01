@@ -15,11 +15,12 @@ bookNamespace.initialization = async function initialization(){
         if(!isLogin)
             window.location.href = "/";
         else{
-            // User
-            bookNamespace.createUserInfo();
-            // Book
+            
             bookNamespace.getBooking()
             .then((bookingData) => {
+                // User
+                bookNamespace.createUserInfo();
+                // Book
                 bookNamespace.createBookInfo(bookingData);
             })
         }
