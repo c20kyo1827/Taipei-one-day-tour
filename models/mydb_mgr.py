@@ -339,7 +339,7 @@ class mydb_mgr:
                         ON tableI.attraction_id=tableB.attraction_id \
                     LEFT JOIN attraction tableA \
                         ON tableA.id=tableB.attraction_id \
-                    WHERE tableB.member_id=%s LIMIT 1"
+                    WHERE tableB.member_id=%s"
             val = (member_id, )
             cursor.execute("USE website")
             cursor.execute(sql, val)

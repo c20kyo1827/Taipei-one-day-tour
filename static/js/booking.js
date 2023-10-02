@@ -10,35 +10,33 @@ window.onload = async function indexLoading(){
 
 bookNamespace.initialization = async function initialization(){
     // Check authorization => return
-    baseNamespace.checkSignState()
+    let loginCheck = false;
+    await baseNamespace.checkSignState()
     .then((isLogin) => {
-        if(!isLogin)
-            window.location.href = "/";
-        else{
-            bookNamespace.getBooking()
-            .then((bookingData) => {
-                // User
-                bookNamespace.createUserInfo();
-                // Book
-                bookNamespace.createBookInfo(bookingData);
-            })
-        }
+        loginCheck = isLogin
     })
+    if(!loginCheck)
+        window.location.href = "/";
+    else{
+        await bookNamespace.getBooking()
+        .then((bookingData) => {
+            // User
+            bookNamespace.createUserInfo();
+            // Book
+            bookNamespace.createBookInfo(bookingData);
+            console.log("initial then then");
+        })
+    }
+    console.log("initial out");
+    console.log(document.querySelector("#card-code"));
 }
 
 bookNamespace.addElementListener = function addElementListener(){
-    // Delete
-    // const deletIcon = document.querySelector(".book-panel__group-delete-icon");
-    // if(deletIcon !== null){
-    //     deletIcon.addEventListener("click", () => {
-    //         bookNamespace.deleteBooking()
-    //         .then((json) =>{
-    //             console.log(json);
-    //         })
-    //     });
-    // }
-    
     // Book
+    // Sperate space every 4 char
+    console.log("Listen");
+    console.log(document.querySelector("#card-code"));
+
     // document.querySelector(".book-panel__button").addEventListener("click", () => {
     //     // TODO
     //     // Make the order based on the book info
@@ -59,10 +57,12 @@ bookNamespace.createUserInfo = async function createUserInfo(){
 
         const boardProfile = document.querySelector(".main");
         boardProfile.insertBefore(titleRow, boardProfile.firstChild);
+        console.log("user then");
     })
+    console.log("user out");
 }
 
-bookNamespace.createBookInfo = function createBookInfo(bookingData){
+bookNamespace.createBookInfo = async function createBookInfo(bookingData){
     // Empty
     if(bookingData.data === null || "error" in bookingData){
         const emptyRow = document.createElement("div");
@@ -76,12 +76,19 @@ bookNamespace.createBookInfo = function createBookInfo(bookingData){
 
         const boardProfile = document.querySelector(".main");
         boardProfile.appendChild(emptyRow);
+        return;
     }
     // TODO
     // Support the multiple booking order
     bookNamespace.createBookginAttraction(bookingData.data[0]);
-    bookNamespace.createContactInfo();
+    await baseNamespace.getAuthorization()
+    .then((userInfo) => {
+        bookNamespace.createContactInfo(userInfo);
+        console.log("book then");
+    })
     bookNamespace.createPayInfo(bookingData.data[0].price);
+    console.log("book out");
+    console.log(document.querySelector("#card-code"));
 }
 
 bookNamespace.createBookginAttraction = function createBookginAttraction(bookingData){
@@ -141,7 +148,7 @@ bookNamespace.createBookginAttraction = function createBookginAttraction(booking
     boardProfile.appendChild(bookGroup);
 }
 
-bookNamespace.createContactInfo = function createContactInfo(){
+bookNamespace.createContactInfo = function createContactInfo(userInfo){
     const hLine = document.createElement("hr");
     hLine.classList.add("horizontal-line--middle-setting");
 
@@ -169,6 +176,12 @@ bookNamespace.createContactInfo = function createContactInfo(){
         const input = document.createElement("input");
         input.type = "text";
         input.id = label.htmlFor;
+        if(input.id === "book-name"){
+            input.value = userInfo.data.name;
+        }
+        if(input.id === "book-email"){
+            input.value = userInfo.data.email;
+        }
         input.classList.add("book-panel__input-box");
         inputRow.appendChild(label);
         inputRow.appendChild(input);
@@ -223,9 +236,15 @@ bookNamespace.createPayInfo = function createPayInfo(price){
             input.placeholder = "**** **** **** ****";
         }
         if(input.id === "card-date"){
+            input.inputMode = "numeric";
+            input.pattern = "[0-9\s]{4}";
+            input.maxLength = "4";
             input.placeholder = "MM / YY";
         }
         if(input.id === "card-password"){
+            input.inputMode = "numeric";
+            input.pattern = "[0-9\s]{3,4}";
+            input.maxLength = "4";
             input.placeholder = "CVV";
         }
         inputRow.appendChild(label);
