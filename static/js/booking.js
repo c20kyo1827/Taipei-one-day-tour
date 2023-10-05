@@ -24,19 +24,11 @@ bookNamespace.initialization = async function initialization(){
             bookNamespace.createUserInfo();
             // Book
             bookNamespace.createBookInfo(bookingData);
-            console.log("initial then then");
         })
     }
-    console.log("initial out");
-    console.log(document.querySelector("#card-code"));
 }
 
 bookNamespace.addElementListener = function addElementListener(){
-    // Book
-    // Sperate space every 4 char
-    console.log("Listen");
-    console.log(document.querySelector("#card-code"));
-
     // document.querySelector(".book-panel__button").addEventListener("click", () => {
     //     // TODO
     //     // Make the order based on the book info
@@ -57,9 +49,7 @@ bookNamespace.createUserInfo = async function createUserInfo(){
 
         const boardProfile = document.querySelector(".main");
         boardProfile.insertBefore(titleRow, boardProfile.firstChild);
-        console.log("user then");
     })
-    console.log("user out");
 }
 
 bookNamespace.createBookInfo = async function createBookInfo(bookingData){
@@ -84,11 +74,8 @@ bookNamespace.createBookInfo = async function createBookInfo(bookingData){
     await baseNamespace.getAuthorization()
     .then((userInfo) => {
         bookNamespace.createContactInfo(userInfo);
-        console.log("book then");
     })
     bookNamespace.createPayInfo(bookingData.data[0].price);
-    console.log("book out");
-    console.log(document.querySelector("#card-code"));
 }
 
 bookNamespace.createBookginAttraction = function createBookginAttraction(bookingData){

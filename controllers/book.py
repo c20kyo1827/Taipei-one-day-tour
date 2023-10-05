@@ -19,7 +19,7 @@ logging.basicConfig(level=logging.INFO,
 secret_key = "f1#39gA9psa"
 
 @blueprint_book.route("/booking", methods=["GET"])
-def getBooking():
+def get_booking():
     try:
         auth_header = request.headers.get("Authorization")
 
@@ -84,7 +84,7 @@ def getBooking():
             }), 500
 
 @blueprint_book.route("/booking", methods=["POST"])
-def newBooking():
+def new_booking():
     try:
         auth_header = request.headers.get("Authorization")
 
@@ -128,8 +128,10 @@ def newBooking():
                 "message": "Server internal error" \
             }), 500
 
+# TODO
+# Should check the book_id's owner should be this member (use member_id)
 @blueprint_book.route("/booking", methods=["DELETE"])
-def deleteBooking():
+def delete_booking():
     try:
         auth_header = request.headers.get("Authorization")
 

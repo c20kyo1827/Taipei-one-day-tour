@@ -230,12 +230,12 @@ class mydb_mgr:
             cursor.execute(sql, val)
         self.connect_and_run(run, True)
 
-    def delete_book_by_id(self, book_id):
+    def delete_book_by_id(self, book_id, member_id):
         def run(cursor):
             # TODO
             # Support multiple booking
-            sql = "DELETE FROM book WHERE id = %s"
-            val = (book_id, )
+            sql = "DELETE FROM book WHERE id = %s AND member_id = %s"
+            val = (book_id, member_id)
             cursor.execute("USE website")
             cursor.execute(sql, val)
         self.connect_and_run(run, True)
