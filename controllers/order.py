@@ -4,7 +4,7 @@ from datetime import datetime
 import logging
 import jwt
 import sys
-from controllers.users import secret_key
+from controllers.users import process_auth_header
 
 blueprint_orders = Blueprint('blueprint_orders', __name__)
 mydb = mydb_mgr.mydb_mgr()
@@ -18,31 +18,19 @@ logging.basicConfig(level=logging.INFO,
 @blueprint_orders.route("/booking", methods=["POST"])
 def new_order():
     try:
-        auth_header = request.headers.get("Authorization")
+        payload = process_auth_header(request.headers.get("Authorization"))
 
-        if auth_header is None:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
+        print(request.json)
 
-        split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
-        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+        if payload == None:
             return \
                 jsonify({ \
                     "error": True, \
                     "message": "Havn't logged in" \
                 }), 403
         
+        
+
         # TODO
         return \
             jsonify({ \
@@ -61,25 +49,9 @@ def new_order():
 @blueprint_orders.route("/order/<int:attractionId>", methods=["GET"])
 def get_order_from_id():
     try:
-        auth_header = request.headers.get("Authorization")
+        payload = process_auth_header(request.headers.get("Authorization"))
 
-        if auth_header is None:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
-        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+        if payload == None:
             return \
                 jsonify({ \
                     "error": True, \

@@ -1,5 +1,13 @@
 let tapPayNamespace = {};
 tapPayNamespace.setTPD = function setTPD(){
+    if(
+        document.querySelector(".book-panel__button") == null ||
+        document.getElementById("card-number") == null ||
+        document.getElementById("card-date") == null ||
+        document.getElementById("card-ccv") == null
+    ){
+        return;
+    }
     // Const declaration
     const submitButton = document.querySelector(".book-panel__button")
     const setupField = {
@@ -106,16 +114,13 @@ tapPayNamespace.setTPD = function setTPD(){
         changeStyleFromStatus(update.status.ccv, ".card-ccv-group");
     })
 
-    // $("form").on("submit", function (event) {
     submitButton.addEventListener("click", (event) => {
-        console.log(event);
         event.preventDefault();
         
         // fix keyboard issue in iOS device
         forceBlurIos();
         
         const tappayStatus = TPDirect.card.getTappayFieldsStatus();
-        console.log(tappayStatus);
 
         // Check TPDirect.card.getTappayFieldsStatus().canGetPrime before TPDirect.card.getPrime
         if (tappayStatus.canGetPrime === false) {
@@ -130,27 +135,6 @@ tapPayNamespace.setTPD = function setTPD(){
                 return;
             }
             console.log("get prime successfully, prime: " + result.card.prime);
-            // var command = `
-            // Use following command to send to server \n\n
-            // curl -X POST https://sandbox.tappaysdk.com/tpc/payment/pay-by-prime \\
-            // -H 'content-type: application/json' \\
-            // -H 'x-api-key: partner_6ID1DoDlaPrfHw6HBZsULfTYtDmWs0q0ZZGKMBpp4YICWBxgK97eK3RM' \\
-            // -d '{
-            //     "partner_key": "partner_6ID1DoDlaPrfHw6HBZsULfTYtDmWs0q0ZZGKMBpp4YICWBxgK97eK3RM",
-            //     "prime": "${result.card.prime}",
-            //     "amount": "1",
-            //     "merchant_id": "GlobalTesting_CTBC",
-            //     "details": "Some item",
-            //     "cardholder": {
-            //         "phone_number": "+886923456789",
-            //         "name": "王小明",
-            //         "email": "LittleMing@Wang.com",
-            //         "zip_code": "100",
-            //         "address": "台北市天龍區芝麻街1號1樓",
-            //         "national_id": "A123456789"
-            //     }
-            // }'`.replace(/                /g, '');
-            // document.querySelector('#curl').innerHTML = command;
         })
     })
 }

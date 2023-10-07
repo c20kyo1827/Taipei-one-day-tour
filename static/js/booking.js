@@ -237,6 +237,7 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     priceRow.appendChild(priceInfo);
     const priceButton = document.createElement("button");
     priceButton.classList.add("book-panel__button");
+    priceButton.setAttribute("disabled", true);
     priceButton.innerText = "確認訂購並付款";
     priceGroup.appendChild(priceRow);
     priceGroup.appendChild(priceButton);
