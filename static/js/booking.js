@@ -18,13 +18,13 @@ bookNamespace.initialization = async function initialization(){
     if(!loginCheck)
         window.location.href = "/";
     else{
-        await bookNamespace.getBooking()
-        .then((bookingData) => {
-            // User
-            bookNamespace.createUserInfo();
-            // Book
-            bookNamespace.createBookInfo(bookingData);
-        })
+        bookingData = await bookNamespace.getBooking()
+        // User
+        await bookNamespace.createUserInfo();
+        // Book
+        await bookNamespace.createBookInfo(bookingData);
+        // TapPay
+        tapPayNamespace.setTPD();
     }
 }
 
@@ -201,18 +201,18 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     const bookGroup1 = document.createElement("div");
     bookGroup1.classList.add("book-panel__group");
     const text = ["卡片號碼\u00A0:\u00A0", "過期時間\u00A0:\u00A0", "驗證密碼\u00A0:\u00A0"];
+    const group = ["card-number-group", "card-date-group", "card-ccv-group"];
     const name = ["card-number", "card-date", "card-ccv"];
-    const type = ["tel", "text", "password"];
     for(let i=0 ; i<text.length ; i++){
         const inputRow = document.createElement("div");
         inputRow.classList.add("book-panel__input-row");
         inputRow.classList.add("book-panel__text--small");
+        inputRow.classList.add(group[i]);
         const label = document.createElement("label");
         label.classList.add("book-panel__text--big");
         label.htmlFor = name[i];
         label.innerText = text[i];
         const input = document.createElement("div");
-        input.type = type[i];
         input.id = label.htmlFor;
         input.classList.add("book-panel__input-box");
         inputRow.appendChild(label);

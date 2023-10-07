@@ -217,7 +217,7 @@
     letter-spacing: 0em;
     text-align: center;
 }
-.book-panel__button:hover{
+.book-panel__button:not(:disabled):hover{
     box-shadow: 0 3px 5px rgba(104, 104, 104, 0.8);
 }
 
