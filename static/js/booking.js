@@ -201,7 +201,7 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     const bookGroup1 = document.createElement("div");
     bookGroup1.classList.add("book-panel__group");
     const text = ["卡片號碼\u00A0:\u00A0", "過期時間\u00A0:\u00A0", "驗證密碼\u00A0:\u00A0"];
-    const name = ["card-code", "card-date", "card-password"];
+    const name = ["card-number", "card-date", "card-ccv"];
     const type = ["tel", "text", "password"];
     for(let i=0 ; i<text.length ; i++){
         const inputRow = document.createElement("div");
@@ -211,29 +211,10 @@ bookNamespace.createPayInfo = function createPayInfo(price){
         label.classList.add("book-panel__text--big");
         label.htmlFor = name[i];
         label.innerText = text[i];
-        const input = document.createElement("input");
+        const input = document.createElement("div");
         input.type = type[i];
         input.id = label.htmlFor;
         input.classList.add("book-panel__input-box");
-        if(input.id === "card-code"){
-            input.inputMode = "numeric";
-            input.pattern = "[0-9\s]{13,19}";
-            // input.autocomplete = "cc-number";
-            input.maxLength = "19";
-            input.placeholder = "**** **** **** ****";
-        }
-        if(input.id === "card-date"){
-            input.inputMode = "numeric";
-            input.pattern = "[0-9\s]{4}";
-            input.maxLength = "4";
-            input.placeholder = "MM / YY";
-        }
-        if(input.id === "card-password"){
-            input.inputMode = "numeric";
-            input.pattern = "[0-9\s]{3,4}";
-            input.maxLength = "4";
-            input.placeholder = "CVV";
-        }
         inputRow.appendChild(label);
         inputRow.appendChild(input);
         bookGroup1.appendChild(inputRow);
