@@ -2,7 +2,7 @@
 let attractionNamespace = {};
 
 // Main
-window.onload = async function indexLoading(){
+window.onload = async function attractionLoading(){
     attractionNamespace.initialization();
     await attractionNamespace.loadAttractions();
     attractionNamespace.addElementListener();
@@ -148,8 +148,8 @@ attractionNamespace.addElementListener = function addElementListener(){
         });
     });
 
-    // document.querySelector("image-panel__images-group").addEventListener("mouseover", ()=>{
-    //     setInterval(()=>{
+    // document.querySelector(".image-panel__images-group").addEventListener("mouseover", () => {
+    //     setTimeout(()=>{
     //         let board = document.querySelector(".image-panel__images-group");
     //         let element = document.querySelectorAll(".images-group__image");
     //         let oldIndex = scrollIndex;

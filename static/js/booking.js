@@ -3,46 +3,50 @@ let bookNamespace = {};
 bookNamespace.isLogin = false;
 
 // Main
-window.onload = async function indexLoading(){
+window.onload = async function bookLoading(){
     await bookNamespace.initialization();
     bookNamespace.addElementListener();
 }
 
 bookNamespace.initialization = async function initialization(){
     // Check authorization => return
-    baseNamespace.checkSignState()
+    let loginCheck = false;
+    await baseNamespace.checkSignState()
     .then((isLogin) => {
-        if(!isLogin)
-            window.location.href = "/";
-        else{
-            bookNamespace.getBooking()
-            .then((bookingData) => {
-                // User
-                bookNamespace.createUserInfo();
-                // Book
-                bookNamespace.createBookInfo(bookingData);
-            })
-        }
+        loginCheck = isLogin
     })
+    if(!loginCheck)
+        window.location.href = "/";
+    else{
+        bookingData = await bookNamespace.getBooking()
+        // User
+        await bookNamespace.createUserInfo();
+        // Book
+        await bookNamespace.createBookInfo(bookingData);
+        // TapPay
+        tapPayNamespace.setTPD();
+    }
 }
 
 bookNamespace.addElementListener = function addElementListener(){
-    // Delete
-    // const deletIcon = document.querySelector(".book-panel__group-delete-icon");
-    // if(deletIcon !== null){
-    //     deletIcon.addEventListener("click", () => {
-    //         bookNamespace.deleteBooking()
-    //         .then((json) =>{
-    //             console.log(json);
-    //         })
-    //     });
-    // }
-    
-    // Book
     // document.querySelector(".book-panel__button").addEventListener("click", () => {
     //     // TODO
     //     // Make the order based on the book info
     // });
+
+    const inputCellphone = document.getElementById("book-cellphone");
+    if(inputCellphone !== null){
+        inputCellphone.addEventListener("input", function(event) {
+            let numericValue = event.target.value.replace(/[^0-9]/g, '');
+            if (numericValue.length > 10) {
+                numericValue = numericValue.substring(0, 10);
+            }
+            event.target.value = numericValue;
+
+            // TODO
+            // Check the email box and turn the button on
+        });
+    }
 }
 
 // Utility
@@ -62,7 +66,7 @@ bookNamespace.createUserInfo = async function createUserInfo(){
     })
 }
 
-bookNamespace.createBookInfo = function createBookInfo(bookingData){
+bookNamespace.createBookInfo = async function createBookInfo(bookingData){
     // Empty
     if(bookingData.data === null || "error" in bookingData){
         const emptyRow = document.createElement("div");
@@ -76,11 +80,15 @@ bookNamespace.createBookInfo = function createBookInfo(bookingData){
 
         const boardProfile = document.querySelector(".main");
         boardProfile.appendChild(emptyRow);
+        return;
     }
     // TODO
     // Support the multiple booking order
     bookNamespace.createBookginAttraction(bookingData.data[0]);
-    bookNamespace.createContactInfo();
+    await baseNamespace.getAuthorization()
+    .then((userInfo) => {
+        bookNamespace.createContactInfo(userInfo);
+    })
     bookNamespace.createPayInfo(bookingData.data[0].price);
 }
 
@@ -141,7 +149,7 @@ bookNamespace.createBookginAttraction = function createBookginAttraction(booking
     boardProfile.appendChild(bookGroup);
 }
 
-bookNamespace.createContactInfo = function createContactInfo(){
+bookNamespace.createContactInfo = function createContactInfo(userInfo){
     const hLine = document.createElement("hr");
     hLine.classList.add("horizontal-line--middle-setting");
 
@@ -169,6 +177,15 @@ bookNamespace.createContactInfo = function createContactInfo(){
         const input = document.createElement("input");
         input.type = "text";
         input.id = label.htmlFor;
+        if(input.id === "book-name"){
+            input.value = userInfo.data.name;
+        }
+        if(input.id === "book-email"){
+            input.value = userInfo.data.email;
+        }
+        if(input.id === "book-cellphone"){
+            input.type = "tel";
+        }
         input.classList.add("book-panel__input-box");
         inputRow.appendChild(label);
         inputRow.appendChild(input);
@@ -201,33 +218,20 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     const bookGroup1 = document.createElement("div");
     bookGroup1.classList.add("book-panel__group");
     const text = ["卡片號碼\u00A0:\u00A0", "過期時間\u00A0:\u00A0", "驗證密碼\u00A0:\u00A0"];
-    const name = ["card-code", "card-date", "card-password"];
-    const type = ["tel", "text", "password"];
+    const group = ["card-number-group", "card-date-group", "card-ccv-group"];
+    const name = ["card-number", "card-date", "card-ccv"];
     for(let i=0 ; i<text.length ; i++){
         const inputRow = document.createElement("div");
         inputRow.classList.add("book-panel__input-row");
         inputRow.classList.add("book-panel__text--small");
+        inputRow.classList.add(group[i]);
         const label = document.createElement("label");
         label.classList.add("book-panel__text--big");
         label.htmlFor = name[i];
         label.innerText = text[i];
-        const input = document.createElement("input");
-        input.type = type[i];
+        const input = document.createElement("div");
         input.id = label.htmlFor;
         input.classList.add("book-panel__input-box");
-        if(input.id === "card-code"){
-            input.inputMode = "numeric";
-            input.pattern = "[0-9\s]{13,19}";
-            // input.autocomplete = "cc-number";
-            input.maxLength = "19";
-            input.placeholder = "**** **** **** ****";
-        }
-        if(input.id === "card-date"){
-            input.placeholder = "MM / YY";
-        }
-        if(input.id === "card-password"){
-            input.placeholder = "CVV";
-        }
         inputRow.appendChild(label);
         inputRow.appendChild(input);
         bookGroup1.appendChild(inputRow);
@@ -250,6 +254,7 @@ bookNamespace.createPayInfo = function createPayInfo(price){
     priceRow.appendChild(priceInfo);
     const priceButton = document.createElement("button");
     priceButton.classList.add("book-panel__button");
+    priceButton.setAttribute("disabled", true);
     priceButton.innerText = "確認訂購並付款";
     priceGroup.appendChild(priceRow);
     priceGroup.appendChild(priceButton);

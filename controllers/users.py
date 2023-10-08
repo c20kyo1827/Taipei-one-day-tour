@@ -16,6 +16,20 @@ logging.basicConfig(level=logging.INFO,
 
 secret_key = "f1#39gA9psa"
 
+def process_auth_header(auth_header):
+    if auth_header is None:
+        return None
+
+    split_header = auth_header.split()
+    if len(split_header) != 2 or split_header[0].lower() != "bearer" or split_header[1].lower() == "null":
+        return None
+
+    payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
+    if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+        return None
+    
+    return payload
+
 @blueprint_users.route("/user", methods=["POST"])
 def sign_up():
     try:
@@ -53,18 +67,10 @@ def sign_up():
 @blueprint_users.route("/user/auth", methods=["GET"])
 def auth_get_sign_in():
     try:
-        auth_header = request.headers.get("Authorization")
+        payload = process_auth_header(request.headers.get("Authorization"))
 
-        if auth_header is None:
-            return jsonify({"data" : None})
-
-        split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer" or split_header[1].lower() == "null":
-            return jsonify({"data" : None})
-
-        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
-        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
-            return jsonify({"data" : None})
+        if payload == None:
+            return jsonify({"data": None})
 
         return jsonify({"data":{ \
                             "id" : payload["id"], \
@@ -122,4 +128,3 @@ def auth_sign_in():
                 "error": True, \
                 "message": "Server internal error" \
             }), 500
-    

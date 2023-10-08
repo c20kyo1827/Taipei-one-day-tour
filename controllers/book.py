@@ -5,7 +5,7 @@ import logging
 import jwt
 import sys
 from models import mydb_mgr
-from controllers.users import secret_key
+from controllers.users import process_auth_header
 
 blueprint_book = Blueprint("blueprint_book", __name__)
 mydb = mydb_mgr.mydb_mgr()
@@ -16,30 +16,12 @@ logging.basicConfig(level=logging.INFO,
                 format="[%(levelname)-7s] %(name)s - %(message)s",
                 stream=sys.stdout)
 
-secret_key = "f1#39gA9psa"
-
 @blueprint_book.route("/booking", methods=["GET"])
-def getBooking():
+def get_booking():
     try:
-        auth_header = request.headers.get("Authorization")
+        payload = process_auth_header(request.headers.get("Authorization"))
 
-        if auth_header is None:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
-        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+        if payload == None:
             return \
                 jsonify({ \
                     "error": True, \
@@ -84,27 +66,11 @@ def getBooking():
             }), 500
 
 @blueprint_book.route("/booking", methods=["POST"])
-def newBooking():
+def new_booking():
     try:
-        auth_header = request.headers.get("Authorization")
+        payload = process_auth_header(request.headers.get("Authorization"))
 
-        if auth_header is None:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
-        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+        if payload == None:
             return \
                 jsonify({ \
                     "error": True, \
@@ -112,7 +78,8 @@ def newBooking():
                 }), 403
 
         # TODO
-        # POST DATA
+        # Support multiple order
+        print(request.json)
         mydb.add_book(payload["id"], request.json.get("attractionId"), request.json.get("date"), request.json.get("time"), request.json.get("price"))
         return \
             jsonify({ \
@@ -128,28 +95,14 @@ def newBooking():
                 "message": "Server internal error" \
             }), 500
 
+# TODO
+# Should check the book_id's owner should be this member (use member_id)
 @blueprint_book.route("/booking", methods=["DELETE"])
-def deleteBooking():
+def delete_booking():
     try:
-        auth_header = request.headers.get("Authorization")
+        payload = process_auth_header(request.headers.get("Authorization"))
 
-        if auth_header is None:
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        split_header = auth_header.split()
-        if len(split_header) != 2 or split_header[0].lower() != "bearer":
-            return \
-                jsonify({ \
-                    "error": True, \
-                    "message": "Havn't logged in" \
-                }), 403
-
-        payload = jwt.decode(split_header[1], secret_key, algorithms="HS256")
-        if payload["exp"] is None or datetime.utcnow() > datetime.utcfromtimestamp(payload["exp"]):
+        if payload == None:
             return \
                 jsonify({ \
                     "error": True, \
@@ -157,7 +110,7 @@ def deleteBooking():
                 }), 403
 
         # TODO
-        # DELETE DATA
+        # Support multiple order
         mydb.delete_book_all(payload["id"])
         return \
             jsonify({ \

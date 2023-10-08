@@ -79,6 +79,8 @@ class mydb_mgr:
             cursor.execute("DROP TABLE IF EXISTS category")
             cursor.execute("DROP TABLE IF EXISTS image")
             cursor.execute("DROP TABLE IF EXISTS member")
+            cursor.execute("DROP TABLE IF EXISTS book")
+            cursor.execute("DROP TABLE IF EXISTS order_data")
             # Attractions
             cursor.execute( \
                 "CREATE TABLE attraction( \
@@ -131,7 +133,9 @@ class mydb_mgr:
             )
             # Book
             # TODO
-            # Support multiple booking
+            #   1.Support multiple booking
+            #   2.Refactor table design
+            #   3.ORM
             cursor.execute( \
                 "CREATE TABLE book( \
                     id bigint AUTO_INCREMENT, \
@@ -146,6 +150,24 @@ class mydb_mgr:
                 )" \
             )
             # Order
+            cursor.execute( \
+                "CREATE TABLE order_data( \
+                    id bigint AUTO_INCREMENT, \
+                    order_number varchar(255) NOT NULL, \
+                    member_id bigint NOT NULL, \
+                    attraction_id bigint NOT NULL, \
+                    status bigint NOT NULL, \
+                    contact_name varchar(255) NOT NULL, \
+                    contact_email varchar(255) NOT NULL, \
+                    contact_phone varchar(255) NOT NULL, \
+                    book_date date NOT NULL, \
+                    book_time SET('morning', 'afternoon') NOT NULL, \
+                    price bigint NOT NULL, \
+                    FOREIGN KEY(member_id) REFERENCES member(id), \
+                    FOREIGN KEY(attraction_id) REFERENCES attraction(id), \
+                    PRIMARY KEY(id) \
+                )" \
+            )
         self.connect_and_run(run)
 
     # Test & Debug
@@ -230,12 +252,12 @@ class mydb_mgr:
             cursor.execute(sql, val)
         self.connect_and_run(run, True)
 
-    def delete_book_by_id(self, book_id):
+    def delete_book_by_id(self, book_id, member_id):
         def run(cursor):
             # TODO
             # Support multiple booking
-            sql = "DELETE FROM book WHERE id = %s"
-            val = (book_id, )
+            sql = "DELETE FROM book WHERE id = %s AND member_id = %s"
+            val = (book_id, member_id)
             cursor.execute("USE website")
             cursor.execute(sql, val)
         self.connect_and_run(run, True)
@@ -251,6 +273,14 @@ class mydb_mgr:
         # TODO
         # Check the column exists or not => exist not to delete
         self.delete_book_all(member_id) # Should be remove after supporting multiple booking
+        self.connect_and_run(run, True)
+
+    def add_order(self, order_number, member_id, attraction_id, name, email, phone, date, time, price, status):
+        def run(cursor):
+            sql = "INSERT INTO order_data (order_number, member_id, attraction_id, contact_name, contact_email, contact_phone, book_date, book_time, price, status) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+            val = (order_number, member_id, attraction_id, name, email, phone, date, time, price, status)
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
         self.connect_and_run(run, True)
 
     # Get function
@@ -341,6 +371,17 @@ class mydb_mgr:
                         ON tableA.id=tableB.attraction_id \
                     WHERE tableB.member_id=%s LIMIT 1"
             val = (member_id, )
+            cursor.execute("USE website")
+            cursor.execute(sql, val)
+            return cursor.fetchall()
+        return self.connect_and_run(run)
+    
+    def get_order(self, member_id, order_number):
+        # TODO
+        # Support multiple booking
+        def run(cursor):
+            sql = "SELECT * FROM order_data WHERE member_id = %s AND order_number = %s"
+            val = (member_id, order_number)
             cursor.execute("USE website")
             cursor.execute(sql, val)
             return cursor.fetchall()

@@ -2,6 +2,8 @@
 {%block title%}預定資訊{%endblock%}
 {%block css%}
     <link rel="stylesheet" type="text/css" href="../static/css/booking.css">
+    <!-- some style of div input box -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 {%endblock%}
 {%block main%}
     <hr class="horizontal-line--basic-setting horizontal-line--top-setting">
@@ -65,16 +67,16 @@
         </div>
         <div class="book-panel__group book-panel__group--setting-gap">
             <div class="book-panel__input-row book-panel__text--small">
-                <label for="card-code" class="book-panel__text--big">卡片號碼&nbsp;:&nbsp;</label>
-                <input type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="**** **** **** ****" id="card-code" class="book-panel__input-box">
+                <label for="card-number" class="book-panel__text--big">卡片號碼&nbsp;:&nbsp;</label>
+                <input type="tel" inputmode="numeric" pattern="[0-9\s]{13,19}" autocomplete="cc-number" maxlength="19" placeholder="**** **** **** ****" id="card-number" class="book-panel__input-box">
             </div>
             <div class="book-panel__input-row book-panel__text--small">
                 <label for="card-date" class="book-panel__text--big">過期時間&nbsp;:&nbsp;</label>
                 <input type="text" id="card-date" placeholder="MM / YY" class="book-panel__input-box">
             </div>
             <div class="book-panel__input-row book-panel__text--small">
-                <label for="card-password" class="book-panel__text--big">驗證密碼&nbsp;:&nbsp;</label>
-                <input type="password" placeholder="CVV" id="card-password" class="book-panel__input-box">
+                <label for="card-ccv" class="book-panel__text--big">驗證密碼&nbsp;:&nbsp;</label>
+                <input type="password" placeholder="CVV" id="card-ccv" class="book-panel__input-box">
             </div>
         </div>
         <hr class="horizontal-line--middle-setting">
@@ -92,5 +94,9 @@
     </main>
 {%endblock%}
 {%block script%}
+    <!-- control whether user can type in the div box -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://js.tappaysdk.com/sdk/tpdirect/v5.17.0"></script>
     <script src="../static/js/booking.js"></script>
+    <script src="../static/js/order.js"></script>
 {%endblock%}
