@@ -129,14 +129,40 @@ def get_order_from_id(orderNumber):
                 }), 403
 
         order = mydb.get_order(payload["id"], orderNumber)
-        attraction = mydb.get_attraction(order[0][3])
         print(order)
+        if order == []:
+            return \
+                jsonify({ \
+                    "data": None
+                }), 200
+        attraction = mydb.get_attraction(order[0][3])
         print(attraction)
+        images = mydb.get_images_by_id(order[0][3])
+        print(images)
 
         # TODO
         return \
             jsonify({ \
-                "ok": True
+                "data": {
+                    "number": order[0][1],
+                    "price": order[0][10],
+                    "trip": {
+                        "attraction": {
+                            "id": order[0][3],
+                            "name": attraction[0][1],
+                            "address": attraction[0][3],
+                            "image": images[0][0]
+                        },
+                        "date": order[0][8].isoformat(),
+                        "time": ' '.join(order[0][9])
+                    },
+                    "contact": {
+                        "name": order[0][5],
+                        "email": order[0][6],
+                        "phone": order[0][7]
+                    },
+                    "status": order[0][4]
+                }
             }), 200
 
     except Exception as e:
