@@ -2,7 +2,7 @@
 let attractionNamespace = {};
 
 // Main
-window.onload = async function indexLoading(){
+window.onload = async function attractionLoading(){
     attractionNamespace.initialization();
     await attractionNamespace.loadAttractions();
     attractionNamespace.addElementListener();

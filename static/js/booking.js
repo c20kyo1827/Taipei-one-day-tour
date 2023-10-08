@@ -3,7 +3,7 @@ let bookNamespace = {};
 bookNamespace.isLogin = false;
 
 // Main
-window.onload = async function indexLoading(){
+window.onload = async function bookLoading(){
     await bookNamespace.initialization();
     bookNamespace.addElementListener();
 }
@@ -33,6 +33,20 @@ bookNamespace.addElementListener = function addElementListener(){
     //     // TODO
     //     // Make the order based on the book info
     // });
+
+    const inputCellphone = document.getElementById("book-cellphone");
+    if(inputCellphone !== null){
+        inputCellphone.addEventListener("input", function(event) {
+            let numericValue = event.target.value.replace(/[^0-9]/g, '');
+            if (numericValue.length > 10) {
+                numericValue = numericValue.substring(0, 10);
+            }
+            event.target.value = numericValue;
+
+            // TODO
+            // Check the email box and turn the button on
+        });
+    }
 }
 
 // Utility
@@ -168,6 +182,9 @@ bookNamespace.createContactInfo = function createContactInfo(userInfo){
         }
         if(input.id === "book-email"){
             input.value = userInfo.data.email;
+        }
+        if(input.id === "book-cellphone"){
+            input.type = "tel";
         }
         input.classList.add("book-panel__input-box");
         inputRow.appendChild(label);

@@ -1,4 +1,7 @@
+// TODO
+// Support multiple order
 let tapPayNamespace = {};
+
 tapPayNamespace.setTPD = function setTPD(){
     if(
         document.querySelector(".book-panel__button") == null ||
@@ -96,10 +99,12 @@ tapPayNamespace.setTPD = function setTPD(){
     })
 
     TPDirect.card.onUpdate(function (update) {
-        // Disable / enable submit button depend on update.canGetPrime  
+        // Disable / enable submit button depend on update.canGetPrime
+        // Use the tapPayNamespace.isContactInfoDone()
         if (update.canGetPrime) {
             submitButton.removeAttribute("disabled")
-        } else {
+        }
+        else {
             submitButton.setAttribute("disabled", true)
         }
 
@@ -134,7 +139,80 @@ tapPayNamespace.setTPD = function setTPD(){
                 console.log("get prime error " + result.msg);
                 return;
             }
-            console.log("get prime successfully, prime: " + result.card.prime);
+            tapPayNamespace.collectOrder(result.card.prime)
+            .then((orderBody)=>{
+                tapPayNamespace.newOrder(orderBody)
+                .then((response) => {
+                    window.location.href = "/thankyou?number=" + response.data.number;
+                });
+            })
         })
     })
+}
+
+// Utility
+tapPayNamespace.isContactInfoDone = function isContactInfoDone(){
+    const name = document.getElementById("book-name").value;
+    const eamil = document.getElementById("book-email").value;
+    const cellphone = document.getElementById("book-cellphone").value;
+    return name !== "" && eamil !== "" && cellphone !== "";
+}
+
+tapPayNamespace.collectOrder = async function collectOrder(prime){
+    // Attraction info
+    bookingData = await bookNamespace.getBooking();
+    // Contact info
+    const name = document.getElementById("book-name").value;
+    const email = document.getElementById("book-email").value;
+    const cellphone = document.getElementById("book-cellphone").value;
+    return JSON.stringify({
+        "prime": prime,
+        "order": {
+            "price": bookingData["data"][0]["price"],
+            "trip": {
+                "attraction": {
+                    "id": bookingData["data"][0]["attraction"]["id"],
+                    "name": bookingData["data"][0]["attraction"]["name"],
+                    "address": bookingData["data"][0]["attraction"]["address"],
+                    "image": bookingData["data"][0]["attraction"]["image"]
+                },
+                "date": bookingData["data"][0]["date"],
+                "time": bookingData["data"][0]["time"]
+            },
+            "contact": {
+                "name": name,
+                "email": email,
+                "phone": cellphone
+            }
+        }
+    });
+}
+
+tapPayNamespace.newOrder = async function newOrder(OrderBody){
+    let fetchURL ="/api/orders";
+    return fetch(fetchURL,
+        {
+            method: "POST",
+            body: OrderBody,
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+            }
+        }
+    )
+    .then( (response) => {return response.json()})
+}
+
+tapPayNamespace.getOrder = async function getOrder(orderNumber){
+    let fetchURL ="/api/order/" + orderNumber;
+    return fetch(fetchURL,
+        {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json; charset=UTF-8",
+                "Authorization": "Bearer " + localStorage.getItem("jwtToken")
+            }
+        }
+    )
+    .then( (response) => {return response.json()})
 }

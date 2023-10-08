@@ -78,7 +78,8 @@ def new_booking():
                 }), 403
 
         # TODO
-        # POST DATA
+        # Support multiple order
+        print(request.json)
         mydb.add_book(payload["id"], request.json.get("attractionId"), request.json.get("date"), request.json.get("time"), request.json.get("price"))
         return \
             jsonify({ \
@@ -109,7 +110,7 @@ def delete_booking():
                 }), 403
 
         # TODO
-        # DELETE DATA
+        # Support multiple order
         mydb.delete_book_all(payload["id"])
         return \
             jsonify({ \
