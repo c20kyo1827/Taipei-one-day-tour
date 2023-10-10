@@ -79,7 +79,6 @@ def new_booking():
 
         # TODO
         # Support multiple order
-        print(request.json)
         mydb.add_book(payload["id"], request.json.get("attractionId"), request.json.get("date"), request.json.get("time"), request.json.get("price"))
         return \
             jsonify({ \

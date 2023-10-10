@@ -129,16 +129,13 @@ def get_order_from_id(orderNumber):
                 }), 403
 
         order = mydb.get_order(payload["id"], orderNumber)
-        print(order)
         if order == []:
             return \
                 jsonify({ \
                     "data": None
                 }), 200
         attraction = mydb.get_attraction(order[0][3])
-        print(attraction)
         images = mydb.get_images_by_id(order[0][3])
-        print(images)
 
         # TODO
         return \

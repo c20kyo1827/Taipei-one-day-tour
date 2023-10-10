@@ -206,7 +206,11 @@
 }
 
 .book-panel__date{
+    border: none;
+    width: 170px;
     height: 35px;
+    padding: 5px 10px 5px 10px;
+    align-items: center;
 }
 input[type="date"]::-webkit-calendar-picker-indicator:hover {
     opacity: 0.4;
